@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0,user-scalable=no">
+    <title>hilda's Blog</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <!-- built files will be auto injected -->
+  </body>
+  <script type="text/javascript">
+// 根据屏幕宽度设置rem
+(function() { var resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize'; 
+    var rescale = function() { 
+      document.documentElement.style.fontSize = document.documentElement.clientWidth/375*75 + 'px';     
+    } 
+   window.addEventListener(resizeEvent,rescale,false); 
+   document.addEventListener('DOMContentLoaded',rescale,false); })();
+  </script>
+</html>
