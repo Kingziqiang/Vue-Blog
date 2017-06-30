@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",
-    "start": "node build/dev-server.js",
+    "start": "node server/routes/index.js",
     "build": "node build/build.js",
     "unit": "cross-env BABEL_ENV=test karma start test/unit/karma.conf.js --single-run",
     "e2e": "node test/e2e/runner.js",
@@ -15,6 +15,10 @@
   },
   "dependencies": {
     "express": "^4.15.3",
+    "highlight": "^0.2.4",
+    "highlight.js": "^9.12.0",
+    "marked": "^0.3.6",
+    "moment": "^2.18.1",
     "mongoose": "^4.10.4",
     "sass": "^0.5.0",
     "vue": "^2.3.3",

@@ -20,13 +20,21 @@ const UserSchme = new Schema({
 	password:{type: String,unique:true}
 })
 
+/*定义草稿Schme*/
+const DraftSchme = new Schema({
+	title:String,
+	tags:[String],
+	date:Date,
+	content:String
+})
 
 
 
 /* 将Schme发布为Model */
 const Models = {
 	Article:db.model('Article',ArticleSchema),
-	User:db.model('User',UserSchme)
+	User:db.model('User',UserSchme),
+	Draft:db.model('Draft',DraftSchme)
 }
 
 

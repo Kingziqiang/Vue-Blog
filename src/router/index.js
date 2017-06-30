@@ -1,18 +1,18 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Home from '@/components/home'
-import Articles from '@/components/Articles'
-import Article from '@/components/Article'
-import Index from '@/components/Index'
-import AboutMe from '@/components/AboutMe'
+import Home from '@/components/front/home'
+import Articles from '@/components/front/Articles'
+import Article from '@/components/front/Article'
+import Index from '@/components/front/Index'
+import AboutMe from '@/components/front/AboutMe'
 
-import Login from '@/components/Login' 
-import Admin from '@/components/Admin'
-import Amend from '@/components/Amend'
-import Editor from '@/components/Editor'
-import AddArticle from '@/components/AddArticle'
-import Acount from '@/components/Acount'
+import Login from '@/components/back/Login' 
+import Admin from '@/components/back/Admin'
+import Amend from '@/components/back/Amend'
+import Editor from '@/components/back/Editor'
+import AddArticle from '@/components/back/AddArticle'
+import Acount from '@/components/back/Acount'
 
 
 Vue.use(Router)

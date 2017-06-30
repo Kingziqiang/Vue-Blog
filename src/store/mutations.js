@@ -1,6 +1,6 @@
 export default {
   set_articles: (state, articles) => {
-    state.articles = articles
+    state.articles = articles;
   },
   set_all_tags: (state, allTags) => {
     state.allTags = allTags
@@ -9,11 +9,12 @@ export default {
   	state.article = article
   },
   set_user: (state,user) => {
+    localStorage.setItem('name', user.username)
     state.user = user
   },
   set_dialog: (state,dialog_box) => {
-    state.dialog_box.show = dialog_box.show;
-    state.dialog_box.tip = dialog_box.tip;
-    state.dialog_box.hasTwobtn = dialog_box.hasTwobtn;
+    state.dialog_box = {
+      ...dialog_box
+    }    
   }
 }

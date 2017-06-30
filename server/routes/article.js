@@ -6,29 +6,28 @@ const db = require('../db/db.js')
 //查询部分文章
 router.get('/api/articles',function(req,res){
 	var tag = req.query.payload.tag
-	var limit = req.query.payload.limit
-
-	/*if(tag && tag !== '全部'){
-	  db.Article.find({tags: tag}).limit(limit)
-	  .then(articles => {
-		res.status(200).send(articles)
-	  })
-    }else{
-      db.Article.find().limit(limit)
-      .then(articles => {
-	    res.status(200).send(articles)
-	  })
-    }*/
+	var limit = +req.query.payload.limit;
+    var skip = +req.query.payload.skip
     console.log(limit)
     if (tag && tag !== '全部') {
-        db.Article.find({tags: tag}).sort({date: -1})/*.limit(limit).exec()*/.then((articles) => {
+        db.Article
+        .find({tags: tag})
+        .sort()
+        .skip(skip)
+        .limit(limit)
+        .then((articles) => {
         	console.log(articles)
                 res.send(articles)
         })
     } else {
-        db.Article.find().sort({date: -1})/*.limit(limit).exec()*/.then((articles) => {
+       db.Article
+        .find()
+        .sort({date: -1})
+        .limit(limit)
+        .skip(skip)
+        .then((articles) => {
         	console.log(articles)
-            res.send(articles)
+                res.send(articles)
         })
     }
 })

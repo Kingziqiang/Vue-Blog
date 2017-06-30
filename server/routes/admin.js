@@ -34,5 +34,14 @@ router.post('/api/alter',function(req,res){
 	.catch((err) => {console.err("修改失败"+err)})
 })
 
+router.get('/api/searchArticles',function(req,res){
+	console.log(req.query.payload)
+	let title = req.query.payload.search_title;
+
+	db.Article.find({"title":eval("/.*"+title+".*/i")})
+	.then((result) => {res.send(result)})
+	.catch((err)=>{console.log(err)})
+
+})
 
 module.exports = router
