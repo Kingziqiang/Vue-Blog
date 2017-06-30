@@ -45,17 +45,25 @@ npm run dev
 ```
 稍等一会儿，页面就会自动在浏览器窗口加载了
 # 示例页面
-首页
-![](./src/assets/img/QQ图片20170630160907.jpg)
-文章列表
-![](./src/assets/img/QQ图片20170630161024.png)
-文章详细
-![](./src/assets/img/QQ图片20170630161114.png)
-登陆
-![](./src/assets/img/QQ图片20170630175326.png)
-后台管理
-![](./src/assets/img/QQ图片20170630161103.png)
-文章发布
-![](./src/assets/img/QQ图片20170630161123.png)
-效果演示
-<iframe height=498 width=510 src="./src/assets/img/admin.mp4">
+### 首页
+![](./src/assets/img/QQ图片20170630160907.jpg)  
+
+### 文章列表
+![](./src/assets/img/QQ图片20170630161024.png)  
+
+### 文章详细
+![](./src/assets/img/QQ图片20170630161114.png)  
+
+### 登陆
+![](./src/assets/img/QQ图片20170630175326.png)  
+
+### 后台管理
+![](./src/assets/img/QQ图片20170630161103.png)  
+
+### 文章发布
+![](./src/assets/img/QQ图片20170630180945.png)
+
+### 效果演示
+<video>
+      <source id="mp4" src="./src/assets/img/admin.mp4" type="video/mp4">
+ </video>
