@@ -120,16 +120,7 @@ label img{
 	border-radius:0px;
 	color: #fff;
 }
-/*
-input[type="text"]:focus{
-	border: 1px solid #d1d8e6;
-}
-input[type="button"]{
-	border-radius: 15px;
-	border: 1px solid #d1d8e6;
-	
-}
- */
+
 @media screen and (max-width: 440px) {
   .login_form{
 	width:3.9rem !important;

@@ -3,6 +3,7 @@ const app = express()
 const article = require('./article.js')
 const login = require('./login.js')
 const admin = require('./admin')
+const draft = require('./draft')
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
@@ -11,6 +12,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(article)
 app.use(login)
 app.use(admin)
+app.use(draft)
 
 
 //启动服务

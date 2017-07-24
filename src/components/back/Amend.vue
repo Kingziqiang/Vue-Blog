@@ -4,10 +4,11 @@
 			<p class="head">所有文章</p>
 			<table>
 				<tr v-for='item in getShortArticles'>
-						<td class="title">{{item.title}}</td>	
+						<td class="title">{{item.title}}</td>
+						<td class="tags"><span v-for='tag in item.tags'>{{tag}}</span></td>	
 						<td class="time">{{item.date}}</td>			
 						<td class="operate">
-							<router-link tag="span" :to="{name: 'editor',params: {aid:item._id}}">编辑</router-link>
+							<router-link tag="span" :to="{name: 'editor',params: {type:'article',aid:item._id}}">编辑</router-link>
 							<span @click="remove(item._id)">删除</span>
 						</td>				
 				</tr>
@@ -39,6 +40,7 @@ export default {
 	methods: {
 		...mapMutations(['set_dialog']),
 		...mapActions(['getArticles', 'removeArtical']),
+
 		remove:function (aid) {
 			var _this = this
 			this.set_dialog({
@@ -67,8 +69,11 @@ export default {
 			}
 		},
 		nextPage: function () {
-			this.page++;
-			this.getArticles({limit:8,skip:(this.page-1)*8})
+			if(this.articles.length == 8){
+				console.log(this.articles.length)
+			  this.page++;
+			  this.getArticles({limit:8,skip:(this.page-1)*8})
+			 }
 		}
 	}
 }
@@ -120,6 +125,10 @@ tr .time{
 	white-space: nowrap; 
 	overflow: hidden; 
 	color: #aaa;
+}
+tr .tags span{
+	margin:10px;
+	float: left;
 }
 tr .operate{
 	text-align: right;

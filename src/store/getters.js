@@ -31,10 +31,7 @@ export default {
     return shortArticles
   },
   getFormArticle:(state) =>{
-    let formArticle = {}
-    for(let i in state.article){
-      formArticle[i] = state.article[i]
-    }
+    let formArticle = {...state.article};
     formArticle.date = moment(formArticle.date).format("YYYY-MM-DD");
     formArticle.content = marked(formArticle.content);
     return formArticle;

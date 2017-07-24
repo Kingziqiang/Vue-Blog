@@ -19,17 +19,19 @@ export default {
 			aid: this.$route.params.aid
 		}
 	},
-	computed: {
-	
-      ...mapGetters(['getFormArticle'])
-     
+	computed: {	
+      ...mapGetters(['getFormArticle']) ,
+      ...mapState(['article'])   
 	},
 
 	watch:{
 		'aid':(to,from) => {
 			this.getArticle({aid: to})
+		},
+		'article': function (){
+
 		}
-	},
+	},	
 	created (){
       this.getArticle({aid: this.aid})
 	},	

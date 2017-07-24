@@ -3,7 +3,7 @@
 		<div id="admin_header">
 			<div class="hello">
 				<img src="../../assets/img/home.png">
-				<span >hello&nbsp;&nbsp;{{name}}</span>
+				<span >Hello,{{name}}</span>
 			</div>
 			<div class="search_box">
 				<input type="text" placeholder="您要搜索的文章标题"class="search" 
@@ -17,7 +17,8 @@
 		
 			<ul>
 				<router-link to="/admin/amend" tag="li">文章管理</router-link>
-				<router-link to="/admin/addArticle" tag="li">新建文章</router-link>
+				<router-link :to="{name:'addArticle',params: {type: 'new'}}" tag="li">新建文章</router-link>
+				<router-link to="/admin/draft" tag="li">我的草稿</router-link>
 				<router-link to="/admin/acount" tag="li">修改账户</router-link>
 			</ul>
 		</div>
@@ -60,8 +61,8 @@ export default {
 	display: block;
 	position: fixed;
 	top:0px;
-	background-color:#b5bfc6;
-	box-shadow: 1px 1px 1px 1px rgba(250,250,250,0.7); 
+	background-color:#fff;
+	box-shadow: 0 0 2px rgba(0,0,0,0.25);
 	z-index: 10;
 }
 .hello{
@@ -76,16 +77,16 @@ export default {
 	align-items: center;
 }
 .hello img{
-	height: 100%;
+	height: 75%;
 }
 
 .hello span{
 	font-size: 20px;
-	color:#fff;
+	color:#444;
 	margin-left:10px;
 }
 .search_box{
-	border:1px solid #fff;
+	border:1px solid #ccc;
 	border-radius: 15px;
 	position: relative;
 	top:50%;
@@ -98,7 +99,7 @@ export default {
 	position: relative;
 	width: 2rem;
 	height: 35px;
-	max-width: 310px !important;
+	max-width: 250px !important;
 	background-color: rgba(255,255,255,0);
 }
 .search_box img{

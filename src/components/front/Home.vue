@@ -7,7 +7,7 @@
 			<div class="article" v-for="article in getShortArticles">
           <div class="box" >
               <div class="art_header">
-        			  <h3>{{article.title}}</h3>
+        			  <h1>{{article.title}}</h1>
                 <time>{{article.date}}</time>
               </div>
               <p>{{article.content}}</p>
@@ -99,10 +99,9 @@ export default {
   height: auto;
   overflow: hidden;
  }
- .article h3{
+ .article h1{
    font-weight: normal;
-   height: 60px;
-   line-height: 60px;
+  
    margin-top: 20px;
    float: left;
    display: inline-block;

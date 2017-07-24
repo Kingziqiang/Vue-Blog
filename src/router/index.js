@@ -11,8 +11,9 @@ import Login from '@/components/back/Login'
 import Admin from '@/components/back/Admin'
 import Amend from '@/components/back/Amend'
 import Editor from '@/components/back/Editor'
-import AddArticle from '@/components/back/AddArticle'
+/*import AddArticle from '@/components/back/AddArticle'*/
 import Acount from '@/components/back/Acount'
+import Draft from '@/components/back/Draft'
 
 
 Vue.use(Router)
@@ -42,9 +43,10 @@ Vue.use(Router)
         component: Admin,
         children: [
           {path: 'amend',name: 'amend',component: Amend},
-          {path: 'addArticle',name: 'addArticle',component: AddArticle},
-          {path: 'editor/:aid',name: 'editor',component: Editor},
-          {path: 'acount',name: 'acount',component: Acount}
+          {path: '编辑/:type',name: 'addArticle',component: Editor},
+          {path: '编辑/:type/:aid',name: 'editor',component: Editor},
+          {path: 'acount',name: 'acount',component: Acount},
+          {path: 'draft',name: 'draft',component:Draft}
         ]
       }
     ]

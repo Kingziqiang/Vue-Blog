@@ -1,30 +1,26 @@
 <template>
-	<div id="addArticle">
+	<div id="editor">
 		<ul class="form">
-				<li class="switch">
-					<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
-					<span :class="{checked:isMarked}" @click="isMarked = true">预览</span>
-				</li>
-				<li>
-					<input v-focus type="text" class="title" placeholder="标题"  v-model.trim="title">
-					
-				</li>
-				<li>
-					<input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="tags">
-				</li>
-
-				<li>
-					<textarea class="content" placeholder="来写点儿啥呗~" 
-					v-model="content"
+			<li class="switch">
+				<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
+				<span :class="{checked:isMarked}" @click="isMarked = true">预览</span>
+			</li>
+			<li>
+				<input type="text" class="title" v-model.trim="article.title" v-focus>
+			</li>
+			<li>
+				<input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="article.tags">
+			</li>
+			<li>
+				<textarea class="content" placeholder="来写点儿啥呗~" 
+					v-model.trim="article.content"
 					v-if = "!isMarked"
 					></textarea>
-					<div  class="mdContent" v-if="isMarked" v-html="mdContent"></div>
-				</li>
-
-				<li class="btn">
-					<button  @click="submit()">发布文章</button>
-			    	<button >存为草稿</button>
-			    </li>
+				<div  class="mdContent" v-if="isMarked" v-html="mdContent"></div>
+			</li>
+			<li class="btn">
+				<button type="button" @click="submit()" >发布文章</button>
+			</li>
 		</ul>
 	</div>
 </template>
@@ -32,6 +28,7 @@
 import {mapActions,mapState,mapMutations} from 'vuex'
 
 var marked = require('marked');  //引入markdown
+
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -42,60 +39,57 @@ marked.setOptions({
   smartLists: true,
   smartypants: false
 });
-
+marked.setOptions({
+  highlight: function (code) {
+    return require('highlight.js').highlightAuto(code).value;
+  }
+});
 export default {
-
 	data(){
-		return {
-			title:'',
-			tags:[],
+		return{
+			aid:this.$route.params.aid,
+			originArticle:{},
 			isMarked:false,
-			content:''
 		}
-	},
-	directives: {
-		focus: {
- 			 inserted: function (el) {
- 			 el.focus()
- 		 	}
- 		}
 	},
 	computed:{
-		...mapState(['dialog_box']),
-		mdContent: function() {
-			return marked(this.content)
-		},
-		newArticle: function() {
-			return{
-				title:this.title,
-				tags:this.tags.split(' '),
-				content:this.content,
-				date:new Date()
-			}
+		...mapState(['article','dialog_box']),
+		mdContent:function() {
+			return marked(this.article.content)
+		}
+	},
+	created(){
+		this.getArticle({aid:this.aid}) //更新article的所有数据
+	},
+	
+	watch: {
+		'aid':(to,from) =>{
+			this.getArticle({aid:to})
 		},
 	},
+
 	methods:{
-		...mapActions(['saveArticle']),
+		...mapActions(['getArticle','alterArticle']),
 		...mapMutations(['set_dialog']),
-		submit:function (){
-			let _this = this; 
-			this.saveArticle(this.newArticle)
-			.then(_this.set_dialog({
-				show : true,
-				tip :  '发布成功了哟(๑╹◡╹)ﾉ"""',
-				hasTwobtn : false,
-    			resolved : () => {
-    				_this.dialog_box.show = false; 
-    				_this.$router.push('/admin/amend')}
-			}))
-			.catch((err) => {console.log(err)})
-			
+		submit: function(){	
+		 var _this = this		
+			_this.set_dialog({
+				show: true,
+				tip:  '确认保存修改吗(๑╹◡╹)ﾉ"""',
+				hasTwobtn: true,
+				resolved: () =>{
+					_this.alterArticle(_this.article)
+					.then(()=> {_this.dialog_box.show = false;_this.$router.push('/admin/amend')})
+				},
+				reject: () =>{_this.dialog_box.show = false;}
+			})
 		}
 	}
-}
+} 
 </script>
 <style type="stylesheel/scss" scoped>
- #addArticle{
+
+ #editor{
 	position: relative;
 	display: inline-block;
 	width: 100%;
@@ -106,7 +100,7 @@ export default {
 
 }
 
-#addArticle .form{
+#editor .form{
 	width: 60%;
 	position: relative;
 	margin:auto;
@@ -119,7 +113,7 @@ export default {
 
 }
 
-#addArticle .form li{
+#editor .form li{
 	margin-top:0.1rem;
 	width: 100%;
 	display: flex;
@@ -132,7 +126,7 @@ export default {
 	padding: 5px;
 	font-family: '微软雅黑'
 }
-#addArticle .form .switch span{
+#editor .form .switch span{
 	display: inline-block;
 	height:35px;
 	line-height: 35px;
@@ -140,32 +134,32 @@ export default {
 	border:1px solid #42b983; 
 }
 
-#addArticle .form .switch .checked{
+#editor .form .switch .checked{
 	background-color: #42b983;
 	color: #fff;
 }
 
-#addArticle .form li .title{
+#editor .form li .title{
 	width: 100%;
 	height: 40px;
 	background-color: #ebebeb;
 	text-align: center;
 	font-size: 22px;
 }
-#addArticle .form li .title::placeholder{
+#editor .form li .title::placeholder{
 	text-align: center;
 }
-#addArticle .form li .tag{
+#editor .form li .tag{
 	width:1rem;
 	min-width: 170px;
 	border-bottom:1px solid #999;
 	padding: 3px;
 
 }
-#addArticle .form li .content{
+#editor .form li .content{
 	width: 100%;
 	height: 340px;
-	
+	font-family: '微软雅黑';
 	border:none;
 	background-color: #ebebeb;
 }
@@ -176,54 +170,55 @@ export default {
 	text-align: left;
 	overflow: scroll;
 }
-#addArticle .form .btn{
-	justify-content: space-around;
+#editor .form .btn{
+	justify-content: center;
 
 }
-#addArticle .form .btn button{		
+ .btn button{
+		
 		color: #42b983;
 		padding: 6px 8%;
 		border-radius: 15px;
 		border:1px solid #42b983;
 		font-size: 20px;
-		transition: 0.6s;
+		transition: 0.4s;
 }
 .btn button:hover{
 		color: #fff !important;		
 		background-color: #42b983;
-		
+		border-radius: 0px;
 }
-
 @media screen and (max-width: 450px) {
 	::placeholder{
 	font-size: 18px;
 	}
-	#addArticle .form{
+	#editor .form{
 		width: 90%;
 		font-size: 18px;
 	}
 	.form li{
 		margin-top:0.2rem !important;
 	}
-	#addArticle .form .switch{
+	#editor .form .switch{
 		justify-content: center;
 	}
-	#addArticle .form .switch span{
+	#editor .form .switch span{
 		width:1rem;
 		height: 0.42rem;
 	}
-	#addArticle .form li .title{
+	#editor .form li .title{
 		height: 0.4rem;
 		font-size: 18px;
 	}
-	#addArticle .form li textarea{	
+	#editor .form li textarea{	
 		height:4rem;
 	}
-	#addArticle .form .btn button{
+	#editor .form .btn button{
 		font-size: 18px;
 		padding: 4px 12px;
 		border-radius: 12px;
 	}
 
 }
+
 </style>

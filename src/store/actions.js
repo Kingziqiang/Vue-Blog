@@ -11,21 +11,20 @@ export default {
   },
 
   getArticle:({commit,state},payload) => {
-    Vue.http.get('/api/article',{params: {payload}})
-    .then((res) =>{
-      commit('set_article',res.data)
-      console.log("state已改")
-      console.log(state.article)
-    })
+    return Vue.http.get('/api/article',{params: {payload}})
+    .then((res) => {commit('set_article',res.data),console.log(res.data)})
     .catch((err) => {
       console.log('获取article错误')
     })
   },
-
+  
   alterArticle:({commit},payload) => {
-    Vue.http.post('api/alter',payload)
+    return Vue.http.post('/api/alter',payload)
     .then(() => {console.log("发送请求成功")})
     .catch((err) => {console.log(err)})
+  },
+  articleToDraft: ({},payload) => {
+    return Vue.http.post('/api/articleToDraft',payload)
   },
 
   getAllTags: ({commit, state}) => {
@@ -69,7 +68,40 @@ export default {
           commit('set_articles',res.data);
       })
       .catch((err)=>{console.log(err)})
-  }
+  },
+
+  getDrafts: ({commit,state},payload) => {
+    return Vue.http.get('/api/getDrafts',{params:{payload}})
+    .then((drafts) => {
+      console.log(drafts.body)
+      commit('set_drafts',drafts.body)
+    })
+    .catch((err) => {console.log(err)})
+  },
+  getDraft: ({commit,state},payload) => {
+    return Vue.http.get('/api/draft',{params: {payload}})
+    .then((res) =>{
+      commit('set_draft',res.data)
+      console.log(res.data)
+    })
+    .catch((err) => {
+      console.log('获取draft错误')
+    })
+  },
+  alterDraft: ({},payload) => {
+    return Vue.http.patch('/api/draft',payload)
+
+  },
+  dropDraft: ({},_id) => {
+    console.log(_id)
+    return Vue.http.delete('/api/draft/'+_id)
+  },
+  postDraft: ({},payload) => {
+    return Vue.http.post('/api/postDraft',payload)
+  },
+  saveDraft: ({},payload) => {
+    return Vue.http.post('/api/saveDraft',payload)
+  } 
 
 }
 

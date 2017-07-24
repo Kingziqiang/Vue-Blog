@@ -44,4 +44,13 @@ router.get('/api/searchArticles',function(req,res){
 
 })
 
+router.post('/api/articleToDraft',function(req,res) {
+	var _id = req.body._id;
+    delete req.body._id;
+    Promise.all([db.Article.remove({_id:_id}),new db.Draft(req.body).save()])
+     .then(() => res.status(200).send())
+     .catch(err => console.log(err))
+
+})
+
 module.exports = router

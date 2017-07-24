@@ -1,26 +1,30 @@
 <template>
-	<div id="editor">
+	<div id="addArticle">
 		<ul class="form">
-			<li class="switch">
-				<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
-				<span :class="{checked:isMarked}" @click="isMarked = true">预览</span>
-			</li>
-			<li>
-				<input type="text" class="title" v-model.trim="article.title" v-focus>
-			</li>
-			<li>
-				<input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="article.tags">
-			</li>
-			<li>
-				<textarea class="content" placeholder="来写点儿啥呗~" 
-					v-model.trim="article.content"
+				<li class="switch">
+					<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
+					<span :class="{checked:isMarked}" @click="isMarked = true">预览</span>
+				</li>
+				<li>
+					<input v-focus type="text" class="title" placeholder="标题"  v-model.trim="title">
+					
+				</li>
+				<li>
+					<input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="tags">
+				</li>
+
+				<li>
+					<textarea class="content" placeholder="来写点儿啥呗~" 
+					v-model="content"
 					v-if = "!isMarked"
 					></textarea>
-				<div  class="mdContent" v-if="isMarked" v-html="mdContent"></div>
-			</li>
-			<li class="btn">
-				<button type="button" @click="submit()" >submit</button>
-			</li>
+					<div  class="mdContent" v-if="isMarked" v-html="mdContent"></div>
+				</li>
+
+				<li class="btns">
+					<div class="btn" @click="submitArticle()">发布文章</div>
+					<div class="btn" @click="submitDraft()">存为草稿</div>
+				</li>
 		</ul>
 	</div>
 </template>
@@ -28,7 +32,6 @@
 import {mapActions,mapState,mapMutations} from 'vuex'
 
 var marked = require('marked');  //引入markdown
-
 marked.setOptions({
   renderer: new marked.Renderer(),
   gfm: true,
@@ -39,57 +42,109 @@ marked.setOptions({
   smartLists: true,
   smartypants: false
 });
-marked.setOptions({
-  highlight: function (code) {
-    return require('highlight.js').highlightAuto(code).value;
-  }
-});
+
 export default {
+
 	data(){
-		return{
-			aid:this.$route.params.aid,
-			originArticle:{},
-			isMarked:false,
+		return {		
+			isMarked:false,	
+			title:'',
+			tags:'',
+			content:'',	
+			type: this.$route.params.type,	
 		}
+	},
+	watch: {
+		type : function (to,from) {
+			alert("jianshichenggong")
+			init(this)
+		}
+	},
+	directives: {
+		focus: {
+ 			 inserted: function (el) {
+ 			 el.focus()
+ 		 	}
+ 		}
 	},
 	computed:{
-		...mapState(['article','dialog_box']),
-		mdContent:function() {
-			return marked(this.article.content)
+		...mapState(['dialog_box','draft','article']),
+		mdContent: function() {
+			return marked(this.content)
+		},
+		newContent: function (){
+		  let newContent = {
+		    title: this.title,
+			tags: this.tags,
+			content: this.content,
+			date: new Date()
+		  }
+		  if(this.type !== 'new'){
+		  	newContent._id = this.$route.params.aid;
+		  }
+		  return newContent;
 		}
 	},
-	created(){
-		this.getArticle({aid:this.aid}) //更新article的所有数据
-	},
 	
-	watch: {
-		'aid':(to,from) =>{
-			this.getArticle({aid:to})
-		},
+	created() {
+		let _this = this;
+		this.init(_this);
 	},
 
 	methods:{
-		...mapActions(['getArticle','alterArticle']),
-		...mapMutations(['set_dialog']),
-		submit: function(){	
-		 var _this = this		
-			_this.set_dialog({
-				show: true,
-				tip:  '确认保存修改吗(๑╹◡╹)ﾉ"""',
-				hasTwobtn: true,
-				resolved: () =>{
-					_this.alterArticle(_this.article)
-					.then(()=> {_this.dialog_box.show = false;_this.$router.push('/admin/amend')})
-				},
-				reject: () =>{_this.dialog_box.show = false;}
-			})
+		...mapActions(['saveArticle','saveDraft','getDraft','getArticle','alterArticle','alterDraft','postDraft','articleToDraft']),
+		...mapMutations(['set_dialog','set_article','set_draft']),
+		submitArticle:function (){
+			switch(this.type)
+			{
+				case "article":
+				  this.alterArticle(this.newContent).then(() => {alert("修改成功了哟~")});
+				  break;
+				case "draft":
+				  this.postDraft(this.newContent).then(() => {alert("草稿发布成功了哟~")});
+				  break;
+				case "new":
+				  this.saveArticle(this.newContent).then(() => {alert("新文章发布成功了哟~")});
+				  break;
+			}			
+		},
+		submitDraft:function(){
+			switch(this.type)
+			{
+				case "article":
+				  this.articleToDraft(this.newContent).then(() => {alert("文章存至草稿了哟~")});
+				  break;
+				case "draft":
+				  this.alterDraft(this.newContent).then(() => {alert("草稿修改成功了哟~")});
+				  break;
+				case "new":
+				  this.saveDraft(this.newContent).then(() => {alert("草稿新建成功了哟~")});
+				  break;
+			}	
+		},
+		init: function(_this) {		
+			const params = _this.$route.params;
+			switch(_this.type)
+			{
+				case "article":
+					_this.getArticle({aid:params.aid})
+					.then(function(){					
+						({title: _this.title, tags: _this.tags, content:_this.content} = _this.article)
+					})
+					break;
+				case "draft":
+					_this.getDraft({aid:params.aid})
+					.then(function(){
+						({title: _this.title, tags: _this.tags, content:_this.content} = _this.draft)
+					})
+					break;
+			}
 		}
 	}
-} 
+}
 </script>
 <style type="stylesheel/scss" scoped>
-
- #editor{
+ #addArticle{
 	position: relative;
 	display: inline-block;
 	width: 100%;
@@ -100,7 +155,7 @@ export default {
 
 }
 
-#editor .form{
+#addArticle .form{
 	width: 60%;
 	position: relative;
 	margin:auto;
@@ -113,7 +168,7 @@ export default {
 
 }
 
-#editor .form li{
+#addArticle .form li{
 	margin-top:0.1rem;
 	width: 100%;
 	display: flex;
@@ -126,7 +181,7 @@ export default {
 	padding: 5px;
 	font-family: '微软雅黑'
 }
-#editor .form .switch span{
+#addArticle .form .switch span{
 	display: inline-block;
 	height:35px;
 	line-height: 35px;
@@ -134,32 +189,32 @@ export default {
 	border:1px solid #42b983; 
 }
 
-#editor .form .switch .checked{
+#addArticle .form .switch .checked{
 	background-color: #42b983;
 	color: #fff;
 }
 
-#editor .form li .title{
+#addArticle .form li .title{
 	width: 100%;
 	height: 40px;
 	background-color: #ebebeb;
 	text-align: center;
 	font-size: 22px;
 }
-#editor .form li .title::placeholder{
+#addArticle .form li .title::placeholder{
 	text-align: center;
 }
-#editor .form li .tag{
+#addArticle .form li .tag{
 	width:1rem;
 	min-width: 170px;
 	border-bottom:1px solid #999;
 	padding: 3px;
 
 }
-#editor .form li .content{
+#addArticle .form li .content{
 	width: 100%;
 	height: 340px;
-	font-family: '微软雅黑';
+	
 	border:none;
 	background-color: #ebebeb;
 }
@@ -170,55 +225,70 @@ export default {
 	text-align: left;
 	overflow: scroll;
 }
-#editor .form .btn{
-	justify-content: center;
+#addArticle .form .btns{
+	justify-content: space-around;
 
 }
- .btn button{
-		
+#addArticle .form .btn{		
 		color: #42b983;
 		padding: 6px 8%;
-		border-radius: 15px;
+		border-radius: 3px;
 		border:1px solid #42b983;
 		font-size: 20px;
-		transition: 0.4s;
+		position: relative;
+		z-index:2;
 }
-.btn button:hover{
-		color: #fff !important;		
-		background-color: #42b983;
-		border-radius: 0px;
+.btn::before{
+	content: '发布文章';
+	position:absolute;
+	left:0px;
+	top:0px;
+	background-color: #42b983;
+	width:0px;
+	height:100%;
+	transition: 1s;
+	box-sizing: border-box;
+	border-radius: 3px;
+	z-index: 1;
+	color:rgba(255,255,255,0);
+	padding-top: 7px;
 }
+.btns:hover .btn::before{
+		width: 100%;
+		color: #fff;
+
+}
+
 @media screen and (max-width: 450px) {
 	::placeholder{
 	font-size: 18px;
 	}
-	#editor .form{
-		width: 90%;
+	#addArticle .form{
+	width: 90%;
 		font-size: 18px;
 	}
 	.form li{
 		margin-top:0.2rem !important;
 	}
-	#editor .form .switch{
+	#addArticle .form .switch{
 		justify-content: center;
 	}
-	#editor .form .switch span{
+	#addArticle .form .switch span{
 		width:1rem;
 		height: 0.42rem;
 	}
-	#editor .form li .title{
+	#addArticle .form li .title{
 		height: 0.4rem;
 		font-size: 18px;
 	}
-	#editor .form li textarea{	
+	#addArticle .form li textarea{	
 		height:4rem;
 	}
-	#editor .form .btn button{
+	#addArticle .form .btn button{
 		font-size: 18px;
 		padding: 4px 12px;
 		border-radius: 12px;
 	}
 
 }
-
 </style>

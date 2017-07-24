@@ -12,6 +12,8 @@ const store = new Vuex.Store({
     articles: [],
     allTags: [],
     article: {},
+    drafts: [],
+    draft: {},
     user:{},
     dialog_box:{
     	show:false,

@@ -24,7 +24,6 @@ export default {
 		},
 		cancel: function (){
 			this.dialog_box.reject()
-			/*this.dialog_box.show = false;*/
 		}
 	}
 	

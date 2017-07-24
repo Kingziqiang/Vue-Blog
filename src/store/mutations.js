@@ -16,5 +16,11 @@ export default {
     state.dialog_box = {
       ...dialog_box
     }    
+  },
+  set_drafts: (state,drafts) => {
+    state.drafts = drafts
+  },
+  set_draft: (state,draft) => {
+    state.draft = draft
   }
 }
