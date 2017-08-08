@@ -1,86 +1,114 @@
 <template>
-	<div class="article">
-		<h3>{{getFormArticle.title}}</h3>
-		<time>{{getFormArticle.date}}</time>
-		<p v-html="getFormArticle.content"></p>
-		<ul>
-			<li></li>
-		</ul>
+	<div class="wrap">
+
+		<div class="article page">
+			<time>{{getFormArticle().date}}</time>
+			<p v-html="getFormArticle().content"></p>
+		</div>
+
+		<comment :aid = "aid"></comment>
+
 	</div>
 </template>
 
 <script>
-import {mapActions, mapState,mapGetters} from 'vuex'
+import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
+import comment                           from './Comment.vue'
 
+var moment = require("moment");
+var marked = require('marked');
+marked.setOptions({
+  renderer: new marked.Renderer(),
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false
+});
+
+marked.setOptions({
+  highlight: function (code) {
+    return require('highlight.js').highlightAuto(code).value;
+  }
+});
 
 export default {
     data () {
 		return {
-			aid: this.$route.params.aid
+			aid: this.$route.params.aid		
 		}
 	},
-	computed: {	
-      ...mapGetters(['getFormArticle']) ,
-      ...mapState(['article'])   
+	computed: {
+
+		...mapState(['article'])
 	},
-
+	components: {
+		comment
+	},
 	watch:{
-		'aid':(to,from) => {
+		aid(to,from) {
+			
 			this.getArticle({aid: to})
-		},
-		'article': function (){
-
 		}
 	},	
 	created (){
+
+	  this.set_loading(true);
       this.getArticle({aid: this.aid})
-	},	
+      .then(() => {this.set_title(this.article.title)})
+	},
 	methods: {
-      ...mapActions(['getArticle'])
+	  ...mapMutations(['set_loading', 'set_title']),
+      ...mapActions(['getArticle']),
+      getFormArticle() {
+      	let formArticle = {...this.article};
+      	if(formArticle.content != null){
+		    formArticle.content = marked(formArticle.content);
+		    return formArticle;
+		}
+      }
+     
 	}
 }	
 </script>
 
-<style type="stylesheet/scss" scoped>
+<style lang="scss" type="stylesheet/scss" scoped>
+.wrap{
+	position: relative;
+	width: 67%;
+  	margin:30px auto;
+}
 .article{
 	position: relative;
-	width: 60%;
-	background-color: #fff;
+	width: 100%;
   	margin:30px auto;
- 	border: 7px solid #fff;
-  	border-radius: 3px;
-  	box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12); 
-  	padding:30px 20px;
+  	padding:30px 0;
   	text-align: left;
+  	time{
+		margin-bottom:30px;
+		color: #ccc;
+		float: right;
+	}
+  	h1{
+		text-align: center;
+		font-weight: normal;
+		margin-bottom: 30px;
+		color: #444;
+		font-size:30px;
+		&:hover{
+			color: #3f86b5;
+		}
+	}
 }
 
-.article h3{
-	text-align: center;
-	font-weight: normal;
-	margin-bottom: 30px;
-	color: #444;
-	font-size:30px;
-}
 
-.article h3:hover{
-	color: #8bc34a;
-}
-.article time{
-	margin-bottom:30px;
-	color: #ccc;
-}
-p{
-  margin:20px;
-  line-height: 30px;
-  font-stretch:40px;
-  font-family: '微软雅黑';
-  color:#333;
-}
-h1,h2,h3{
-  margin:15px;
-}
-h4,h5,h6{
-  margin:10px;
+
+@media screen and (max-width: 440px) {
+	.wrap{
+		width: 80%;
+	}
 }
 
 </style>

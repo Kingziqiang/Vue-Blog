@@ -1,24 +1,23 @@
 <template>
-	<div class='title_list'>
-		<div class="wrapper">
-			<p class="head">所有草稿</p>
-			<table>
-				<tr v-for='item in drafts'>
-						<td class="title">{{item.title}}</td>	
-						<td class="time">{{item.date}}</td>			
-						<td class="operate">
-							<router-link tag="span" :to="{name: 'editor',params: {type:'draft',aid:item._id}}">编辑</router-link>
-							<span @click="remove(item._id)">删除</span>
-						</td>				
-				</tr>
-			</table>
+	<div class="wrapper">
+		<p class="head">所有草稿</p>
+		<table>
+			<tr v-for='item in drafts'>
+				<td class="title">{{item.title}}</td>
+				<!-- <td class="tags"><span v-for='tag in item.tags'>{{tag}}</span></td>	 -->
+				<td class="time">{{item.date}}</td>			
+				<td class="operate">
+					<router-link tag="span" :to="{name: 'editor',params: {type:'draft',aid:item._id}}">编辑</router-link>
+					<span @click="remove(item._id)">删除</span>
+				  </td>				
+			</tr>
+		</table>
 		<!-- 	<div class="turn_page">
 			<span @click="prePage">上一页</span>
 			<span>第{{ page }}页</span>
 			<span @click="nextPage">下一页</span>
 		</div> -->
-		</div>	
-	</div>
+	</div>	
 </template>
 <script>
 import {mapActions,mapState,mapMutations} from 'vuex'
@@ -26,31 +25,32 @@ import {mapActions,mapState,mapMutations} from 'vuex'
 	export default {
 		data() {
 			return {
-
+				limit: 10
 			}
 		},
 		computed: {
 			...mapState(['drafts','dialog_box'])
 		},
 		created() {
-			this.getDrafts({limit:8,skip:0})
+			this.getDrafts({limit:this.limit,skip:0})
 		},
 		methods: {
 			...mapMutations(['set_dialog']),
 			...mapActions(['getDrafts','dropDraft']),
 			remove(_id){
-				let _this = this
+			  const _this = this;
 			  this.set_dialog({
 			  	show:true,
 		    	tip:'确定要删除吗(ﾉﾟ0ﾟ)ﾉ~',
 		    	hasTwobtn:true,
-		    	resolved:() => {
+		    	resolved() {
+		    		const __this = this
 		    		_this.dropDraft(_id)
-		    		.then(() => _this.getDrafts({limit:8,skip:0}))
-		    		.then(() => _this.dialog_box.show = false)
+		    		.then(() => _this.getDrafts({limit:_this.limit,skip:0}))
+		    		.then(() => __this.show = false)
 		    		.catch(err => console.log(err))
 		    	},
-		    	reject:() => {_this.dialog_box.show = false}
+		    	reject(){this.show = false}
 			  })
 			}
 
@@ -58,70 +58,67 @@ import {mapActions,mapState,mapMutations} from 'vuex'
 	}
 </script>
 
-<style type="stylesheet/scss" scoped>
-
-.title_list{
-	position: relative;
-	display: inline-block;
-	width: 100%;
-	height: 92%;
-	position: relative;
-	top:8%;
-	font-size: 20px;
-}
+<style lang="scss" type="stylesheet/scss" scoped>
 .wrapper{
 	width: 52%;
 	position: relative;
 	margin:auto;
 	top:50%;
-	left: 3%;
+	top: 320px;
 	transform: translateY(-50%);	
-}
- table{
-	width: 100%;
-	table-layout:fixed;		
 }
 .head{
 	font-size: 24px;
 	font-weight: bold;
 	text-align: center;
-	color: #444;
 	margin-bottom: 20px;	
 }
-table tr{
+ table{
 	width: 100%;
-	height: 60px;
-	
+	position: relative;
+	margin: auto;
+	table-layout:fixed;	
+	tr{
+		width: 100%;
+		height: 35px;		
+		.title{
+			text-align: left;
+			text-overflow: ellipsis; 
+			white-space: nowrap; 
+			overflow: hidden; 
+			font-weight: bold;						
+		}
+		
+		.time{
+			text-overflow: ellipsis; 
+			white-space: nowrap; 
+			overflow: hidden; 
+			color: #aaa;
+		}
+		.tags span{
+			margin:10px;
+			float: left;
+		}
+		.operate{
+			text-align: right;
+			white-space: nowrap;
+			span{			
+				padding: 4px 9px;
+				border-radius: 10px;
+			} 
+		}		
+	}	
 }
-tr .title{
-	text-align: left;
-	text-overflow: ellipsis; 
-	white-space: nowrap; 
-	overflow: hidden; 
-}
-tr .time{
-	text-overflow: ellipsis; 
-	white-space: nowrap; 
-	overflow: hidden; 
-	color: #aaa;
-}
-tr .operate{
-	text-align: right;
-	white-space: nowrap;
-}
-.operate span{
-	color: #888;
-	padding: 4px 9px;
-	border-radius: 10px;
-} 
+
+
 .turn_page{
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
 	width: 100%;
 	margin-top: 20px;
-	color: #42b983;
-}
+	
+}	
 
 
 @media screen and (max-width: 440px) {

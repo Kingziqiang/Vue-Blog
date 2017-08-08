@@ -1,5 +1,4 @@
 
-var moment = require("moment");
 var marked = require('marked');
 marked.setOptions({
   renderer: new marked.Renderer(),
@@ -18,22 +17,25 @@ marked.setOptions({
   }
 });
 
+
 export default {
   
   getShortArticles: (state) => {
     const shortArticles = state.articles.map((article) => {
-      let newArticle = {}
-      for (let i in article) { newArticle[i] = article[i] }
+      let newArticle = {...article}
       newArticle.content = newArticle.content.slice(0, 200) + '......';
-  	  newArticle.date = moment().format("YYYY-MM-DD")
       return newArticle
     })
     return shortArticles
   },
-  getFormArticle:(state) =>{
-    let formArticle = {...state.article};
-    formArticle.date = moment(formArticle.date).format("YYYY-MM-DD");
-    formArticle.content = marked(formArticle.content);
-    return formArticle;
-  }
+  slideUp() {
+      const body = document.querySelector("body");
+      setTimeout(function up() {      
+          body.scrollTop -= 200;
+          if(body.scrollTop>200){
+            setTimeout(up,20)
+          }       
+  },20)
+  
+}
 }

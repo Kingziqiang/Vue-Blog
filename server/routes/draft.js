@@ -55,14 +55,13 @@ const db = require('../db/db.js')
     .catch((err) => {
       console.log(err)
     })
-  }),
+  })
 
   router.post('/api/saveDraft',function (req,res){
     new db.Draft(req.body).save()
-    .catch((err) => {
-      console.log(err)
-    })
-  }),
+    .then(() =>{res.sendStatus(200)})
+    .catch((err) => {console.log(err)})
+  })
   
 
 

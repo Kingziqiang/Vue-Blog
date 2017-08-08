@@ -28,7 +28,7 @@ router.post('/api/alter',function(req,res){
 	.then((result) => {
 		console.log(result);
 		db.Article.findOne({_id: _id}).then((result) => {
-			console.error("更新后数据"+result)
+			console.log("更新后数据"+result)
 		})
 	})
 	.catch((err) => {console.err("修改失败"+err)})

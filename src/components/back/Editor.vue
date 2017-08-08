@@ -1,5 +1,5 @@
 <template>
-	<div id="addArticle">
+	<div id="editor">
 		<ul class="form">
 				<li class="switch">
 					<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
@@ -143,149 +143,149 @@ export default {
 	}
 }
 </script>
-<style type="stylesheel/scss" scoped>
- #addArticle{
-	position: relative;
-	display: inline-block;
+<style lang="scss" type="stylesheel/scss" scoped>
+$button_color: #acc0d7;
+ #editor{	
+	display: inline-block;	
+	position:relative;
 	width: 100%;
-	height: 92%;
-	position: relative;
-	top:8%;
-	font-size: 20px;
-
-}
-
-#addArticle .form{
-	width: 60%;
-	position: relative;
-	margin:auto;
-	top:50%;
-	transform: translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: flex-start;
-
-}
-
-#addArticle .form li{
-	margin-top:0.1rem;
-	width: 100%;
-	display: flex;
-	justify-content: flex-start;
-	
-}
-::placeholder{
-	font-size: 20px;
-	color: #aaa;
-	padding: 5px;
-	font-family: '微软雅黑'
-}
-#addArticle .form .switch span{
-	display: inline-block;
-	height:35px;
-	line-height: 35px;
-	width:100px;
-	border:1px solid #42b983; 
-}
-
-#addArticle .form .switch .checked{
-	background-color: #42b983;
-	color: #fff;
-}
-
-#addArticle .form li .title{
-	width: 100%;
-	height: 40px;
-	background-color: #ebebeb;
-	text-align: center;
-	font-size: 22px;
-}
-#addArticle .form li .title::placeholder{
-	text-align: center;
-}
-#addArticle .form li .tag{
-	width:1rem;
-	min-width: 170px;
-	border-bottom:1px solid #999;
-	padding: 3px;
-
-}
-#addArticle .form li .content{
-	width: 100%;
-	height: 340px;
-	
-	border:none;
-	background-color: #ebebeb;
-}
-.mdContent{
-	width: 100%;
-	height: 340px;
-	background-color: #ebebeb;
-	text-align: left;
-	overflow: scroll;
-}
-#addArticle .form .btns{
-	justify-content: space-around;
-
-}
-#addArticle .form .btn{		
-		color: #42b983;
-		padding: 6px 8%;
-		border-radius: 3px;
-		border:1px solid #42b983;
-		font-size: 20px;
+	top: 100px;
+	margin: auto;
+	font-size: inherit;
+	z-index: 19;
+	.form{
+		width: 70%;
 		position: relative;
-		z-index:2;
+		margin:auto;
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		li{
+			margin-top:0.06rem;	
+			/* background-color: red; 	 */	
+			width: 100%;
+			display: flex;
+			justify-content: flex-start;
+					span{
+					display: inline-block;
+					height:26px;
+					line-height: 26px;
+					
+					width:70px;
+					border:1px solid $button_color; 
+				}
+				.checked{
+					background-color: $button_color;
+					font-weight: bold;
+					color: #fff;
+				}
+			
+			
+			.title{
+				width: 100%;
+				/* height: 0px; */
+				text-align: center;
+				font-size: 22px;
+				&::placeholder{
+					text-align: center;
+				}
+			}
+			.tag{
+				width:1rem;
+				min-width: 170px;
+				background-color: #fafafa;
+				padding: 3px;
+				&::placeholder{
+					font-weight: bold; 
+					font-family: '微软雅黑';
+		
+				}
+	
+			}
+			.content{
+				width: 100%;
+				height: 320px;	
+				border:none;
+				background-color: #fafafa;
+				&::placeholder{
+					font-weight: bold; 
+					font-family: '微软雅黑';
+		
+				}
+			}
+			.mdContent{
+				width: 100%;
+				height: 320px;	
+				border:none;
+				background-color: #fafafa;
+				overflow: scroll;
+				text-align: left;
+			}
+			
+		}
+		.btns{
+			justify-content: space-around;
+			.btn{		
+				/* color: $button_color; */
+				padding: 6px 8%;
+				border-radius: 3px;
+				position: relative;
+				z-index:2;
+				font-weight: bold;
+				 transition: 1s;/*
+				border-top: 2px solid #666;
+				border-bottom: 2px solid #666; */
+				&:hover{
+					color: #acc0d7;
+				}
+			}
+
+		}
+			
+	}
 }
-.btn::before{
-	content: '发布文章';
-	position:absolute;
-	left:0px;
-	top:0px;
-	background-color: #42b983;
-	width:0px;
-	height:100%;
-	transition: 1s;
-	box-sizing: border-box;
-	border-radius: 3px;
-	z-index: 1;
-	color:rgba(255,255,255,0);
-	padding-top: 7px;
-}
+
+ 
+
+
+
+ 
+/* #editor .form 
+.btn
 .btns:hover .btn::before{
 		width: 100%;
 		color: #fff;
 
-}
+} */
 
 @media screen and (max-width: 450px) {
 	::placeholder{
-	font-size: 18px;
+	/* font-size: 18px; */
 	}
-	#addArticle .form{
+	#editor .form{
 	width: 90%;
-		font-size: 18px;
+		/* font-size: 18px; */
 	}
 	.form li{
 		margin-top:0.2rem !important;
 	}
-	#addArticle .form .switch{
+	#editor .form .switch{
 		justify-content: center;
 	}
-	#addArticle .form .switch span{
+	#editor .form .switch span{
 		width:1rem;
 		height: 0.42rem;
 	}
-	#addArticle .form li .title{
+	#editor .form li .title{
 		height: 0.4rem;
-		font-size: 18px;
-	}
-	#addArticle .form li textarea{	
+		/* font-size: 18px;
+			 */	}
+	#editor .form li textarea{	
 		height:4rem;
 	}
-	#addArticle .form .btn button{
-		font-size: 18px;
+	#editor .form .btn button{
+		/* font-size: 18px; */
 		padding: 4px 12px;
 		border-radius: 12px;
 	}

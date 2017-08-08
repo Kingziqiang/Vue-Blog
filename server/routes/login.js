@@ -14,15 +14,11 @@ router.get('/api/login',function(req,res){
 })
 
 router.post('/api/alterUser',function(req,res){
-	let newUser = req.body
-	console.log(newUser)
-	db.User.update({"_id":newUser._id},{$set:{username: newUser.username, password: newUser.password}})
-	.then(() => {
-		res.status(200)
-		db.User.find()
-		.then(result => { console.log(result)})
+	db.User.remove({}).then(() => {
+		new db.User(req.body).save()
+		.then(() =>{res.sendStatus(200); console.log(req.body)})
+		.catch(() => {console.log(err)})
 	})
-	.catch((err) => {console.log(err)})
 })
 
 

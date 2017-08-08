@@ -5,10 +5,9 @@ const db = require('../db/db.js')
 
 //查询部分文章
 router.get('/api/articles',function(req,res){
-	var tag = req.query.payload.tag
-	var limit = +req.query.payload.limit;
-    var skip = +req.query.payload.skip
-    console.log(limit)
+	let  tag = req.query.payload.tag,
+	     limit = parseInt(req.query.payload.limit),
+         skip = parseInt(req.query.payload.skip);
     if (tag && tag !== '全部') {
         db.Article
         .find({tags: tag})
@@ -16,7 +15,6 @@ router.get('/api/articles',function(req,res){
         .skip(skip)
         .limit(limit)
         .then((articles) => {
-        	console.log(articles)
                 res.send(articles)
         })
     } else {
@@ -26,7 +24,6 @@ router.get('/api/articles',function(req,res){
         .limit(limit)
         .skip(skip)
         .then((articles) => {
-        	console.log(articles)
                 res.send(articles)
         })
     }
@@ -43,7 +40,6 @@ router.get('/api/article',function(req,res){
 	let aid = req.query.payload.aid
 	db.Article.findOne({_id:aid}).then(article => {
 		res.status(200).send(article)
-		console.log(article)
 	})
 })
 

@@ -1,25 +1,24 @@
 <template>
-<div class="header">
-<!-- <img class="title" src="../../assets/img/welcome.png"/> -->
-  <div class="catolog">    
-    <ul>
-      <router-link to='/home' tag="li">博客首页</router-link>
-      <router-link to='/articles' tag="li">文章列表</router-link>
-      <router-link to='/aboutMe' tag="li">关于我</router-link>
-    </ul>
-
-    <div class="search_box">
-        <input type="text" placeholder="您要搜索的文章标题"class="search" 
-          v-model="search_title" 
-          @keyup.enter="search({search_title:search_title})"
-          />
-        <img src="../../assets/img/search.png" @click="search({search_title:search_title})">
-    </div>
-  </div>
-
- <canvas id="canvas" width="100%" height="100%">诶哟 你的浏览器不支持canvas噢~</canvas>
-
- </div>
+    <div class="header"> 
+        <div class = "shadow"></div>
+        <div class="catolog" :class="{nav: isShow}">    
+            <div class="search_box">
+                <input type="text" placeholder="请输入文章标题"class="search" 
+                  v-model="search_title" 
+                  @keyup.enter="search({search_title:search_title})"
+                  />
+                <img src="../../assets/img/search.png" @click="search({search_title:search_title})">
+            </div>
+        <ul >
+            <router-link to='/home' tag="li">Home</router-link>
+            <router-link to='/articles' tag="li">Articles</router-link>
+            <router-link to='/aboutMe' tag="li">About</router-link>
+            <li>Contract</li>
+        </ul>
+        </div>
+        <span class="title">{{title}}</span>
+        <canvas id="wave" >你的浏览器好像不支持canvas(⊙o⊙)哦，换个浏览器试试吧~</canvas>
+     </div>
 </template>
 
 <script>
@@ -27,53 +26,79 @@ import {mapState,mapActions} from 'vuex'
 export default {
   data(){
     return{
-      search_title:''
+      search_title:'',
+      isShow: false
     }
   },
- mounted(){
-      setInterval(draw,40)
-      var canvas = document.getElementById('canvas');
-      var ctx = canvas.getContext('2d');
-      canvas.width = window.innerWidth;
-      canvas.height = 680;
-      var waves = ["rgba(255, 255, 255, 0.8)","rgba(255, 255, 255, 1)"]
-      var i = 0;
-      function draw() {
-        canvas.width = canvas.width;
-        for(var j = waves.length - 1; j >= 0; j--) {
-          var offset = i + 2*j * Math.PI * 100;
-          ctx.fillStyle = (waves[j]);
-          var randomLeft            = (Math.sin(offset/50)  + 1)       / 2 * 30;
-          var randomRight           = (Math.sin((offset/50) + 10) + 1) / 2 * 30;
-          var randomLeftConstraint  = (Math.sin((offset/60)  + 2)  + 1) / 2 * 60;
-          var randomRightConstraint = (Math.sin((offset/60)  + 1)  + 1) / 2 * 60;
- 
-          ctx.beginPath();
-          ctx.moveTo(0, randomLeft + 470);
-          ctx.bezierCurveTo(canvas.width / 3, randomLeftConstraint*2+420, canvas.width / 3 * 2, randomRightConstraint*2+420, canvas.width, randomRight + 470);
-
-          ctx.lineTo(canvas.width , canvas.height);
-          ctx.lineTo(0, canvas.height);
-          ctx.lineTo(0, randomLeft + 100);
-          ctx.closePath();
-          ctx.fill();
-        }
-        i = i + 3;
-      }
- },
-  computed:{
-    ...mapState(['user'])
+  computed: {
+    ...mapState(['title'])
   },
+
+  mounted() {
+    this.paintWave();
+    window.addEventListener('scroll', this.handleShow, false); // 监听滚动处理导航栏是否出现
+    const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';  
+    window.addEventListener(resizeEvent, this.paintWave, false); // 监听窗口resize事件，重绘波浪
+  },
+
+  beforeRouteLeave (to, from, next) {
+     window.removeEventListener('scroll', this.paintWave);
+     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';
+     window.removeEventListener('resizeEvent', this.paintWave);
+     next()
+  },
+
   methods:{
     ...mapActions(["searchArticles"]),
-     search:function(params){
-      let _this = this;
-    this.searchArticles(params)
-    .then(function () {
-      _this.$router.push('/articles')
-    })
+     search(params) {
+        let _this = this;
+        this.searchArticles(params)
+        .then(function () {
+          _this.$router.push('/articles')
+        })
+    },
+    handleShow() {
+      if(document.querySelector("body").scrollTop > 300){
+        this.isShow = true;
+      }else{
+        this.isShow = false;
+      }
+    },
+    paintWave() {
+        const canvas  = document.querySelector("#wave"),
+              width   = canvas.width  = window.innerWidth,
+              height  = canvas.height = document.querySelector('.header').offsetHeight,
 
-  }
+              offset  = [40,40],  // 波浪偏移距离
+              waves   = ["rgba(255,255,255,1)","rgba(255,255,255,.5)"], // 波浪颜
+              context = canvas.getContext('2d');
+        let count = 0;    
+        function loop(){
+            context.clearRect(0,0, width, height);
+            count ++;       
+            for(let i = 0; i < waves.length; i++){
+              const startY = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2),
+                    cpx1   = width/3,
+                    cpy1   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + Math.PI/2),
+                    cpx2   = width*2/3,
+                    cpy2   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + 2*Math.PI/2),           
+                    endY   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + 3*Math.PI/2);
+              context.save()
+              context.beginPath();
+              context.moveTo(0,startY);
+              context.bezierCurveTo(cpx1,cpy1,cpx2,cpy2,width,endY );
+              context.lineTo(width,height);
+              context.lineTo(0,height);
+              context.lineTo(0,0)
+              context.fillStyle=waves[i];
+              context.closePath();
+              context.fill();
+              context.restore();
+            }    
+           requestAnimationFrame(loop)
+        } 
+      requestAnimationFrame(loop)
+    },
   }
  
 }
@@ -81,116 +106,163 @@ export default {
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style rel="stylesheet/scss" scoped>
+<style lang="scss" rel="stylesheet/scss" scoped>
 .header{
-  background-image: url('../../assets/img/bg.png');
-  background-repeat: no-repeat;
-  background-size:100%; 
-  height: 600px;
-  display: block;
-  width: 100%;
-  transition: background-size  2s;
-   background-position: center;
-   background-color: #fff;
-   position: relative;
-   overflow: hidden;
+    background-image: url('../../assets/img/bg.png');
+    background-repeat: no-repeat;
+    background-size: 100% 100% ;
+    background-color: #000;
+    height: 450px;
+    display: block;
+    width: 100%;
+    background-position:center 0px;
+    position: relative;
+    overflow: hidden;
+
+
 }
-.title{
+.shadow{
   position: absolute;
-  display: inline-block;
-  width: 450px;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0,0,0,.3);
+  z-index: 1;
   top: 0px;
   left: 0px;
-  right: 0px;
-  bottom:0px;
-  color: #fff;
+}
+.title{
+  position: relative;
   margin:auto;
-  opacity: 0.7;
-  animation:title1 1s ease-in-out 0ms 1;
-}
+  top:45%;
+  z-index: 3; 
+  transform: translate(0, -50%);
+  display: inline-block;
+  font-size: 0.11rem;
+  padding: 10px 0px;
+   background:linear-gradient(to right,#fff,#acc0d7 25%,#fff 50%,#acc0d7 75%,#fff);
+  background-clip : text;
+  -webkit-background-clip: text;
+  color:transparent;
+  background-size:200% 100%;
+  animation: flowlight 1s linear infinite, changeWidth 500ms ease-in-out 0ms 1;
+  &::before, &::after{
+    content:'';
+    width: 85%;
+    height: 1px;
+    background-color: #fff;
+    position: absolute;
+    top: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  &::after{
+    bottom: 0px;
+    top: auto;
+  }
 
- @keyframes title1 {
-      0%{width:0px;}
-      100%{width:450px;}
-   } 
-   @keyframes title2 {
-      0%{width:0px;}
-      100%{width:3.5rem;}
-   } 
-
-.header:hover{
-  background-size:110%;
-  background-position: center;
- 
 }
-.catolog{
-  width:100%;
-  position: fixed;
-  top:0px;
-  z-index: 10;
-  height: 65px;
-  line-height:65px;
- display: flex;
- flex-wrap: wrap;
- justify-content: space-between;
-  background-color: rgba(255,255,255,0.8);
-  box-shadow: 2px 2px 2px #999;
-}
-.catolog ul{
-  list-style: none;
-  display:flex;
-  justify-content: space-around;
-  margin-left:0.4rem;
-  padding-bottom: 0px;
-}
-.header ul li{
-   color: #262626;
-  margin-left: 60px;
-  flex-grow: 0;
-  padding-left:10px;
-  padding-right:10px;
-}
-
-.header ul li:hover{
-  color:#8bc34a;
+@keyframes changeWidth {
+  0%{
+    font-size: 0px;
+  }
+  100%{
+    font-size: 0.11rem
+  }
+} 
+@keyframes flowlight {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: -100% 0; /*  background-position属性百分比计算公式，（容器宽度-背景宽度）*百分比=××px; */
+  }
 }
 
 .search_box{
-  border:2px solid #fff;
-  border-radius: 15px;
+    border:1px solid #eee;
+    border-radius: 4px;
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+    float: left;
+    height:37px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left:0.4rem;
+    padding: 0 10px 0 10px;
+    .search{
+        width: 2rem;
+        max-width: 210px !important;
+        background-color: rgba(255,255,255,0);
+        &::placeholder{
+          color:rgba(255,255,255,.6);
+        }
+    }
+    img{
+       width: 25px;
+    }
+    img:hover{
+      opacity:0.6;
+    }
+}
+.catolog{
+    width:100%;
+    position: fixed;
+    top:0px;
+    z-index: 40;
+    height: 55px;
+    line-height:55px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    color: #fff;
+   background-color: rgba(255,255,255,.4);
+    /* box-shadow: 1px 1px 4px #444; */
+    ul{
+        list-style: none;
+        display:flex;
+        justify-content: space-around;
+        margin-right:0.4rem;
+        padding-bottom: 0px;
+        
+        li{
+           cursor:pointer;
+           opacity: 0.8;
+           margin-left: 40px;
+           flex-grow: 0;
+           padding-left:10px;
+           padding-right:10px;
+          /*  font-weight: bold; */
+         /* text-shadow: 1px 1px 1px #999; */
+        }
+        li:hover{
+          color:#686868;
+        }
+    }
+}
+.nav{
+  background-color: rgba(255,255,255,0.8);
+  box-shadow: 2px 2px 2px #999;
+  color: #000;
+}
+
+#wave{
+  z-index: 3;
   position: relative;
-  top:50%;
-  transform: translateY(-50%);
-  float: left;
-  height:37px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right:0.4rem;
-  padding: 0 10px 0 10px;
 }
- .search{
 
-  width: 2rem;
-  max-width: 310px !important;
-  background-color: rgba(255,255,255,0);
-}
-.search_box img{
-  width: 25px;
-
-}
-.search_box img:hover{
-  opacity:0.6;
-}
 .router-link-active{
-  color:#8bc34a !important;
-  border-bottom: 4px solid #8bc34a;
+  color:#000 !important;
 }
 @media screen and (max-width: 950px) {
+  .header{
+     background-size:auto 100%;
+  }
   .catolog{
     justify-content: center;
     align-items: center;
+    order: 1;
   }
   .catolog ul{
     list-style: none;
@@ -200,10 +272,11 @@ export default {
     margin-left:auto;
   }
   .header ul li{
-   color: #262626;
+ 
    margin-left: 0.1rem !important;
 }
 .search_box{
+   order: 2;
    margin:auto;
 }
 .search{
@@ -212,12 +285,17 @@ export default {
   max-width: 310px !important;
   background-color: rgba(255,255,255,0);
 }
-.header{
-  height: 4rem;
-}
+
 .title{
-  width:3.5rem;
+  font-size: 0.3rem;
   animation:title2 0.8s ease-in-out 0ms 1;
 }
 }
+@media screen and (max-width: 450px) {
+  .header{
+    height: 350px;
+     background-size:auto 100%;
+  }
+}
+
 </style>

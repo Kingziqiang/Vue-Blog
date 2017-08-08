@@ -14,7 +14,7 @@ Vue.config.devtools = true;
 Vue.use(Vuex)
 Vue.use(VueResource)
 
-/* eslint-disable no-new */
+
 new Vue({
   el: '#app',
   router,
@@ -23,27 +23,24 @@ new Vue({
   components: { App }
 })
 
-/*Vue.directive('scrollShow', {
-    bind: (el) => {
-        window.addEventListener('scroll', () => {
-          var actualTop = el.offsetTop;
-          var current = el.offsetParent;
-          while (current !== null){
-           actualTop += current.offsetTop;
-           current = current.offsetParent;
-          }
-            if (document.body.scrollTop +600>actualTop) {
-              console.log(el)
-            }
-        })Vue.directive('focus', {
-  // 当绑定元素插入到 DOM 中。
-  inserted: function (el) {
-    // 聚焦元素
-    el.focus()
+
+Vue.directive('scrollShow',{
+  bind: el => {     
+    window.addEventListener('scroll', () => {
+        let actualTop = el.offsetTop,
+            current = el.offsetParent;
+        while(current != null){
+            actualTop += current.offsetTop;
+            current = current.offsetParent;
+        }
+        if(actualTop - document.body.scrollTop < 400){
+          setTimeout(() => {el.classList.add("show");},200)   
+           
+        }
+    });
   }
 })
-    }
-})*/
+
 Vue.directive('focus', {
   inserted: function (el) {
     el.focus()

@@ -4,95 +4,123 @@ Zenburn style from voldmar.ru (c) Vladimir Epifanov <voldmar@voldmar.ru>
 based on dark.css by Ivan Sagalaev
 
 */
-.article p{
-  margin:20px;
-  line-height: 35px;
-  font-stretch:40px;
-  color:#333;
+.page>p{
+  margin:20px 0;
+  line-height: 30px;
+  font-stretch:30px;
+  color: #4d4d4c;
 }
-.article h1,h2,h3{
+.page h1,.page h2,.page h3{
   margin:15px 0px;
+  border-bottom:1px solid #eee;
+  padding: 10px 0px;
+  position:relative;
 }
-.article h4,h5,h6{
+.page h1::after,.page h2::after,.page h3::after{
+  content:'#';
+  position:absolute;
+  right:0px;
+}
+.page h4,.page h5,.page h6{
   margin:10px 0px;
+}
+.page h1:hover, h2:hover{
+  color: #3f86b5;
 }
 
 pre{
-  background-color:#3f3f3f;
-  padding:15px 20px;
-  margin:15px auto;
-  color:#dcdcbe;
-}
-/*
+  background-color: rgba(230,230,230,0.1);
+  padding:15px;
+  word-wrap: break-word; 
+  word-break:break-all;
+  width:100%; 
+ }
 
-github.com style (c) Vasily Polovnyov <vast@whiteants.net>
-
-*/
 .hljs {
   display: block;
   overflow-x: auto;
   padding: 0.5em;
-  background: #3f3f3f;
-  color: #dcdcdc;
+  color: #333;
+  background: #f8f8f8;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #998;
+  font-style: italic;
 }
 
 .hljs-keyword,
 .hljs-selector-tag,
-.hljs-tag {
-  color: #e3ceab;
+.hljs-subst {
+  color: #333;
+ /*  font-weight: bold; */
 }
 
-.hljs-template-tag {
-  color: #dcdcdc;
-}
-
-.hljs-number {
-  color: #8cd0d3;
-}
-
+.hljs-number,
+.hljs-literal,
 .hljs-variable,
 .hljs-template-variable,
-.hljs-attribute {
-  color: #efdcbc;
+.hljs-tag .hljs-attr {
+  color: #008080;
 }
 
-.hljs-literal {
-  color: #efefaf;
-}
-
-.hljs-subst {
-  color: #8f8f8f;
+.hljs-string,
+.hljs-doctag {
+  color: #d14;
 }
 
 .hljs-title,
-.hljs-name,
-.hljs-selector-id,
-.hljs-selector-class,
 .hljs-section,
-.hljs-type {
-  color: #efef8f;
+.hljs-selector-id {
+  color: #900;
+  font-weight: bold;
+}
+
+.hljs-subst {
+  font-weight: normal;
+}
+
+.hljs-type,
+.hljs-class .hljs-title {
+  color: #458;
+  font-weight: bold;
+}
+
+.hljs-tag,
+.hljs-name,
+.hljs-attribute {
+  color: #000080;
+  font-weight: normal;
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #009926;
 }
 
 .hljs-symbol,
-.hljs-bullet,
-.hljs-link {
-  color: #dca3a3;
+.hljs-bullet {
+  color: #990073;
 }
 
-.hljs-deletion,
-.hljs-string,
 .hljs-built_in,
 .hljs-builtin-name {
-  color: #cc9393;
+  color: #0086b3;
 }
 
-.hljs-addition,
-.hljs-comment,
-.hljs-quote,
 .hljs-meta {
-  color: #7f9f7f;
+  color: #999;
+  font-weight: bold;
 }
 
+.hljs-deletion {
+  background: #fdd;
+}
+
+.hljs-addition {
+  background: #dfd;
+}
 
 .hljs-emphasis {
   font-style: italic;

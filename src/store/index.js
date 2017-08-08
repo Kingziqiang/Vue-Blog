@@ -9,18 +9,21 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
+    title:'',
     articles: [],
     allTags: [],
     article: {},
+    comments:[],
     drafts: [],
     draft: {},
     user:{},
+    isLoading: false,
     dialog_box:{
     	show:false,
     	tip:'',
     	hasTwobtn:false,
-    	resolved:() => {},
-    	reject:() => {}
+    	resolved() {this.show = false },
+    	reject() {this.show = false}
     }
   },
   getters,

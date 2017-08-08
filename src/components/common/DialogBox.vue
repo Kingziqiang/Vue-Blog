@@ -1,12 +1,10 @@
 <template>
 	<div class="dialog_box" v-if="dialog_box.show">
-		<div class="shadow">
-			
-		</div>
+		<div class="shadow"></div>
 		<div class="dialog">
 			<p>{{dialog_box.tip}}</p>
 			<div class="btn_group">
-				<button @click="comfirm()">确定</button>
+				<button @click="comfirm()" class="resolve">确定</button>
 				<button v-if='dialog_box.hasTwobtn' @click="cancel()">取消</button>
 			</div>
 		</div>
@@ -30,7 +28,8 @@ export default {
 
 }	
 </script>
-<style type="stylesheel/scss" scoped>
+<style lang="scss" type="stylesheel/scss" scoped>
+$button_color: #e74851;
 .dialog_box{
 	width: 100%;
 	height: 100%;
@@ -38,56 +37,76 @@ export default {
 	display: block;
 	top:0px;
 	display: block;
-}
-.shadow{
-	width: 100%;
-	height: 100%;
-	display: block;
-	position: absolute;
-	background-color: rgba(0,0,0,0.15);
-	top:0px;
-	z-index: 3;
+	z-index: 10;
+	.shadow{
+		width: 100%;
+		height: 100%;
+		display: block;
+		position: absolute;
+		background-color: rgba(0,0,0,0.15);
+		top:0px;
+		z-index: 3;
+	}
+	.dialog{
+		width: 1.3rem;
+		height: 0.9rem;
+		min-width: 260px;
+		min-height: 180px ;
+		display:block;
+		background-color: #fff;
+		position: absolute;
+		z-index: 11;
+		top:0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		margin:auto;
+		border-radius: 4px;
+		.btn_group{
+			display: flex;
+			justify-content: space-around;
+			width: 100%;
+			position: absolute;
+			bottom: 10%;
+			white-space:nowrap;
+			button{			
+				padding: 7px 10%;
+				background-color: #f6f4f5;
+				text-align: center;
+				margin: 5px auto;
+				color: #444;
+				border-radius: 3px;
+			}
+			.resolve{
+				background-color: $button_color;
+				color: #fff;
+			}
+
+		}
+	}
 }
 
-.dialog{
-	width: 1.3rem;
-	height: 0.9rem;
-	min-width: 300px;
-	min-height: 200px ;
-	display:block;
-	background-color: #fff;
-	position: absolute;
-	z-index: 10;
-	top:0px;
-	bottom: 0px;
-	left: 0px;
-	right: 0px;
-	margin:auto;
-	border-radius: 4px;
-}
+
+
 
 @media screen and (max-width: 440px) {
 	.dialog{
-		width: 3.6rem !important;
+		width: 3.3rem !important;
 		height: 2.7rem !important;
+		margin: auto 1rem;
 	}
 }
 
 .dialog p{
 	text-align: center;
 	margin: 15% auto;
-	font-size: 20px;
 	color: #555;
 }
 .dialog .btn_group{
-	width: 100%;
-	position: absolute;
-	bottom: 20%;
-	display: flex;
+	
 	justify-content: space-around;
 }
 .dialog button{
-	font-size: 18px;
 	position: relative;
 	transition: 0.5s;
 }

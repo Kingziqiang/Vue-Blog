@@ -1,15 +1,13 @@
 <template>
-	<div class="acount">
-		
-		<div class="acount_form">
-			
+	<div class="acount">		
+		<ul class="acount_form">			
 			<li>
 				<input type="text" placeholder="新用户名" v-model.trim="username">
 			</li>
 			<li><input type="password" placeholder="密码" v-model.trim="password1"></li>
 			<li><input type="password" placeholder="请再次输入密码" v-model.trim="password2"></li>
-			<li><p>{{msg}}</p><button  @click="submit()">确认修改</button></li>
-		</div>
+			<li><p>{{msg}}</p><button  @click="submit({username, password1, password2})">确认修改</button></li>
+		</ul>
 	</div>
 </template>
 <script>
@@ -29,38 +27,37 @@ export default {
 	methods:{
 		...mapMutations(['set_dialog']),
 		...mapActions(['alterUser']),
-		submit:function(){
-			var user = {
-				username:this.username,
-				password:this.password1 
+		submit(payload) {
+			const {username, password1, password2} = payload;
+			if(username.length === 0 || password1.length === 0){
+				this.set_dialog({tip: "还有必填项没有填噢(ﾟﾛﾟﾉ)ﾉ", show: true, resolved() {this.show = false}})
 			}
-			var _this = this;
-			this.set_dialog({
-				tip:"确定要修改吗(*´ﾟ∀ﾟ｀)ﾉ ",
-				hasTwobtn:true,
-				show:true,
-				resolved : () => {
-					_this.msg = "正在提交......"
-					_this.dialog_box.show = false
-					_this.alterUser(user)
-					.then(() => {
-						console.log("fsdfsdfsfd")
-						_this.msg = "修改成功";
-
-						/*_this.$router.push('/login')*/
+			else if(password1 !== password2){
+				this.set_dialog({tip: "两次密码输入不一致噢(ﾟﾛﾟﾉ)ﾉ", show: true, resolved() {this.show = false}})
+			}
+			else{
+				const _this = this;
+				function resolved(){
+					const __this = this;
+					_this.alterUser({username, password: password1})
+					.then(function() {__this.show = false;})
+					.catch(function(err) {
+						if(err){
+							_this.set_dialog({tip: "网络好像不太好噢，稍后试试吧(ﾟﾛﾟﾉ)ﾉ", show: true, resolved() {this.show = false}});
+							console.log(err);
+						}
 					})
-					.catch((err) => {_this.msg = '网络貌似不太好噢~';console.log(err)})
-				},
-				reject: () => {
-					_this.dialog_box.show = false;
 				}
-			})
+				this.set_dialog({tip: "确定要修改吗(ﾟﾛﾟﾉ)ﾉ", hasTwobtn: true, show: true, resolved, reject() {this.show = false}})				
+			} 
 		}
 	}
 }
 </script>
 
-<style type="stylesheet/scss" scoped>
+<style lang="scss" type="stylesheet/scss" scoped>
+$border_color: #000;
+
 .acount{
 	position: absolute;
 	height: 100%;
@@ -73,61 +70,43 @@ export default {
 	font-size: 20px;
 }
 .acount_form{
-	width:390px;
-	margin: 200px auto;
+	width:310px;
+	margin: 200px auto auto;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	li{
+		margin-bottom:40px;
+		width:100%;
+		height: 32px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		input{
+		 	width: 100%;
+			flex-shrink: 1;
+		  	border-bottom:1px solid $border_color;
+		  	padding: 4px 0px 4px 5px;		  
+		  	background-color: rgba(255,255,255,0);
+		}
+		button{			
+			padding:10px auto;
+			height: 100%;
+			width: 100%;
+			border:1px solid $border_color;
+			border-radius: 20px;
+			transition: 0.5s;
+		}
+		button:hover{
+			background-color:  $border_color;
+			border-radius:0px;
+			color: #fff;
+		}
+	}
 }
 
-.acount_form li{
-	margin-bottom:70px;
-	width:100%;
-	height: 30px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-label img{
-	height: 90%;
-	margin-right:10px;
-}
-.acount_form input{
- 	width: 375px;
-	flex-shrink: 1;
-  	border-bottom:1px solid #42b983;
-  	padding: 4px 5px;
-  	font-size:20px;
-  	background-color: rgba(255,255,255,0);
-}
-.acount_form button{
-	font-size: 20px;
-	line-height: 3px;
-	padding:18px ;
-	width: 100%;
-	/* background-color: #42b983; */
-	border:1px solid #42b983;
-	border-radius: 20px;
-	transition: 0.5s;
 
-}
-
-.acount_form button:hover{
-	background-color:  #42b983;
-	border-radius:0px;
-	color: #fff;
-}
-/*
-input[type="text"]:focus{
-	border: 1px solid #d1d8e6;
-}
-input[type="button"]{
-	border-radius: 15px;
-	border: 1px solid #d1d8e6;
-	
-}
- */
 @media screen and (max-width: 440px) {
   .acount_form{
 	width:3.9rem !important;
@@ -136,7 +115,7 @@ input[type="button"]{
    	margin-bottom: 0.7rem;
    }
    input{
-   	font-size:18px;
+
    }
 }
 

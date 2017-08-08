@@ -1,34 +1,102 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <transition name="fade">
-       <dialog-box></dialog-box>
-   </transition>
+    <transition name="fade"> <dialog-box></dialog-box>
+    </transition>
+    <div v-show="isShow" id="up" @click="slideUp()"></div>
+   <!-- <bubble></bubble> -->
+    <loading></loading>
   </div>
 </template>
 
 <script>
+import Bubble from './components/common/Bubble.vue'
 import DialogBox from './components/common/DialogBox.vue'
+import Loading from './components/common/Loading.vue'
+import util from './util.js'
 
 export default {
 	components:{
-		DialogBox
-	}
+		DialogBox,
+    Loading,
+    Bubble
+	},
+  data(){
+    return {
+      isShow: false
+    }
+  },
+  mounted() {
+    window.addEventListener('scroll', this.handleShow, false)
+  },
+  methods: {
+    slideUp() {
+      /*const body = */util.slideTo(document.querySelector("body"));
+      /*setTimeout(function up() {      
+          body.scrollTop -= 200;
+          if(body.scrollTop>200){
+            setTimeout(up,20)
+          }       
+      },20) */
+    },
+    handleShow() {
+      if(document.querySelector("body").scrollTop > 400){
+        this.isShow = true;
+      }else{
+        this.isShow = false;
+      }
+    }
+  }
+
 }
 </script>
 
-<style>
+<style  lang="scss" rel="stylesheet/scss" scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
+  height: 100%;
+  position: relative;
+  width:100%;
+/*   overflow: hidden; */
 }
 
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+.fade-enter, .fade-leave-to {
   opacity: 0
+}
+#up{
+  position: fixed;
+  bottom: 0.2rem;
+  right: 0.2rem;
+  width: 0.15rem;
+  height:0.15rem;
+  min-height: 30px;
+  min-width:30px;
+  border-radius: 50%;
+  background-color: #3f86b5;
+  z-index: 50;
+}
+#up:hover{
+  opacity: 0.8;
+}
+#up::before{
+  content:'';
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  left: 0px;
+  right:0px;
+  margin:auto;
+  width: 25%;
+  height:25%;
+  border-top: 4px solid #fff;
+  border-left: 4px solid #fff;
+  border-radius:4px;
+  transform: rotate(45deg);
 }
 </style>

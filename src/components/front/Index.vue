@@ -21,6 +21,7 @@ export default {
 .wrapper{
 	width: 100%;
 	position: relative;
+
 	
 }
 </style>

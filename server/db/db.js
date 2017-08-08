@@ -6,7 +6,7 @@ const data = require('./data');
 const db= mongoose.createConnection('127.0.0.1','my-blog-cms');
 
 
-/* 定义文章Schme */
+/* 定义文章Schma */
 const ArticleSchema = new Schema({
 	title:String,
 	date:Date,
@@ -14,14 +14,24 @@ const ArticleSchema = new Schema({
 	tags:[String]
 })
 
-/*定义用户Schme*/
-const UserSchme = new Schema({
+const CommentSchema = new Schema({
+	aid: String,
+	email: String,
+	name: String,
+	content: String,
+	date: Date,
+	agree: Number,
+	isManager: Boolean
+})
+
+/*定义用户Schma*/
+const UserSchema = new Schema({
 	username:String,
 	password:{type: String,unique:true}
 })
 
-/*定义草稿Schme*/
-const DraftSchme = new Schema({
+/*定义草稿Schma*/
+const DraftSchema = new Schema({
 	title:String,
 	tags:[String],
 	date:Date,
@@ -30,11 +40,12 @@ const DraftSchme = new Schema({
 
 
 
-/* 将Schme发布为Model */
+/* 将Schma发布为Model */
 const Models = {
-	Article:db.model('Article',ArticleSchema),
-	User:db.model('User',UserSchme),
-	Draft:db.model('Draft',DraftSchme)
+	Article: db.model('Article', ArticleSchema),
+	User: db.model('User', UserSchema),
+	Draft: db.model('Draft', DraftSchema),
+	Comment: db.model('Comment', CommentSchema)
 }
 
 

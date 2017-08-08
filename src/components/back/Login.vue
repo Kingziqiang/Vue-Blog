@@ -32,104 +32,76 @@ export default {
 		...mapActions(['login']),
 		comfirm (username,password) {
 			var _this = this;
-			_this.msg="登陆中......";			
-			_this.login({username:username,password:password})
+			this.msg="登陆中......";			
+			this.login({username:username,password:password})
 			.then((res) => {
-				_this.msg='';
+				this.msg='';
 				if(res.body){
-					_this.set_user(res.body)
-					_this.$router.push('/admin/amend')					
+					this.set_user(res.body)
+					this.$router.push('/admin/amend')					
 				}else{
-					_this.set_dialog({
-						show:true,
-						tip:"验证失败，请确认您的输入噢(*ﾟﾛﾟ)",
-						hasTwobtn:false,
-						resolved : () => { _this.dialog_box.show = false},
-					})
+					this.set_dialog({show:true, tip:"验证失败，请确认您的输入噢(*ﾟﾛﾟ)", resolved(){ this.show = false}})
 				}
 			})
 			.catch((err)=>{
 				console.log(err);
-				_this.msg='';
-				_this.set_dialog({show:true,
-					tip:"服务好像出了点问题,稍后再试下吧(*ﾟﾛﾟ)",
-					hasTwobtn:false,
-					resolved : () => {_this.dialog_box.show = false}
-				})
+				this.msg='';
+				this.set_dialog({show:true, tip:"服务好像出了点问题,稍后再试下吧(*ﾟﾛﾟ)", resolved() {this.show = false}})
 			})
-
 		}
-}
+	}
 }
 </script>
-<style type="stylesheet/scss" scoped>
+<style lang="scss" type="stylesheet/scss" scoped>
+$border-color: #000;
 .login{
 	position: relative;
-	height: 100%;
-	width: 100%;
-/* background-image: url("../../assets/img/bg_login.png"); */
-	background-repeat: no-repeat;
-	background-size: 100%;
+	width: 100%;	
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	flex-direction: column;
-}
-.login p{
-	position: absolute;
-	top:6%;
-	font-size: 20px;
-}
-.login_form{
-	width:390px;
-}
-
-.login_form li{
-	/* background-color: red; */
-	margin-bottom:70px;
-	height: 30px;
-	display: flex;
-	justify-content: center;
-}
-label img{
-	height: 90%;
-	margin-right:10px;
-}
- input{
- 	width: 375px;
-	flex-shrink: 1;
-  	border-bottom:1px solid #42b983;
-  	padding: 4px 5px;
-  	font-size:20px;
-  	background-color: rgba(255,255,255,0);
-}
-.login_form button{
-	font-size: 20px;
-	line-height: 3px;
-	padding:18px ;
-	width: 100%;
-	/* background-color: #42b983; */
-	border:1px solid #42b983;
-	border-radius: 20px;
-	transition: 0.5s;
-
+	.login_form{
+		width:300px;
+		position: relative;
+		top: 130px;
+		li{
+			margin:60px auto;
+			height: 30px;
+			display: flex;
+			justify-content: center;
+			input{
+			 	width: 375px;
+				flex-shrink: 1;
+			  	border-bottom:1px solid $border-color;
+			  	padding: 4px 5px;
+			  	background-color: rgba(255,255,255,0);
+			  	font-size:16px;
+			}
+			button{
+				line-height: 3px;
+				padding:6px ;
+				width: 100%;
+				font-size:16px;
+				border:1px solid $border-color;
+				border-radius: 20px;
+				transition: 0.5s;
+				&:hover{
+					background-color:  $border-color;
+					border-radius:0px;
+					color: #fff;
+				}
+			}
+		}
+	}
 }
 
-.login_form button:hover{
-	background-color:  #42b983;
-	border-radius:0px;
-	color: #fff;
-}
 
 @media screen and (max-width: 440px) {
   .login_form{
 	width:3.9rem !important;
    }
    .login_form li{
-   	margin-bottom: 0.7rem;
-   }
-   input{
-   	font-size:18px;
+   	margin: 0.8rem auto !important;
    }
 }
 
