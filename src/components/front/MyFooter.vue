@@ -29,7 +29,7 @@ export default {
 	        ctx.lineTo(0,height);
 	        ctx.lineTo(0,0)
 	        ctx.closePath();
-	        ctx.fillStyle = "#f8f8f8";
+	        ctx.fillStyle = "#fafafa";
 	        ctx.fill();
    		}
    	}
@@ -41,10 +41,11 @@ export default {
 <style lang="scss" rel="stylesheet/scss" scoped>
 .footer{
 	  width:100%;
+	  overflow: hidden;
 	  display: block;
 	  position: relative;
 	  margin-top: 30px;
-	  height:250px;
+	  height:200px;
 	  	z-index: 6;
 	  #foot-bg{		
 			position: absolute;

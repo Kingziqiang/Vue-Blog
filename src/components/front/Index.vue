@@ -1,5 +1,6 @@
 <template>
 	<div class="wrapper">
+		<search></search>
 		<my-header></my-header>
 		<router-view></router-view>
 		<my-footer></my-footer>
@@ -9,11 +10,13 @@
 <script>
 import MyHeader from './MyHeader.vue'
 import MyFooter from './MyFooter.vue'
+import Search from './../common/Search.vue'
 
 export default {
   	components: {
       MyHeader,
-      MyFooter
+	  MyFooter,
+	  Search
   	}
   }
 </script>
@@ -21,7 +24,6 @@ export default {
 .wrapper{
 	width: 100%;
 	position: relative;
-
 	
 }
 </style>

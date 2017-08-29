@@ -10,7 +10,6 @@
 </template>
 
 <script>
-import Bubble from './components/common/Bubble.vue'
 import DialogBox from './components/common/DialogBox.vue'
 import Loading from './components/common/Loading.vue'
 import util from './util.js'
@@ -19,7 +18,6 @@ export default {
 	components:{
 		DialogBox,
     Loading,
-    Bubble
 	},
   data(){
     return {
@@ -53,14 +51,10 @@ export default {
 
 <style  lang="scss" rel="stylesheet/scss" scoped>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   text-align: center;
   height: 100%;
   position: relative;
   width:100%;
-/*   overflow: hidden; */
 }
 
 .fade-enter-active, .fade-leave-active {

@@ -1,122 +1,81 @@
 <template>
-	<div>
-		<div class='tags'><span @click="switchTags('全部')">全部</span>
-  			<span v-for="tag in allTags"
-              @click="switchTags(tag)"
-        >{{tag}}</span>
-  	</div>
-		<div class='wrapper posts animated fadeIn'>
+	<div class="wrap posts animated fadeIn">
+		<p class="title">Total 共计<span>{{articles.length}}</span>篇相关文章</p>
+		<div class='wrapper '> 
+              <div v-if = "!articles.length" class="none"><span style="font-size: 25px">o(；>△<)o </span> 没有与 “{{key}}” 相关的文章噢, 瞅瞅别的吧~</div>
 			  <div class="article posts animated fadeIn" v-for = "article in articles">
-            <router-link :to="{ name: 'article', params:{aid: article._id} }" tag="h3">
-              {{article.title}}
-            </router-link>
-            <span class="line"></span>
-            <time>{{article.date}}</time>
-
-             <ul class="tag">
-              <li v-for = "tag in article.tags">{{tag}}</li>    
-            </ul>
-			  </div>
+                <router-link :to="{ name: 'article', params:{aid: article._id} }" tag="h3">
+                {{article.title}}
+                </router-link>
+                <span class="line"></span>
+                <time>{{article.date}}</time>
+                <ul class="tag">
+                <li v-for = "tag in article.tags">{{tag}}</li>    
+                </ul>
+			</div>
 		</div>
-    <div class="loadMore" v-if = "isLoadingMore" >
-      <span v-if = "more">下拉加载更多...</span> <span v-if = "!more"> .没有更多文章了哟... (;ﾟДﾟi|!) </span>
-    </div>
 	</div>
 </template>
 
 <script>
 import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
 export default {
-  data () {
-    return {
-      limit: 10,
-      skip:0,
-      tag: '全部',
-      isLoadingMore: false,
-      more: true
-    }
-  },
 
   created () {
-    this.set_title('Articles');
-    this.getAllTags();
-    this.getArticles({tag: this.tag, limit: this.limit, skip: 0})
+    this.set_headLine({text: '关于\ “' + this.key +'\”', animate:'show2'});  
+    this.init();
   },
 
-  mounted() {
-    window.addEventListener('scroll', this.loadMore, false);
-  },
-
-  beforeRouteLeave (to, from, next) {
-     window.removeEventListener('scroll', this.loadMore)
-     next()
-  },
-
-  components: {
-  },
   computed: {
-    ...mapState(['allTags','articles']),
-    ...mapGetters(['getShortArticles'])
+    ...mapState(['articles']),
+    ...mapGetters(['getShortArticles']),
+    key() {        
+      let key = this.$route.query.tag || this.$route.query.key;
+      this.set_headLine({text: '关于“' + key +'”', animate:'show2'}); 
+      return key;
+    }
   },
   methods: {
-    ...mapMutations(['set_title']),
-    ...mapActions(['getAllTags', 'getArticles']),
-    switchTags (tag) {
-      this.tag = tag;
-      this.limit = 10;
-      this.more = true;
-      this.isLoadingMore = false;
-      this.getArticles({tag: tag, limit: this.limit})
-    },
-    loadMore() {      
-      if(document.body.scrollHeight - document.body.scrollTop <= window.innerHeight){
-          this.isLoadingMore = true;
-          if(this.more == true){
-              this.getArticles({tag:this.tag, limit: this.limit, skip: (this.skip+=1)*this.limit, isAdd: true})
-              .then((articles) => {
-                  if(articles.length === 0){
-                      this.more = false;
-                  }                 
-                  this.isLoadingMore = false;               
-              })
-          }
-      }
-      
+    ...mapMutations(['set_headLine']),
+    ...mapActions(['getArticles', 'searchArticles']),
+    init() {
+        const query = this.$route.query;
+        if(typeof query.key != 'undefined'){
+            this.key = query.key;
+            this.searchArticles(query)
+        } else{
+            this.key = query.tag;
+            this.getArticles(query)
+        }
     }
   }
 }
 </script>
 <style lang="scss" rel="stylesheet/scss" scoped>
- .tags{
-    width:50%;
-    margin:30px auto;
-    display:flex;
-    flex-wrap: wrap;
-    justify-content: center; 
-    span{
-        background-color:#4078c0;
-        margin:20px;
-        padding: 4px 15px;
-        border-radius: 15px;
-        color: #fff;
-        opacity: 0.7;
-        transition:1s;
-    }
-    span:hover{
-        opacity: 0.5;
-        transform: translate(10px,0);
-        transition: 1.5s;
-    }
- }
  
-.wrapper{
+.wrap{
     width:55%;
     position: relative;
     justify-content: center;
     flex-direction: column;
-    margin:30px auto 90px auto;
+    margin:40px auto 30px auto;
     display: flex;
     overflow: hidden;
+    .title{
+        font-size: 18px;
+        letter-spacing:2px;
+        span{
+            font-size: 25px;
+            color: #acc0d7;
+            margin:auto  8px;
+        }
+    }
+    .none{
+        margin-top: 80px;
+        img{
+            width: 100px;
+        }
+    }
     .article{
         width: 100%;
         height: 90px;
@@ -171,7 +130,7 @@ export default {
 
  
  @media screen and (max-width: 500px) {
-  .wrapper{
+  .wrap{
       width:80% !important;
     /*   margin: auto; */
       .article{

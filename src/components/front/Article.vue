@@ -54,13 +54,12 @@ export default {
 		}
 	},	
 	created (){
-
 	  this.set_loading(true);
       this.getArticle({aid: this.aid})
-      .then(() => {this.set_title(this.article.title)})
+	  .then(() => {this.set_headLine({text: this.article.title, animate:'show2'});})
 	},
 	methods: {
-	  ...mapMutations(['set_loading', 'set_title']),
+	  ...mapMutations(['set_loading', 'set_headLine']),
       ...mapActions(['getArticle']),
       getFormArticle() {
       	let formArticle = {...this.article};
@@ -83,6 +82,7 @@ export default {
 .article{
 	position: relative;
 	width: 100%;
+	overflow: hidden;
   	margin:30px auto;
   	padding:30px 0;
   	text-align: left;

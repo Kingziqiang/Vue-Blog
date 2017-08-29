@@ -9,7 +9,11 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    title:'',
+    headLine:{
+      text: '',
+      animate: ''
+    },
+    showSearch: false,
     articles: [],
     allTags: [],
     article: {},

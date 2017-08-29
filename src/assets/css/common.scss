@@ -5,7 +5,8 @@
 
 html body {
   position:relative;
-  font-family: "Microsoft YaHei", "微软雅黑", STXihei, "华文细黑", serif;
+  font-family:  'Optima','PingFang SC','Roboto','Noto SansCJK','Helvetica Neue','Helvetica',
+                "微软雅黑","YaHei-Consolas-Hybrid",sans-serif;
   color:#4C555C;
   scroll-behavior: smooth;
   height: 100%;
@@ -60,3 +61,18 @@ input,textarea{
      font-size: 15px;
   }
 }
+ .show{
+      visibility: visible;
+      animation: show 500ms ease 0s 1 normal;
+    }
+@keyframes show{
+      0% {
+        transform: scale(0);
+      }
+       80% {
+        transform: scale(1.2);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }

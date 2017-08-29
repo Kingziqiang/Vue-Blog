@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const data = require('./data');
 
 /* 创建并连接数据库 */
 const db= mongoose.createConnection('127.0.0.1','my-blog-cms');
@@ -52,9 +51,7 @@ const Models = {
 /* 初始化数据将数据插入数据库 */
 const initialize = () => {
 	var promise = new Promise(function (resolve,reject) {
-		data.map((item) => {
-			new Models.Article(item).save();
-		});
+
 		new Models.User({"username":"hilda","password":"123456"}).save();
 		resolve();
 	});

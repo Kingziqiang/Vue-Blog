@@ -46,9 +46,10 @@ export default {
 
   getAllTags({commit, state}) {
     return Vue.http.get('/api/tags')
-    .then((tags) => {
-      commit('set_all_tags', tags.data)
-      console.log(tags.data)
+    .then((res) => {
+    res.data.unshift('全部')  
+      commit('set_all_tags', res.data)
+      /*console.log(tags.data)*/
     })
     .catch((err) => { console.log(err) })
   },
@@ -78,11 +79,10 @@ export default {
 
   searchArticles({commit,state},payload) {
     console.log(payload)
-     return Vue.http.get('/api/searchArticles',{params:{payload}})
+     return Vue.http.get('/api/searchArticles',{params:payload})
       .then((res) => {
           commit('set_articles',res.data);
       })
-      .catch((err)=>{console.log(err)})
   },
 
   getDrafts({commit,state},payload) {
@@ -118,6 +118,7 @@ export default {
   },
 
   submitComment({dispatch, commit}, payload){
+    console.log(payload)
     return Vue.http.put('/api/comment',payload)
           .then(() => dispatch('getComments',{aid: payload.aid}) )
           .catch(err => console.log(err))  
@@ -136,6 +137,10 @@ export default {
             console.log("点赞成功")
           })
           .catch(err => console(err))
+  },
+  contact({}, payload) {
+    return Vue.http.post('/api/contact', payload)
+    .catch( err => console.log(err))
   }
 
 }

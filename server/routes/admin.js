@@ -1,4 +1,5 @@
-const express = require('express')
+'use strict'
+const express = require('express')     
 const router = express.Router()
 const db = require('../db/db.js')
 
@@ -34,15 +35,6 @@ router.post('/api/alter',function(req,res){
 	.catch((err) => {console.err("修改失败"+err)})
 })
 
-router.get('/api/searchArticles',function(req,res){
-	console.log(req.query.payload)
-	let title = req.query.payload.search_title;
-
-	db.Article.find({"title":eval("/.*"+title+".*/i")})
-	.then((result) => {res.send(result)})
-	.catch((err)=>{console.log(err)})
-
-})
 
 router.post('/api/articleToDraft',function(req,res) {
 	var _id = req.body._id;

@@ -1,49 +1,102 @@
 <template>
   <div class="container">
-		<section class="Articles posts animated fadeIn" >
-      <p class="new">New</p>
-			<div class="article" v-for="article in getShortArticles" >
-          <div class="box" >
-              <div class="art_header">
-                <router-link :to="{ name: 'article', params:{aid: article._id} }" tag='h3'>{{article.title}}</router-link>
-                <time>{{article.date}}</time>
+    <div class="wrap">
+    	<section class="articles posts animated fadeIn" >
+        <div class="article" v-for="article in getShortArticles">                 
+          <div class="art_wrap">
+            <router-link :to="{ name: 'article', params:{aid: article._id} }" tag='h3'>{{article.title}}</router-link>
+            <time>Posted on {{article.date}}</time>                 
+            <p>{{article.content}}</p>
+            <div class="art_footer"> 
+              <div class="tags">In 
+                 <span v-for="tag in article.tags">{{tag}}</span>
               </div>
-              <p>{{article.content}}</p>
-              <div class="art_footer"> 
-                <div class="tags">
-                 in
-                  <span v-for="tag in article.tags">{{tag}}</span>
-                </div>
-                <router-link :to="{ name: 'article', params:{aid: article._id} }" class="detail">more...</router-link>
-              </div> 
-  			   </div>       
-      </div>
-		</section>
+              <router-link :to="{ name: 'article', params:{aid: article._id} }" class="detail">more...</router-link>
+            </div>
+          </div>         			                  
+        </div>
+        <div class="loadMore" v-if = "isLoadingMore" >
+            <span v-if = "more">下拉加载更多...</span> <span v-if = "!more"> .没有更多文章了哟... (;ﾟДﾟi|!) </span>
+        </div> 
+    	</section>
+
+      <section class="aside">
+          <div class='box tags'>
+            <p>FEATURED TAGS</p>
+            <div>
+              <router-link :to="{name: 'articles', query: {tag: item}}" tag='span' v-for="item in allTags" >{{item}}</router-link>
+            </div>                
+          </div>
+          <div class="box portrait">
+            <p>ABOUT ME</p>
+            <img src="../../assets/img/qtc_avatar.png"/>
+          </div>
+          <div class="box others">
+             <!-- <p>学习 积累 生活</p> -->
+             <div>
+               <a class="icons" href="https://github.com/Hilda1227"><img src="../../assets/img/github.png"/></a>
+             </div>
+          </div>
+      </section>
+    </div>
 	</div>
 </template>
 
 <script>
 
-import {mapActions, mapGetters, mapMutations} from 'vuex'
-
+import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
+import ContactMe                          from '../common/ContactMe.vue'
 export default {
   data () {
     return {
-      limit: 5
+      limit: 10,
+      skip:0,
+      isLoadingMore: false,
+      more: true
     }
   },
+
   created () {
-    this.set_title('Welcome to my blog')
+    this.set_headLine({text: 'Hilda的blog', animate:'show1'});
+    this.getAllTags();
     this.getArticles({limit: this.limit,skip: 0})
   },
-  components: {
+
+  mounted() {
+    window.addEventListener('scroll', this.loadMore, false);
   },
+  beforeRouteLeave (to, from, next) {
+      console.log('fdfdfd')
+    window.removeEventListener('scroll', this.loadMore);
+    next();
+  },
+  components: {
+    ContactMe
+  },
+
   computed: {
+    ...mapState(['allTags']),
     ...mapGetters(['getShortArticles'])
   },
+
   methods: {
-    ...mapActions(['getArticles']),
-    ...mapMutations(['set_title'])
+    ...mapActions(['getArticles', 'getAllTags']),
+    ...mapMutations(['set_headLine']),
+    loadMore() {      
+      if(document.body.scrollHeight - document.body.scrollTop <= window.innerHeight){
+          this.isLoadingMore = true;
+          if(this.more == true){
+              this.getArticles({tag:this.tag, limit: this.limit, skip: (this.skip+=1)*this.limit, isAdd: true})
+              .then((articles) => {
+                  if(articles.length === 0){
+                      this.more = false;
+                  }                 
+                  this.isLoadingMore = false;               
+              })
+          }
+      }
+      
+    }
   }
 }
 </script>
@@ -54,135 +107,198 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-  border: none;
+  top: 0px;
   margin-top:70px;
   z-index:2;
-  .new{
-    background-color: #acc0d7;
-    width: 65px;
-    height: 65px;
-    display: inline-block;
-    line-height: 65px;
-    text-align: center;
-    color: #fff; 
-    border-radius: 65%;
-    font-weight: bold;
-    transform: rotate(-25deg);
+  .wrap{
+    width: 78%;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
+  .aside{
+    width: 18%;
+  }
+  
 }
 
-.Articles{
+
+.articles{
+    width: 79%;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
-    align-items: flex-start;
-  	width: 63%;
     min-height:400px;
     position: relative;
-    margin: 20px auto;
     color:rgba(0,0,0,0.54);
-    .article{
-        width: 100%;
-        transition:0.2s;
-        margin:30px auto auto auto;
-        border: 7px solid #fff;
-        border-radius: 3px;
-        position: relative;
-        box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12); 
-    }
-    .article:hover{
-       box-shadow:  0 2px 2px 0 rgba(0,0,0,0.4), 0 3px 1px -2px rgba(0,0,0,0.4), 0 1px 5px 0 rgba(0,0,0,0.12); 
-    }
-    .box{
-        width: 94%;
-        min-height: 100px;
-        display: block;
-        position: relative;
-        margin:0 auto;
-        
-        .art_header{
-            position: relative;
-            display: block;
-            width: 100%;
-            height: auto;
+  .article{
+     position: relative;
+     width:100%;
+     transition:0.2s;
+     margin: auto auto 30px auto;
+     border: 1px solid #fff;
+     border-radius: 3px;
+     box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.2), 0 1px 5px 0 rgba(0,0,0,0.12); 
+     &:hover{
+        box-shadow:  0 2px 2px 0 rgba(0,0,0,0.4), 0 3px 1px -2px rgba(0,0,0,0.4), 0 1px 5px 0 rgba(0,0,0,0.12); 
+     }
+     .art_wrap{
+         display: flex;
+         flex-direction: column;
+         justify-content: space-around;
+         align-items: flex-start;
+         width:95%;
+         margin: auto;
+         position: relative;
+
+         h3{
+            font-weight: normal;
+            margin: 50px auto 30px 10px;
+            float: left;
+            display: inline-block;
+            color: #333;
+            cursor: pointer;
+            font-size: 21px;
+         }
+         time{
+            font-size: 12px;
+            color: rgba(0,0,0,0.4);
             overflow: hidden;
-            h3{
-               font-weight: normal;
-               margin-top: 20px;
-               padding: 10px 0px;
-               float: left;
-               display: inline-block;
-               color: #333;
-               cursor: pointer;
-            }
-            time{
-                position: relative;
-                right: 0px;
-                display: inline-block;
-                float: right;
-                margin-top: 30px;
-            }
+            margin: 0 0 8px 0;
          }
          p{
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
             text-align: left;
-            position: relative;
-            display: block;
-            padding-bottom:70px;
-            font-size:14px;
+            color: rgba(0,0,0,0.54);
+            font-size: 13px;
+            &:hover{
+              color: rgba(0,0,0,0.84);
 
-          }
+            }
+         }
          .art_footer{
-            padding-top: 10px;
-            border-top:1px solid #eee;
-            width: 100%;
-            height: 25px;
-            line-height: 25px;
-            display: block;
-            position: absolute;
-            bottom: 0px;
-            font-size:14px;
-              .tags{
-                  position: relative;
-                  float: left;
-                  span{            
-                    margin-left:10px;
-                    display: inline-block;
-                    transition: 1s;
-                     color: #ff4081;
-                  }
-                  span:hover{
-                    transform: translateX(10px);
-                  }
-              }
-              .detail{
-               float: right;
-               color:#3f51b5;
-                padding: 3px 9px;
-                background-color: #f5f5f5;
-                text-decoration: none;
+           border-top:1px solid #eee;
+           width: 100%;
+           height: 25px;
+           line-height: 25px;
+           display: flex;
+           justify-content: space-between; 
+           align-items: center;  
+           font-size:14px;
+           overflow: hidden;
+           height: auto;
+           .tags {
+            color: #000;
+            margin-left: 20px;
+              span{
+                margin-left:15px;
+                display: inline-block;
                 transition: 1s;
+                color: #ff4081;
+                font-size: 12px;
+                &:hover{
+                   transform: translateX(10px);
+                 }
               }
-              .detail:hover{
-                 background-color: #e5e5e5;
-              }
-          }
+           }
+           
+           .detail{
+              color:#3f51b5;
+              padding: 3px 10px;
+              background-color: #f5f5f5;
+              text-decoration: none;
+              transition: 1s;
+              margin: 5px 0px 5px auto;
+              &:hover{
+                 transform: translateX(10px);
+               }
+           }
+         }
     }
-
+  }   
+   .loadMore {
+    width: 100%;
+      span{
+        width: 100%;
+        text-align: center;
+      }
+   }
 }
 
 
+.aside{
+   .box{
+      width: 100%;
+      border-top: 1px solid #888; 
+      p{
+        text-align: left;
+        margin: 22px 0px 10px 0px;
+        font-weight: bold;
+      }
+   }
+   .tags div{
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      flex-sharink: 0;
+      padding-bottom: 40px;
+      span{          
+          font-size: 13px;
+          padding: 2px 6px;
+          float: left;
+          border: 1px solid #ccc;
+          border-radius: 10px;
+          margin-right:10px;
+          margin-bottom: 10px;
+          color: #ccc;
+          cursor: pointer;
+      }
+   }
+   .portrait img{
+     width: 80%;
+     margin: 10px 0px;
+     
+   }
+    .others div{
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      .icons{
+        width: 40px;
+        margin: 10px 10px 10px 0px;
+        img{
+          width: 100%;
+          transition: 1s;
+          opacity: 0.7;
+          &:hover{
+            transform: rotateZ(360deg)
+          }
+       }
+     }
+   }
+    
+}
 
 
- 
-
-
-@media screen and (max-width: 450px) {
-  .newArticles {
-    width:83%;
+@media screen and (max-width: 950px) {
+  .wrap{
+    width: 95% !important;
   }
+  .articles{
+    width: 100%;
+  }
+  .aside{
+    display: none;
+
+
+  }  
 }
 
+@media screen and (max-width: 950px) {
+  .wrap{
+    width: 90% !important;
+  } 
+}
+ 
 </style>

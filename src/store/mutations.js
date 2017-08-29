@@ -63,7 +63,12 @@ export default {
     state.isLoading = isLoading
   },
 
-  set_title(state, title) {
-    state.title = title;
+  set_headLine(state, headLine) {
+    state.headLine = headLine;
+  },
+
+  set_search(state, isShow) {
+    if(isShow !== undefined) {state.showSearch  = isShow; return; }
+    state.showSearch = !state.showSearch;
   }
 }

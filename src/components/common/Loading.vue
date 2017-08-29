@@ -1,41 +1,22 @@
 <template>
 	<div class ="wrap" v-show="isLoading">
-		<canvas class="canvas" v-show="isLoading">你的浏览器好像不支持canvas(⊙o⊙)噢，换个浏览器试试吧~</canvas>
+		<ul>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
 	</div>
 </template>
 <script type="text/javascript">
-import { mapState,mapMutations} from 'vuex'
+import { mapState} from 'vuex'
 	export default {
 		computed: {
 			...mapState(['isLoading'])
-		},
-		mounted() {
-			const canvas   = document.querySelector(".canvas"),
-				  ctx      = canvas.getContext('2d'),
-				  width    = canvas.width  = window.innerWidth,
-				  height   = canvas.height = window.innerHeight,
-				  distance = 40,
-				  balls    = [
-				    {raidus:14, color: "rgba(255,0,0,0.1)", offset: 20},
-				    {raidus:10, color: "rgba(0,0,255,0.2)", offset: 27},
-				    {raidus:16, color: "rgba(0,255,0,0.1)", offset: 23}
-				  ];
-			let count = 0
-			const loop = () => {
-				count++;
-				ctx.clearRect(0, 0, width, height);
-				for(let i = 0; i < balls.length; i++){					
-					ctx.save();
-					ctx.beginPath();
-					ctx.arc(width/2-distance*i, height/2 + balls[i].offset*Math.sin(Math.PI/2*i+Math.PI*count/24), balls[i].raidus, 0,Math.PI*2);
-					ctx.fillStyle = balls[i].color;
-					ctx.closePath();
-					ctx.fill();
-					ctx.restore();
-				}
-				requestAnimationFrame(loop)
-			}
-			requestAnimationFrame(loop);
 		}
 	}
 </script>
@@ -48,5 +29,70 @@ import { mapState,mapMutations} from 'vuex'
 		width:100%;
 		height:100%;
 		background-color: #fff;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		ul{
+			display: flex;
+			position: relative;
+			&::before{
+				content: "正在加载......";
+				position: absolute;
+				top: -40px;
+				left: 0;
+				right: 0;
+				margin: auto;
+			}
+			li{
+				background-color: #3f86b5;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				margin: 2px;
+				
+			}
+			li:nth-child(1){
+				animation: loading 1s ease 0ms infinite;
+			}
+			li:nth-child(2){
+				animation: loading 1s ease 100ms infinite;
+			}
+			li:nth-child(3){
+				animation: loading 1s ease 200ms infinite;
+			}
+			li:nth-child(4){
+				animation: loading 1s ease 300ms infinite;
+			}
+			li:nth-child(5){
+				animation: loading 1s ease 400ms infinite;
+			}
+			li:nth-child(6){
+				animation: loading 1s ease 500ms infinite;
+			}
+			li:nth-child(7){
+				animation: loading 1s ease 600ms infinite;
+			}
+			li:nth-child(8){
+				animation: loading 1s ease 700ms infinite;
+			}
+		}
 	}
+	
+	@keyframes loading{
+		0%{
+			transform: scale(1);
+			
+		}
+		100%{
+			transform: scale(.3);
+			opacity: 0.1;
+		}
+	}
+
+@media screen and (max-width: 500px) {
+	.wrap ul li{
+		width:0.3rem;
+		height: 0.3rem;
+	}
+}
 </style>

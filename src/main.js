@@ -24,8 +24,8 @@ new Vue({
 })
 
 
-Vue.directive('scrollShow',{
-  bind: el => {     
+Vue.directive('scrollShow', {
+  bind: el => {
     window.addEventListener('scroll', () => {
         let actualTop = el.offsetTop,
             current = el.offsetParent;
@@ -33,9 +33,8 @@ Vue.directive('scrollShow',{
             actualTop += current.offsetTop;
             current = current.offsetParent;
         }
-        if(actualTop - document.body.scrollTop < 400){
-          setTimeout(() => {el.classList.add("show");},200)   
-           
+        if(actualTop - document.body.scrollTop < 300){
+            el.classList.add("show");
         }
     });
   }

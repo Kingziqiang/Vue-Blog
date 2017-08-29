@@ -1,32 +1,23 @@
 <template>
-	<div id="editor">
-		<ul class="form">
-				<li class="switch">
-					<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
-					<span :class="{checked:isMarked}" @click="isMarked = true">预览</span>
-				</li>
-				<li>
-					<input v-focus type="text" class="title" placeholder="标题"  v-model.trim="title">
-					
-				</li>
-				<li>
-					<input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="tags">
-				</li>
-
-				<li>
-					<textarea class="content" placeholder="来写点儿啥呗~" 
-					v-model="content"
-					v-if = "!isMarked"
-					></textarea>
-					<div  class="mdContent" v-if="isMarked" v-html="mdContent"></div>
-				</li>
-
-				<li class="btns">
-					<div class="btn" @click="submitArticle()">发布文章</div>
-					<div class="btn" @click="submitDraft()">存为草稿</div>
-				</li>
-		</ul>
-	</div>
+  <div id="editor">
+	<ul class="form">
+	  <li class="switch">
+		<span :class="{checked:!isMarked}" @click="isMarked = false">原文</span>
+		<span :class="{checked:isMarked}" @click="isMarked = true">预览</span></li><li>
+		<input v-focus type="text" class="title" placeholder="标题"  v-model.trim="title"></li>
+	  <li>
+	    <input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="tags"></li>
+	  <li>
+	    <textarea class="content" placeholder="来写点儿啥呗~" 
+		  v-model="content"
+		  v-if = "!isMarked"
+		  ></textarea>
+		  <div  class="mdContent" v-if="isMarked" v-html="mdContent"></div></li>
+	  <li class="btns">
+	    <div class="btn" @click="submitArticle()">发布文章</div>
+	    <div class="btn" @click="submitDraft()">存为草稿</div></li>
+	</ul>
+  </div>
 </template>
 <script>
 import {mapActions,mapState,mapMutations} from 'vuex'

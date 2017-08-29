@@ -1,3 +1,4 @@
+'use strict'
 const express = require('express')
 const router = express.Router()
 const db = require('../db/db.js')
@@ -11,7 +12,7 @@ router.get('/api/articles',function(req,res){
     if (tag && tag !== '全部') {
         db.Article
         .find({tags: tag})
-        .sort()
+        .sort({date: -1})
         .skip(skip)
         .limit(limit)
         .then((articles) => {
@@ -27,6 +28,14 @@ router.get('/api/articles',function(req,res){
                 res.send(articles)
         })
     }
+})
+
+router.get('/api/searchArticles',function(req,res){
+	let key = req.query.key;
+	db.Article.find({"title":eval("/.*"+key+".*/i")})
+	.then( result => res.send(result) )
+	.catch( err => console.log(err) )
+
 })
 
 //查询所有tag

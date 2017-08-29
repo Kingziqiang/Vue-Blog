@@ -1,5 +1,9 @@
 <template>
 	<div class="wrap">
+		<div class="total">
+			<p v-if="!comments.length">哎呀，没人理我😺</p>
+			<p v-if="comments.length">欢迎留下您宝贵的意见或建议噢~，目前评论总数,共{{comments.length}}条😺</p>
+		</div>
 		<div class = "comment" :class= "{isManager: item.isManager}" v-for="item in comments">
 			<div class = "avatar"></div>
 			<div class = "box">
@@ -16,7 +20,7 @@
 			</div>
 		</div>		
 		<div class="write" id="write">
-			<p class="title">说点儿啥呗~</p>
+			<!-- <p class="title">说点儿啥呗~</p> -->
 			<p class="declar">电子邮件地址不会被公开。 必填项已用*标注</p>
 			<label for="comment"> <span>评论</span> <textarea id="comment" v-model="content"></textarea> </label>
 			<label for="name"> <span>称呼*</span> <input type="text" name="" id="name" v-model="name"> </label>
@@ -68,6 +72,12 @@ import util from '../../util.js'
 			}
 			else{
 				this.submitComment(payload)
+				.then(() => {
+					this.set_dialog({show: true, tip: '评论成功☺', resolved() {this.show = false }});
+					this.content = '';
+					this.name = '';
+					this.email = ''
+				})
 			}
 		},
 		reply(to) {
@@ -95,6 +105,10 @@ import util from '../../util.js'
 <style lang="scss" rel="stylesheet/scss" scoped>
 .wrap{
 	width:100%;
+}
+.total p{
+	background-color: #fcfcfc;
+	width: 100%;
 }
 .comment{
 	width: 100%;

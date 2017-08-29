@@ -1,3 +1,4 @@
+'use strict'
 const express = require('express')
 const app = express()
 const article = require('./article.js')
@@ -18,9 +19,9 @@ app.use(comment)
 
 
 //启动服务
-var server = app.listen(3000, function () {
+var server = app.listen(3002, function () {
   var host = server.address().address;
   var port = server.address().port;
 
-  console.log('正在监听3000端口');
+  console.log('正在监听3002端口');
 });

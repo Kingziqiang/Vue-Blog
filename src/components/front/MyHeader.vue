@@ -1,40 +1,35 @@
 <template>
     <div class="header"> 
         <div class = "shadow"></div>
-        <div class="catolog" :class="{nav: isShow}">    
-            <div class="search_box">
-                <input type="text" placeholder="请输入文章标题"class="search" 
-                  v-model="search_title" 
-                  @keyup.enter="search({search_title:search_title})"
-                  />
-                <img src="../../assets/img/search.png" @click="search({search_title:search_title})">
-            </div>
-        <ul >
-            <router-link to='/home' tag="li">Home</router-link>
-            <router-link to='/articles' tag="li">Articles</router-link>
-            <router-link to='/aboutMe' tag="li">About</router-link>
-            <li>Contract</li>
-        </ul>
+        <div class="catolog" :class="{nav: isShow}">                
+            <ul >              
+              <router-link to='/home' tag="li" @click.native="set_search(false)">Home</router-link>
+              <router-link to='/archives' tag="li" @click.native="set_search(false)">Archives</router-link>
+              <router-link to='/tags' tag="li" @click.native="set_search(false)">Tags</router-link>               
+              <router-link to='/aboutMe' tag="li" @click.native="set_search(false)">About</router-link> 
+              <li><img @click='set_search()' id="search" src="../../assets/img/search.png"></li>               
+            </ul>
         </div>
-        <span class="title">{{title}}</span>
+        <span class="title" :class="headLine.animate">{{headLine.text}}</span>
         <canvas id="wave" >你的浏览器好像不支持canvas(⊙o⊙)哦，换个浏览器试试吧~</canvas>
      </div>
 </template>
 
 <script>
-import {mapState,mapActions} from 'vuex'
+import {mapState, mapMutations} from 'vuex'
 export default {
   data(){
     return{
-      search_title:'',
+      key:'',
       isShow: false
     }
   },
+
   computed: {
-    ...mapState(['title'])
+    ...mapState(['headLine'])
   },
 
-  mounted() {
+  mounted() {  
     this.paintWave();
     window.addEventListener('scroll', this.handleShow, false); // 监听滚动处理导航栏是否出现
     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';  
@@ -49,13 +44,9 @@ export default {
   },
 
   methods:{
-    ...mapActions(["searchArticles"]),
+    ...mapMutations(['set_search']),
      search(params) {
-        let _this = this;
-        this.searchArticles(params)
-        .then(function () {
-          _this.$router.push('/articles')
-        })
+       this.$router.push({ path: '/articles', query: params});
     },
     handleShow() {
       if(document.querySelector("body").scrollTop > 300){
@@ -69,20 +60,20 @@ export default {
               width   = canvas.width  = window.innerWidth,
               height  = canvas.height = document.querySelector('.header').offsetHeight,
 
-              offset  = [40,40],  // 波浪偏移距离
-              waves   = ["rgba(255,255,255,1)","rgba(255,255,255,.5)"], // 波浪颜
+              offset  = [60,40],  // 波浪偏移距离
+              waves   = ["rgba(255,255,255,1)"], // 波浪颜色
               context = canvas.getContext('2d');
         let count = 0;    
         function loop(){
             context.clearRect(0,0, width, height);
             count ++;       
             for(let i = 0; i < waves.length; i++){
-              const startY = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2),
+              const startY = height*4/5 + offset[i] * Math.sin(Math.PI*count/120 + Math.PI*i/2)/2,
                     cpx1   = width/3,
-                    cpy1   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + Math.PI/2),
+                    cpy1   = height*4/5 + offset[i] * Math.sin(Math.PI*count/120 + Math.PI*i/2 - Math.PI/2),
                     cpx2   = width*2/3,
-                    cpy2   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + 2*Math.PI/2),           
-                    endY   = height*4/5 + offset[i] * Math.sin(Math.PI*count/96 + Math.PI*i/2 + 3*Math.PI/2);
+                    cpy2   = height*4/5 + offset[i] * Math.sin(Math.PI*count/120 + Math.PI*i/2 - 3/2 * Math.PI ),           
+                    endY   = height*4/5 + offset[i] * Math.sin(Math.PI*count/120 + Math.PI*i/2 )/2;
               context.save()
               context.beginPath();
               context.moveTo(0,startY);
@@ -119,7 +110,6 @@ export default {
     position: relative;
     overflow: hidden;
 
-
 }
 .shadow{
   position: absolute;
@@ -130,81 +120,10 @@ export default {
   top: 0px;
   left: 0px;
 }
-.title{
+#wave{
+  z-index: 3;
+  border: none;
   position: relative;
-  margin:auto;
-  top:45%;
-  z-index: 3; 
-  transform: translate(0, -50%);
-  display: inline-block;
-  font-size: 0.11rem;
-  padding: 10px 0px;
-   background:linear-gradient(to right,#fff,#acc0d7 25%,#fff 50%,#acc0d7 75%,#fff);
-  background-clip : text;
-  -webkit-background-clip: text;
-  color:transparent;
-  background-size:200% 100%;
-  animation: flowlight 1s linear infinite, changeWidth 500ms ease-in-out 0ms 1;
-  &::before, &::after{
-    content:'';
-    width: 85%;
-    height: 1px;
-    background-color: #fff;
-    position: absolute;
-    top: 0px;
-    left: 50%;
-    transform: translateX(-50%);
-  }
-  &::after{
-    bottom: 0px;
-    top: auto;
-  }
-
-}
-@keyframes changeWidth {
-  0%{
-    font-size: 0px;
-  }
-  100%{
-    font-size: 0.11rem
-  }
-} 
-@keyframes flowlight {
-  0% {
-    background-position: 0 0;
-  }
-  100% {
-    background-position: -100% 0; /*  background-position属性百分比计算公式，（容器宽度-背景宽度）*百分比=××px; */
-  }
-}
-
-.search_box{
-    border:1px solid #eee;
-    border-radius: 4px;
-    position: relative;
-    top:50%;
-    transform: translateY(-50%);
-    float: left;
-    height:37px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-left:0.4rem;
-    padding: 0 10px 0 10px;
-    .search{
-        width: 2rem;
-        max-width: 210px !important;
-        background-color: rgba(255,255,255,0);
-        &::placeholder{
-          color:rgba(255,255,255,.6);
-        }
-    }
-    img{
-       width: 25px;
-    }
-    img:hover{
-      opacity:0.6;
-    }
 }
 .catolog{
     width:100%;
@@ -214,11 +133,9 @@ export default {
     height: 55px;
     line-height:55px;
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-end;
+    align-content: center;
     color: #fff;
-   background-color: rgba(255,255,255,.4);
-    /* box-shadow: 1px 1px 4px #444; */
     ul{
         list-style: none;
         display:flex;
@@ -229,73 +146,143 @@ export default {
         li{
            cursor:pointer;
            opacity: 0.8;
-           margin-left: 40px;
+           margin-left: 25px;
            flex-grow: 0;
            padding-left:10px;
            padding-right:10px;
-          /*  font-weight: bold; */
-         /* text-shadow: 1px 1px 1px #999; */
+           font-weight: bold;
         }
+        
         li:hover{
           color:#686868;
         }
     }
+    #search{
+      width: 18px;
+      margin-top: 20px;
+      &:hover{
+        opacity:0.6;
+      }
+    }
 }
+
 .nav{
   background-color: rgba(255,255,255,0.8);
   box-shadow: 2px 2px 2px #999;
   color: #000;
+  .router-link-active{
+    color:#ccc !important;
+  }
 }
-
-#wave{
-  z-index: 3;
-  position: relative;
-}
-
 .router-link-active{
-  color:#000 !important;
+  color:#666 !important;
 }
-@media screen and (max-width: 950px) {
+.title{
+  position: relative;
+  margin:auto;
+  top:40%;
+  z-index: 3; 
+  display: inline-block;
+  font-size: 0.11rem;
+  padding: 10px 0px;
+  color: rgba(250,250,250, .9); 
+}
+
+@media screen and (max-width: 550px) {
   .header{
      background-size:auto 100%;
+     height: 300px;
   }
+
   .catolog{
+    flex-direction: column !important;
     justify-content: center;
     align-items: center;
-    order: 1;
+    ul{
+      margin-left: 0px !important;
+      width: 90%;
+      justify-content: space-around;
+      li{
+        margin: 0px;
+        padding: 0px;
+      }
+    }
+    .search_box{
+      margin-top: 30px;
+      margin-right: 0px !important;
+       #search:focus{
+         width: 2.5rem !important;
+       }
+    }
   }
-  .catolog ul{
-    list-style: none;
-    display:flex;
-    width: 100%;
-    justify-content:space-around;
-    margin-left:auto;
+  .title{
+    font-size: 0.4rem;
   }
-  .header ul li{
- 
-   margin-left: 0.1rem !important;
-}
-.search_box{
-   order: 2;
-   margin:auto;
-}
-.search{
-  width: 3rem;
- 
-  max-width: 310px !important;
-  background-color: rgba(255,255,255,0);
 }
 
-.title{
-  font-size: 0.3rem;
-  animation:title2 0.8s ease-in-out 0ms 1;
+//标题动画类
+.show1{
+   animation: show1 1000ms ease 0ms 1;
 }
+.show2{
+   animation: show2 500ms ease 0ms 1;
 }
-@media screen and (max-width: 450px) {
-  .header{
-    height: 350px;
-     background-size:auto 100%;
+.show3{
+   animation: show3 800ms ease 0ms 1;
+}
+.show4{
+   animation: show4 800ms ease 0ms 1;
+}
+
+@keyframes show1 {
+ 0%{
+    transform: translateX(100px);
+    opacity: 0;
   }
-}
+  100%{
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+} 
+
+@keyframes show2 {
+  0%{
+    transform: rotateZ(30deg)
+  }
+  40%{
+    transform: rotateZ(-30deg)
+  }
+  80%{
+    transform: rotateZ(10deg)
+  }
+  100%{
+    transform: rotateZ(-10deg)
+  }
+} 
+
+@keyframes show3 {
+  0%{
+    transform: rotateX(0deg);
+    font-size: 0;
+  }
+  70%{
+    transform: rotateX(270deg);
+    font-size: 0.15rem;
+  }
+  100%{
+    transform: rotateX(360deg);
+    font-size: 0.11rem;
+  }
+} 
+
+@keyframes show4 {
+  0%{
+    transform: rotateZ(0deg)
+  }
+  100%{
+    transform: rotateZ(360deg)
+  }
+} 
 
 </style>
