@@ -62,4 +62,10 @@ import { mapState, mapMutations, mapActions} from 'vuex'
             font-weight: bold;
         }
     }
+
+  @media screen and (max-width: 750px){
+      .search{
+        font-size: 2rem;
+      }
+  }
 </style>

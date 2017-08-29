@@ -30,16 +30,14 @@ export default {
   },
 
   mounted() {  
-    this.paintWave();
+     this.paintWave()();
     window.addEventListener('scroll', this.handleShow, false); // 监听滚动处理导航栏是否出现
     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';  
-    window.addEventListener(resizeEvent, this.paintWave, false); // 监听窗口resize事件，重绘波浪
+     window.addEventListener(resizeEvent, this.paintWave(), false); // 监听窗口resize事件，重绘波浪
   },
 
   beforeRouteLeave (to, from, next) {
      window.removeEventListener('scroll', this.paintWave);
-     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';
-     window.removeEventListener('resizeEvent', this.paintWave);
      next()
   },
 
@@ -56,15 +54,18 @@ export default {
       }
     },
     paintWave() {
-        const canvas  = document.querySelector("#wave"),
+    
+        // 绘制波浪
+        function loop(){
+          const canvas  = document.querySelector("#wave"),
               width   = canvas.width  = window.innerWidth,
               height  = canvas.height = document.querySelector('.header').offsetHeight,
 
               offset  = [60,40],  // 波浪偏移距离
               waves   = ["rgba(255,255,255,1)"], // 波浪颜色
               context = canvas.getContext('2d');
-        let count = 0;    
-        function loop(){
+          let count = 0;
+          (function paint(){
             context.clearRect(0,0, width, height);
             count ++;       
             for(let i = 0; i < waves.length; i++){
@@ -86,9 +87,17 @@ export default {
               context.fill();
               context.restore();
             }    
-           requestAnimationFrame(loop)
+            requestAnimationFrame(paint)
+          }())
         } 
-      requestAnimationFrame(loop)
+        // 函数节流
+        let timer = null;
+        return function (){ 
+          clearTimeout(timer);
+          timer = setTimeout(function() {
+             requestAnimationFrame(loop)
+          }, 100)
+        }     
     },
   }
  
@@ -187,11 +196,16 @@ export default {
   padding: 10px 0px;
   color: rgba(250,250,250, .9); 
 }
+@media screen and (max-width: 1000px) {
+  .title{
+    font-size: 0.2rem;
+  }
+}
 
 @media screen and (max-width: 550px) {
   .header{
      background-size:auto 100%;
-     height: 300px;
+     height: 3rem;
   }
 
   .catolog{
@@ -216,7 +230,7 @@ export default {
     }
   }
   .title{
-    font-size: 0.4rem;
+    font-size: 0.3rem;
   }
 }
 

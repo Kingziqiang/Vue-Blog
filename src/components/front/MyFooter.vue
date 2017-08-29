@@ -11,26 +11,36 @@
 <script>
 export default {
 	mounted() {
-		this.paint();
+		this.paintFooter()();
 		const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';
-		window.addEventListener(resizeEvent, this.paint, false)
+		window.addEventListener(resizeEvent, this.paintFooter(), false)
    	},
    	methods: {
-   		paint() {
-   			const canvas = document.querySelector("#foot-bg"),
-		      	  ctx    = canvas.getContext('2d'),
-			      height = canvas.height=250 ,
-			      offset = 40,
-			      width  = canvas.width  = window.innerWidth;		
-			ctx.beginPath();
-	        ctx.moveTo(0,offset);
-	        ctx.bezierCurveTo(width/3,2*offset, width*2/3, 0,width,offset);
-	        ctx.lineTo(width,height);
-	        ctx.lineTo(0,height);
-	        ctx.lineTo(0,0)
-	        ctx.closePath();
-	        ctx.fillStyle = "#fafafa";
-	        ctx.fill();
+   		paintFooter() {
+			function paint(){
+			  const canvas = document.querySelector("#foot-bg"),
+		      	ctx    = canvas.getContext('2d'),
+			    height = canvas.height=250 ,
+			    offset = 40,
+			    width  = canvas.width  = window.innerWidth;		
+			  ctx.beginPath();
+	          ctx.moveTo(0, 100);
+	          ctx.bezierCurveTo(width/3,4*offset, width*2/3, offset,width,2*offset);
+	          ctx.lineTo(width,height);
+	          ctx.lineTo(0,height);
+	          ctx.lineTo(0,0)
+	          ctx.closePath();
+	          ctx.fillStyle = "#fcfcfc";
+	          ctx.fill();
+			}
+			let timer = null;
+			return function (){
+			  clearTimeout(timer);
+              timer = setTimeout(function (){
+				  paint()
+			  }, 100)
+			}
+   			
    		}
    	}
 
@@ -54,8 +64,9 @@ export default {
 	  }
 	  ul{		
 		position: relative;
-		top: 70%;
-		transform: translate(0, -50%);
+		top: 50%;
+		transform: translateY(0, -50%);
+		color: #999;
 		li{
 			margin-top: 10px;
 			span{
@@ -72,6 +83,12 @@ export default {
 			}
 	    }
 	  } 
+}
+@media screen and (max-width: 450px){
+	.footer{
+	  font-size: 12px;
+	}
+	
 } 
 
 
