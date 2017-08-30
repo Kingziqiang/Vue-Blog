@@ -11,8 +11,8 @@
 - [x] 分类显示文章
 - [x] 搜索文章
 - [x] markdown和代码高亮渲染
-- [ ] 评论模块
-- [ ] 邮件功能
+- [x] 评论模块
+- [x] 邮件功能
 ## 后台管理
 - [x] 发布文章
 - [x] 修改文章
@@ -20,7 +20,7 @@
 - [x] 搜索文章
 - [x] 登录验证
 - [x] 修改账户
-- [ ] 草稿
+- [x] 草稿
 # 运行
 ## 环境
 * mongodb
@@ -46,24 +46,49 @@ npm run dev
 稍等一会儿，页面就会自动在浏览器窗口加载了
 # 示例页面
 ### 首页
-![](./src/assets/img/QQ图片20170630160907.jpg)  
+![](./src/assets/img/QQ图片20170830100033.png)  
 
-### 文章列表
-![](./src/assets/img/QQ图片20170630161024.png)  
+### 归档
+![](./src/assets/img/QQ图片20170830100100.png)  
 
-### 文章详细
-![](./src/assets/img/QQ图片20170630161114.png)  
+### 标签
+![](./src/assets/img/QQ图片20170830100106.png)  
+
+### 关于
+![](./src/assets/img/QQ图片20170830100111.png)
+
+### 搜索
+![](./src/assets/img/QQ图片20170830100122.png)
+
+### 列表
+![](./src/assets/img/QQ图片20170830102253.png)
+
+### 文章
+![](./src/assets/img/QQ图片20170830100126.png)
+
+### 评论
+![](./src/assets/img/QQ图片20170830100131.png)
+
+### 邮件
+![](./src/assets/img/QQ图片20170830100135.png)
 
 ### 登陆
-![](./src/assets/img/QQ图片20170630175326.png)  
+![](./src/assets/img/QQ图片20170830100140.png)  
 
-### 后台管理
-![](./src/assets/img/QQ图片20170630161103.png)  
+### 文章管理
+![](./src/assets/img/QQ图片20170830100145.png)  
 
-### 文章发布
-![](./src/assets/img/QQ图片20170630180945.png)
+### 新建
+![](./src/assets/img/QQ图片20170830100149.png)
 
-### 效果演示
-<video>
-      <source id="mp4" src="./src/assets/img/admin.mp4" type="video/mp4">
- </video>
+### 草稿
+![](./src/assets/img/QQ图片20170830100153.png)
+
+### 修改账户
+![](./src/assets/img/QQ图片20170830100157.png)
+
+### 修改文章
+![](./src/assets/img/QQ图片20170830100202.png)
+
+### 删除账户
+![](./src/assets/img/QQ图片20170830100206.png)
