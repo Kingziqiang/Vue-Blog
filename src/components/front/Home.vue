@@ -65,11 +65,12 @@ export default {
   mounted() {
     window.addEventListener('scroll', this.loadMore, false);
   },
+
   beforeRouteLeave (to, from, next) {
-      console.log('fdfdfd')
     window.removeEventListener('scroll', this.loadMore);
     next();
   },
+  
   components: {
     ContactMe
   },
@@ -122,7 +123,6 @@ export default {
   }
   
 }
-
 
 .articles{
     width: 79%;
@@ -225,7 +225,6 @@ export default {
       }
    }
 }
-
 
 .aside{
    .box{

@@ -66,7 +66,7 @@ export default {
 		newContent: function (){
 		  let newContent = {
 		    title: this.title,
-			tags: this.tags,
+			tags: this.tags.split(' '),
 			content: this.content,
 			date: new Date()
 		  }
@@ -86,6 +86,11 @@ export default {
 		...mapActions(['saveArticle','saveDraft','getDraft','getArticle','alterArticle','alterDraft','postDraft','articleToDraft']),
 		...mapMutations(['set_dialog','set_article','set_draft']),
 		submitArticle:function (){
+			// 输入验证
+			if(this.title.length == ' ') {this.set_dialog({show: true, tip: '标题不能为空噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+			if(this.tags.length == ' ') {this.set_dialog({show: true, tip: '请设置至少一个标签噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+			if(this.content.length == ' ') {this.set_dialog({show: true, tip: '内容不能为空噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+
 			switch(this.type)
 			{
 				case "article":
@@ -100,6 +105,11 @@ export default {
 			}			
 		},
 		submitDraft:function(){
+			// 输入验证
+			if(this.title.length == ' ') {this.set_dialog({show: true, tip: '标题不能为空噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+			if(this.tags.length == ' ') {this.set_dialog({show: true, tip: '请设置至少一个标签噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+			if(this.content.length == ' ') {this.set_dialog({show: true, tip: '内容不能为空噢ᓫ(°⌑°)ǃ~', resolved() {this.show = false }}); return;}
+
 			switch(this.type)
 			{
 				case "article":

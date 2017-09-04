@@ -37,7 +37,7 @@ $button_color: #e74851;
 	display: block;
 	top:0px;
 	display: block;
-	z-index: 10;
+	z-index: 100;
 	.shadow{
 		width: 100%;
 		height: 100%;
