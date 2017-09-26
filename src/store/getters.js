@@ -28,14 +28,12 @@ export default {
     })
     return shortArticles
   },
-  slideUp() {
-      const body = document.querySelector("body");
-      setTimeout(function up() {      
-          body.scrollTop -= 200;
-          if(body.scrollTop>200){
-            setTimeout(up,20)
-          }       
-  },20)
-  
-}
+  getArticleNav (state) {
+    const article = marked(state.article.content), reg = /<h(\d) id=\"(.+)\">(.+)<\/h\1>/g ;
+    let result = [];
+      article.replace(reg, function (match, level, id, content, offset, string) {
+        result.push({level, id, content})
+      })
+      return result;
+  },
 }

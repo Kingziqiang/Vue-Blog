@@ -2,16 +2,16 @@
 	<div class="wrap">
 		<div class="total">
 			<p v-if="!comments.length">哎呀，没人理我😺</p>
-			<p v-if="comments.length">欢迎留下您宝贵的意见或建议噢~，目前评论总数,共{{comments.length}}条😺</p>
+			<p v-if="comments.length">评论总数共{{comments.length}}条😺</p>
 		</div>
 		<div class = "comment" :class= "{isManager: item.isManager}" v-for="item in comments">
 			<div class = "avatar"></div>
 			<div class = "box">
-				<span class = "name">{{item.name}}说:</span>
-				<time><em>{{item.date}}</em></time>
+				<span class = "name">{{item.name}}说:</span>				
 				<p class = "content">{{item.content}}</p>
+				<time>{{item.date}}</time>
 				<div class = "action">				
-				    <a  class="reply" @click = "reply(item.name)">回复</a>
+				    <div class="reply"><img  @click = "reply(item.name)" src='../../assets/img/reply.png'/><a @click = "reply(item.name)">回复</a></div>
 				    <div class = "agree" 
 				    	:class="{agreed: localStorage.getItem(item._id) == 'agreed'}" 
 				    	@click='agree(item)'>{{item.agree}}
@@ -32,6 +32,7 @@
 
 <script >
 import {mapActions, mapState, mapMutations} from 'vuex'
+import SmoothScroll from 'smooth-scroll' 
 import util from '../../util.js'
   export default {
 	data() {
@@ -81,11 +82,11 @@ import util from '../../util.js'
 			}
 		},
 		reply(to) {
+			let scroll = new SmoothScroll(),  anchor = document.querySelector('#write');
+			scroll.animateScroll( anchor );
 			this.content = `@${to}: `;
 			this.name = '';
-			this.email = '';
-			util.slideTo(document.querySelector('#write'))
-			
+			this.email = '';						
 		},
 		agree(item) {
 			if(localStorage.getItem(item._id)!== 'agreed'){
@@ -105,66 +106,83 @@ import util from '../../util.js'
 <style lang="scss" rel="stylesheet/scss" scoped>
 .wrap{
 	width:100%;
+	display: flex;
+	flex-direction: column;
 }
 .total p{
 	background-color: #fcfcfc;
 	width: 100%;
+	text-align: center;
 }
 .comment{
 	width: 100%;
-	margin:30px 0px;
+	margin:5px 0px;
 	padding: 20px 0;
 	display: flex;
-	justify-content: flex-start;
-	/* border-top: 1px solid #ddd; */
+	border-top: 1px solid #eee;
 	.avatar{
 		order: 1;
-		width: 0.9rem;
-		height:  0.9rem;
+		width: 0.6rem;
+		height:  0.6rem;
 		flex-shrink: 0;
-		max-width: 95px;
-		max-height:95px;
-		border-radius: 10px;
-		border-radius:50%;
-		margin-right: 4%;
+		max-width: 80px;
+		max-height:80px;
+		border-radius: 50%;
+		margin-right: 10px;
 		background-image: url('../../assets/img/default_avatar.png');
-		background-size: 100%;
-		box-shadow: 2px 2px 4px #999;
+		background-size: 100%;	
 		}
 	.box{	
 		order:2;
-		height: 100%;
-		width:60%;
+		height: 100px;
+		flex-grow: 1;
 		display: flex;
 		flex-direction: column;
-		justify-content: space-around;
+		justify-content: flex-start;
 		align-items: flex-start;
-		background-color: #f8f8f8;
-		border-radius: 8px;
 		color: #4c555c;
 		padding: 10px;
 		position:relative;
 		word-break:break-all;
 		text-align: left;
+		// background-color: red;
+		.name{
+			font-size: 120%;
+			color: #3f86b5;
+		}
 		time{
+			position: absolute;
+			bottom: 0px;
 			font-size: 14px;
 			margin: 6px 0;
+			color: #dedede;
 		}
 		.action{
 			width: 100%;
 			display: flex;
+			position: absolute;
+			bottom: 0px;
 			justify-content: flex-end;
+			font-size: 90%;
+			color: #777;
 			.reply{
-
+				display: flex;
+				justify-content: space-around;
+				align-items: center;
+				img{
+					width: 18px;
+					height: 15px;
+					margin-right: 5px;
+				}
 			}
 			.agree{
-				margin:auto 40px ;
+				margin:auto 35px ;
 				position: relative;
 				&::before{
 					content:'';
 					display: inline-block;
-					width: 10px;
-					height: 16px;
+					width: 9px;
+					height: 14px;
 					background-color: #c0c1c3;
 					position:absolute;
 					left: -20px;
@@ -177,8 +195,8 @@ import util from '../../util.js'
 					position:absolute;
 					left: -15px;
 					display: inline-block;
-					width: 10px;
-					height: 16px;
+					width: 9px;
+					height: 14px;
 					background-color: #c0c1c3;
 					transform: rotate(45deg);
 					border-top-right-radius: 50%;
@@ -191,42 +209,20 @@ import util from '../../util.js'
 			
 		}
 	}
-	.box::before{
-		content:'';
-		position:absolute;
-		width: 20px;
-		height:20px;
-		left:-9px;
-		background-color: inherit;
-		transform:rotate(45deg);
-		border-radius: 4px;
-	}
 }
 
 .isManager{
 	justify-content: flex-end;
 	.avatar{
 		order: 3;
-		margin:auto 0px auto 35px;
+		margin:auto 0px auto 10px;
 		background-image: url('../../assets/img/qtc_avatar.png');
 	}	
 	.box{
 		width:60%;
-		/* background-color: #9f8771; */
-		/* color: #fff; */
 	}
 	.box::before{
 		display: none;
-	}
-	.box::after{
-		content:'';
-		position:absolute;
-		width: 20px;
-		height:20px;
-		right:-9px;
-		background-color: inherit;
-		transform:rotate(45deg);
-		border-radius: 4px;
 	}
 }
 
@@ -264,6 +260,7 @@ import util from '../../util.js'
 			flex-grow:1;
 			flex-shrink:1;
 			max-width:200px;
+			height: 20px;
 		}
 		#comment{
 			height:160px;
@@ -294,5 +291,14 @@ import util from '../../util.js'
 	}
 	
 }	
-	
+@media screen and (max-width: 450px) {
+	label{
+		flex-direction: column;
+		margin:5px 0 !important;
+		input, textarea{
+			width: 100% !important;
+			max-width: 100% !important;
+		}
+	}	
+}	
 </style>

@@ -88,7 +88,6 @@ export default {
             color:#2D3E4A;
             white-space: nowrap;
             font-weight: normal;
-          /*   font-size: 16px; */
         }
         h3:hover{
             color: #aaa;

@@ -3,7 +3,7 @@
    	  	<canvas id="foot-bg" ></canvas> 
 		<ul>
 			<li>Copyright © 2017 wangfang</li>
-			<li>Powered by Vue<router-link to="/login" tag="span">站长登录</router-link></li>
+			<li>Powered by Vue, designed by me<router-link to="/login" tag="span">站长登录</router-link></li>
 		</ul>	 
  	</div>
 </template>

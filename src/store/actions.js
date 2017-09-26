@@ -22,7 +22,6 @@ export default {
     }
      
   },
-
   getArticle({commit,state},payload) {
     commit('set_loading', true);
     return Vue.http.get('/api/article',{params: {payload}})
@@ -33,8 +32,7 @@ export default {
     .catch((err) => {
       console.log('获取article错误')
     })
-  },
-  
+  },  
   alterArticle({commit},payload) {
     return Vue.http.post('/api/alter',payload)
     .then(() => {console.log("发送请求成功")})
@@ -43,48 +41,41 @@ export default {
   articleToDraft({},payload) {
     return Vue.http.post('/api/articleToDraft',payload)
   },
-
   getAllTags({commit, state}) {
     return Vue.http.get('/api/tags')
     .then((res) => {
     res.data.unshift('全部')  
       commit('set_all_tags', res.data)
-      /*console.log(tags.data)*/
     })
     .catch((err) => { console.log(err) })
   },
-
   login({commit}, payload) {   
-      return Vue.http.get('/api/login',{params: {payload}})
-             .then((res) => {
-                commit('set_user',res.data);
-                return res;
-              })
+    return Vue.http.get('/api/login',{params: {payload}})
+      .then((res) => {
+        commit('set_user',res.data);
+        return res;
+      })
   },
-
   removeArtical({},payload) {
     return Vue.http.post('/api/remove',payload)
   },
-
   saveArticle({commit},payload) {
     return Vue.http.post('/api/addArticle',payload)
   },
-
   alterUser({commit,state},payload) {
     return Vue.http.post('/api/alterUser',payload)
     .then(()=>{
       commit('set_user', payload)
     })
   },
-
   searchArticles({commit,state},payload) {
     console.log(payload)
      return Vue.http.get('/api/searchArticles',{params:payload})
       .then((res) => {
-          commit('set_articles',res.data);
+         commit('set_articles',res.data);
       })
   },
-
+  
   getDrafts({commit,state},payload) {
     return Vue.http.get('/api/getDrafts',{params:{payload}})
     .then((drafts) => {
@@ -93,15 +84,16 @@ export default {
     })
     .catch((err) => {console.log(err)})
   },
+
   getDraft({commit,state},payload) {
     return Vue.http.get('/api/draft',{params: {payload}})
-          .then((res) =>{
-            commit('set_draft',res.data)
-            console.log(res.data)
-          })
-          .catch((err) => {
-            console.log('获取draft错误')
-          })
+      .then((res) =>{
+        commit('set_draft',res.data)
+          console.log(res.data)
+        })
+      .catch((err) => {
+        console.log('获取draft错误')
+      })
   },
   alterDraft({},payload) {
     return Vue.http.patch('/api/draft',payload)
@@ -110,33 +102,31 @@ export default {
     console.log(_id)
     return Vue.http.delete('/api/draft/'+_id)
   },
+
   postDraft({},payload) {
     return Vue.http.post('/api/postDraft',payload)
   },
   saveDraft({},payload) {
     return Vue.http.post('/api/saveDraft',payload)
   },
-
   submitComment({dispatch, commit}, payload){
-    console.log(payload)
     return Vue.http.put('/api/comment',payload)
-          .then(() => dispatch('getComments',{aid: payload.aid}) )
-          .catch(err => console.log(err))  
+      .then(() => dispatch('getComments',{aid: payload.aid}) )
+      .catch(err => console.log(err))  
   },
   getComments({commit}, payload) {
     return Vue.http.get('/api/comment/'+payload.aid)
-          .then(res => {
-            commit('set_comments', res.body);
-            console.log(res.body)
-          })
-          .catch(err => console.log(err))
+      .then(res => {
+         commit('set_comments', res.body);
+      })
+      .catch(err => console.log(err))
   },
   subAgree({}, payload) {
     return Vue.http.post('/api/agree', payload)
-          .then(() => {
-            console.log("点赞成功")
-          })
-          .catch(err => console(err))
+      .then(() => {
+         console.log("点赞成功")
+      })
+      .catch(err => console(err))
   },
   contact({}, payload) {
     return Vue.http.post('/api/contact', payload)

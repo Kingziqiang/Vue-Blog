@@ -4,7 +4,6 @@
     <transition name="fade"> <dialog-box></dialog-box>
     </transition>
     <div v-show="isShow" id="up" @click="slideUp()"></div>
-   <!-- <bubble></bubble> -->
     <loading></loading>
   </div>
 </template>
@@ -13,6 +12,7 @@
 import DialogBox from './components/common/DialogBox.vue'
 import Loading from './components/common/Loading.vue'
 import util from './util.js'
+import SmoothScroll from 'smooth-scroll' 
 
 export default {
 	components:{
@@ -29,16 +29,12 @@ export default {
   },
   methods: {
     slideUp() {
-      /*const body = */util.slideTo(document.querySelector("body"));
-      /*setTimeout(function up() {      
-          body.scrollTop -= 200;
-          if(body.scrollTop>200){
-            setTimeout(up,20)
-          }       
-      },20) */
+      var scroll = new SmoothScroll();
+      var anchor = document.querySelector( '#app' );
+      scroll.animateScroll( anchor );
     },
     handleShow() {
-      if(document.querySelector("body").scrollTop > 400){
+      if(document.querySelector("html").scrollTop > 400){
         this.isShow = true;
       }else{
         this.isShow = false;

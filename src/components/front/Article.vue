@@ -1,19 +1,19 @@
 <template>
 	<div class="wrap">
-
 		<div class="article page">
 			<time>{{getFormArticle().date}}</time>
-			<p v-html="getFormArticle().content"></p>
+			<p class="content" v-html="getFormArticle().content"></p>
+			<ul class="tags"><li v-for = "item in getFormArticle().tags">#{{item}}</li></ul>
+			<comment :aid = "aid"></comment>			
 		</div>
-
-		<comment :aid = "aid"></comment>
-
+		<aside-nav></aside-nav>
 	</div>
 </template>
 
 <script>
 import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
 import comment                           from './Comment.vue'
+import AsideNav                           from '../common/AsideNav.vue'
 
 var moment = require("moment");
 var marked = require('marked');
@@ -36,20 +36,20 @@ marked.setOptions({
 
 export default {
     data () {
-		return {
-			aid: this.$route.params.aid		
+		return{
+		    aid: this.$route.params.aid,	
 		}
 	},
 	computed: {
 		...mapState(['article'])
 	},
 	components: {
-		comment
+		comment,
+		AsideNav
 	},
 	watch:{
-		aid(to,from) {
-			
-			this.getArticle({aid: to})
+		aid(to,from) {		
+		    this.getArticle({aid: to})
 		}
 	},	
 	created (){
@@ -75,15 +75,18 @@ export default {
 <style lang="scss" type="stylesheet/scss" scoped>
 .wrap{
 	position: relative;
-	width: 67%;
+	width: 65%;
   	margin:30px auto;
+	display: flex;
+	justify-content: space-between;
 }
 .article{
 	position: relative;
+	align-self: center;
 	width: 100%;
 	overflow: hidden;
   	margin:30px auto;
-  	padding:30px 0;
+  	padding:20px 0;
   	text-align: left;
   	time{
 		margin-bottom:30px;
@@ -100,13 +103,23 @@ export default {
 			color: #3f86b5;
 		}
 	}
+	.content{
+		margin: 10px 0;
+	}
+	.tags{
+		color: #ff4081;
+		display: flex;
+		justify-content: center;
+		li{
+			margin-right: 5px;
+		}
+	}
 }
-
 
 
 @media screen and (max-width: 440px) {
 	.wrap{
-		width: 80%;
+		width: 90%;
 	}
 }
 

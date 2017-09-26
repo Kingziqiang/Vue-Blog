@@ -47,7 +47,7 @@ export default {
        this.$router.push({ path: '/articles', query: params});
     },
     handleShow() {
-      if(document.querySelector("body").scrollTop > 300){
+      if(document.querySelector("html").scrollTop > 300){
         this.isShow = true;
       }else{
         this.isShow = false;
@@ -90,7 +90,7 @@ export default {
             requestAnimationFrame(paint)
           }())
         } 
-        // 函数节流
+        // 函数去抖
         let timer = null;
         return function (){ 
           clearTimeout(timer);

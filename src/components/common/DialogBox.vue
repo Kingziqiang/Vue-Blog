@@ -70,7 +70,7 @@ $button_color: #e74851;
 			bottom: 10%;
 			white-space:nowrap;
 			button{			
-				padding: 7px 10%;
+				padding: 7px 6%;
 				background-color: #f6f4f5;
 				text-align: center;
 				margin: 5px auto;

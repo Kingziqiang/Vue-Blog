@@ -3,17 +3,12 @@
   padding: 0;
 }
 
-html body {
+html ,body {
   position:relative;
   font-family:  'Optima','PingFang SC','Roboto','Noto SansCJK','Helvetica Neue','Helvetica',
                 "微软雅黑","YaHei-Consolas-Hybrid",sans-serif;
   color:#4C555C;
-  scroll-behavior: smooth;
-  height: 100%;
-}
-
-#app{
-	height:100%;
+  height: 100% !important;
 }
 
 ul{

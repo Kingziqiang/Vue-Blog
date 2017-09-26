@@ -32,7 +32,6 @@
             <img src="../../assets/img/qtc_avatar.png"/>
           </div>
           <div class="box others">
-             <!-- <p>学习 积累 生活</p> -->
              <div>
                <a class="icons" href="https://github.com/Hilda1227"><img src="../../assets/img/github.png"/></a>
              </div>
