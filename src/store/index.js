@@ -17,6 +17,7 @@ const store = new Vuex.Store({
     articles: [],
     allTags: [],
     article: {},
+    markedArticle:'',
     comments:[],
     drafts: [],
     draft: {},

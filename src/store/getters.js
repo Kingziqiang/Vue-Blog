@@ -8,7 +8,7 @@ marked.setOptions({
 const renderer = new marked.Renderer()
 renderer.heading = function (text, level) {
   // return "<h" + level + " id=" + text + level + ">" +text+ "</h"+level+">";
-  return `<h${level} id="${text}${level}">${text}</h${level}>`
+  return `<h${level} id="anchor_${text}_${level}">${text}</h${level}>`
 }
 
 
@@ -25,7 +25,7 @@ export default {
   },
   getArticleNav (state) {
     let result = [];
-    const article = marked(state.article.content, {renderer, renderer}),
+    const article = state.markedArticle,
           reg = /<h(\d) id=\"(.+)\">(.+)<\/h\1>/g ;
       article.replace(reg, function (match, level, id, content, offset, string) {
         result.push({level, id, content})

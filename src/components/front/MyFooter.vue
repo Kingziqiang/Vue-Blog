@@ -12,7 +12,7 @@
 import util from '../../util.js'
 export default {
 	mounted() {
-		let footWave = util.throttle(this.paintFooter, 200);
+		let footWave = util.throttle(this.paintFooter, 60);
 		footWave();
 		const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';
 		window.addEventListener(resizeEvent, footWave(), false)

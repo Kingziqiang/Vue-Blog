@@ -109,7 +109,6 @@ export default {
   height: 100%;
   position: relative;
   top: 0px;
-  margin-top:70px;
   z-index:2;
   .wrap{
     width: 78%;

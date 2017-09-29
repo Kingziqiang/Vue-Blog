@@ -31,8 +31,8 @@ export default {
   },
 
   mounted() { 
-    this.paintWave(); 
-    let wave = util.throttle(this.paintWave,100);
+    this.paintWave()(); 
+    let wave = util.throttle(this.paintWave(),60);
     window.addEventListener('scroll', this.handleShow, false); // 监听滚动处理导航栏是否出现
     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';  
      window.addEventListener(resizeEvent, wave, false); // 监听窗口resize事件，重绘波浪
@@ -55,9 +55,12 @@ export default {
         this.isShow = false;
       }
     },
-    paintWave() {    
-        // 绘制波浪
+    paintWave() {    // 绘制波浪
+      let count = 0, animateFrame;
+      return function() {
         function loop(){
+          cancelAnimationFrame(animateFrame);
+          count = 0;
           const canvas  = document.querySelector("#wave"),
               width   = canvas.width  = window.innerWidth,
               height  = canvas.height = document.querySelector('.header').offsetHeight,
@@ -65,7 +68,7 @@ export default {
               offset  = [60,40],  // 波浪偏移距离
               waves   = ["rgba(255,255,255,1)"], // 波浪颜色
               context = canvas.getContext('2d');
-          let count = 0;
+          
           (function paint(){
             context.clearRect(0,0, width, height);
             count ++;       
@@ -88,10 +91,11 @@ export default {
               context.fill();
               context.restore();
             }    
-            requestAnimationFrame(paint)
+            animateFrame = requestAnimationFrame(paint)
           }())
         } 
-        requestAnimationFrame(loop);
+        animateFrame = requestAnimationFrame(loop);
+      }
     },
   }
  
@@ -100,7 +104,7 @@ export default {
 
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
 .header{
     background-image: url('../../assets/img/bg.png');
     background-repeat: no-repeat;
@@ -112,6 +116,7 @@ export default {
     background-position:center 0px;
     position: relative;
     overflow: hidden;
+    margin-bottom: 20px;
 
 }
 .shadow{
@@ -126,7 +131,9 @@ export default {
 #wave{
   z-index: 3;
   border: none;
-  position: relative;
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
 }
 .catolog{
     width:100%;
@@ -199,7 +206,7 @@ export default {
 @media screen and (max-width: 550px) {
   .header{
      background-size:auto 100%;
-     height: 3rem;
+     height: 4rem;
   }
 
   .catolog{

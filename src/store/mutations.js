@@ -1,4 +1,23 @@
 import util from '../util.js'
+import marked from 'marked'
+const renderer = new marked.Renderer()
+renderer.heading = function (text, level) {
+  let uniqId = '' + new Date().getTime() + util.random(1, 10000);
+	return `<h${level} id="anchor_${uniqId}_${level}">${text}</h${level}>`
+}
+marked.setOptions({
+  renderer: renderer,
+  gfm: true,
+  tables: true,
+  breaks: false,
+  pedantic: false,
+  sanitize: true,
+  smartLists: true,
+  smartypants: false,
+  highlight: function (code) {
+    return require('highlight.js').highlightAuto(code).value;
+  }
+});
 export default {
   set_articles: (state, articles) => {
     articles.map(article => {
@@ -6,6 +25,11 @@ export default {
       return article
     })
     state.articles = articles;
+  },
+  set_marked_article: (state, content) => {
+    console.log(content)
+    state.markedArticle = marked(content, {renderer, renderer})
+    console.log(state.markedArticle);
   },
 
   set_add_articles: (state, articles) => {

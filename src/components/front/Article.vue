@@ -14,31 +14,6 @@
 import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
 import comment                           from './Comment.vue'
 import AsideNav                           from '../common/AsideNav.vue'
-import marked from 'marked'
-marked.setOptions({
-    highlight: function (code) {
-        return hljs.highlightAuto(code).value
-    },
-    sanitize: true
-})
-const renderer = new marked.Renderer()
-renderer.heading = function (text, level) {
-//   return "<h" + level + " id=" + text + level + ">" +text+"</h"+level+">";
-	return `<h${level} id="${text}${level}">${text}</h${level}>`
-}
-marked.setOptions({
-  renderer: renderer,
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false,
-  highlight: function (code) {
-    return require('highlight.js').highlightAuto(code).value;
-  }
-});
 
 export default {
     data () {
@@ -47,7 +22,7 @@ export default {
 		}
 	},
 	computed: {
-		...mapState(['article'])
+		...mapState(['article', 'markedArticle'])
 	},
 	components: {
 		comment,
@@ -69,7 +44,7 @@ export default {
       getFormArticle() {
       	let formArticle = {...this.article};
       	if(formArticle.content != null){
-		    formArticle.content = marked(formArticle.content, {renderer, renderer});
+		    formArticle.content = this.markedArticle;
 		    return formArticle;
 		}
       }

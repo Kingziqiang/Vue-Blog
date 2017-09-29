@@ -24,9 +24,12 @@ export default {
   },
   getArticle({commit,state},payload) {
     commit('set_loading', true);
+    console.log(payload)
     return Vue.http.get('/api/article',{params: {payload}})
     .then((res) => {
       commit('set_article', res.data);
+      console.log(res.data)
+      commit('set_marked_article', res.data.content);
       commit('set_loading', false);
     })
     .catch((err) => {

@@ -30,5 +30,11 @@ export default {
                 }, delay)
             }
         }
+    },
+    random(min, max) {
+        if(min > max){
+            let temp = min; min = max; max = temp;
+        }
+        return min + Math.floor(Math.random(max-min));
     }
 }
