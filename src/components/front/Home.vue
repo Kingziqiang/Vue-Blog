@@ -82,8 +82,9 @@ export default {
   methods: {
     ...mapActions(['getArticles', 'getAllTags']),
     ...mapMutations(['set_headLine']),
-    loadMore() {      
-      if(document.body.scrollHeight - document.body.scrollTop <= window.innerHeight){
+    loadMore() {  
+      let html = document.querySelector('html');
+      if(html.scrollHeight - html.scrollTop <= window.innerHeight){
           this.isLoadingMore = true;
           if(this.more == true){
               this.getArticles({tag:this.tag, limit: this.limit, skip: (this.skip+=1)*this.limit, isAdd: true})
@@ -210,7 +211,7 @@ export default {
               transition: 1s;
               margin: 5px 0px 5px auto;
               &:hover{
-                 transform: translateX(10px);
+                 transform: translateX(-10px);
                }
            }
          }

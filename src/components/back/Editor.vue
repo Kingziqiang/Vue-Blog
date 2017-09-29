@@ -23,8 +23,11 @@
 import {mapActions,mapState,mapMutations} from 'vuex'
 
 var marked = require('marked');  //引入markdown
+var renderer = new marked.Renderer();
+
+
 marked.setOptions({
-  renderer: new marked.Renderer(),
+  renderer: renderer,
   gfm: true,
   tables: true,
   breaks: false,

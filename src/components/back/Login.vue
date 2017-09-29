@@ -37,7 +37,7 @@ export default {
 			.then((res) => {
 				this.msg='';
 				if(res.body){
-					this.set_user(res.body)
+					this.set_user({username: res.body.username, status: true})
 					this.$router.push('/admin/amend')					
 				}else{
 					this.set_dialog({show:true, tip:"验证失败，请确认您的输入噢(*ﾟﾛﾟ)", resolved(){ this.show = false}})
@@ -46,7 +46,7 @@ export default {
 			.catch((err)=>{
 				console.log(err);
 				this.msg='';
-				this.set_dialog({show:true, tip:"服务好像出了点问题,稍后再试下吧(*ﾟﾛﾟ)", resolved() {this.show = false}})
+				this.set_dialog({show:true, tip:"网络好像不太好,稍后再试下吧(*ﾟﾛﾟ)", resolved() {this.show = false}})
 			})
 		}
 	}

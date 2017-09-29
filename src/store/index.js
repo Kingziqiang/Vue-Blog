@@ -20,7 +20,10 @@ const store = new Vuex.Store({
     comments:[],
     drafts: [],
     draft: {},
-    user:{},
+    user:{
+      username: '',
+      status: false
+    },
     isLoading: false,
     dialog_box:{
     	show:false,

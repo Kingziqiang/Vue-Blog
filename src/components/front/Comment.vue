@@ -2,7 +2,7 @@
 	<div class="wrap">
 		<div class="total">
 			<p v-if="!comments.length">哎呀，没人理我😺</p>
-			<p v-if="comments.length">评论总数共{{comments.length}}条😺</p>
+			<p v-if="comments.length">欢迎留下您宝贵的意见或建议哟~ 评论总数共{{comments.length}}条😺</p>
 		</div>
 		<div class = "comment" :class= "{isManager: item.isManager}" v-for="item in comments">
 			<div class = "avatar"></div>

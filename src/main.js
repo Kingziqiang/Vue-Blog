@@ -23,6 +23,13 @@ new Vue({
   components: { App }
 })
 
+// 未登录拦截
+router.beforeEach((to, from, next) => {
+  if(/^\/admin.*/.test(to.path) && store.state.user.username == false){
+    next({path: '/login'});
+  }
+  else next();
+})
 
 Vue.directive('scrollShow', {
   bind: el => {

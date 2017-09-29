@@ -17,6 +17,7 @@
 
 <script>
 import {mapState, mapMutations} from 'vuex'
+import util from '../../util.js'
 export default {
   data(){
     return{
@@ -29,11 +30,12 @@ export default {
     ...mapState(['headLine'])
   },
 
-  mounted() {  
-     this.paintWave()();
+  mounted() { 
+    this.paintWave(); 
+    let wave = util.throttle(this.paintWave,100);
     window.addEventListener('scroll', this.handleShow, false); // 监听滚动处理导航栏是否出现
     const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';  
-     window.addEventListener(resizeEvent, this.paintWave(), false); // 监听窗口resize事件，重绘波浪
+     window.addEventListener(resizeEvent, wave, false); // 监听窗口resize事件，重绘波浪
   },
 
   beforeRouteLeave (to, from, next) {
@@ -53,8 +55,7 @@ export default {
         this.isShow = false;
       }
     },
-    paintWave() {
-    
+    paintWave() {    
         // 绘制波浪
         function loop(){
           const canvas  = document.querySelector("#wave"),
@@ -90,14 +91,7 @@ export default {
             requestAnimationFrame(paint)
           }())
         } 
-        // 函数去抖
-        let timer = null;
-        return function (){ 
-          clearTimeout(timer);
-          timer = setTimeout(function() {
-             requestAnimationFrame(loop)
-          }, 100)
-        }     
+        requestAnimationFrame(loop);
     },
   }
  

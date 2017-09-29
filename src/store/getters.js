@@ -1,21 +1,16 @@
-
-var marked = require('marked');
-marked.setOptions({
-  renderer: new marked.Renderer(),
-  gfm: true,
-  tables: true,
-  breaks: false,
-  pedantic: false,
-  sanitize: true,
-  smartLists: true,
-  smartypants: false
-});
-
+import marked from 'marked'
 marked.setOptions({
   highlight: function (code) {
-    return require('highlight.js').highlightAuto(code).value;
-  }
-});
+      return hljs.highlightAuto(code).value
+  },
+  sanitize: true
+})
+const renderer = new marked.Renderer()
+renderer.heading = function (text, level) {
+  // return "<h" + level + " id=" + text + level + ">" +text+ "</h"+level+">";
+  return `<h${level} id="${text}${level}">${text}</h${level}>`
+}
+
 
 
 export default {
@@ -29,8 +24,9 @@ export default {
     return shortArticles
   },
   getArticleNav (state) {
-    const article = marked(state.article.content), reg = /<h(\d) id=\"(.+)\">(.+)<\/h\1>/g ;
     let result = [];
+    const article = marked(state.article.content, {renderer, renderer}),
+          reg = /<h(\d) id=\"(.+)\">(.+)<\/h\1>/g ;
       article.replace(reg, function (match, level, id, content, offset, string) {
         result.push({level, id, content})
       })

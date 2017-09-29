@@ -1,5 +1,5 @@
 <template>
-	<div class="wrap">
+	<div  class="wrap articles posts animated fadeIn">
 		<div class="article page">
 			<time>{{getFormArticle().date}}</time>
 			<p class="content" v-html="getFormArticle().content"></p>
@@ -14,21 +14,27 @@
 import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
 import comment                           from './Comment.vue'
 import AsideNav                           from '../common/AsideNav.vue'
-
-var moment = require("moment");
-var marked = require('marked');
+import marked from 'marked'
 marked.setOptions({
-  renderer: new marked.Renderer(),
+    highlight: function (code) {
+        return hljs.highlightAuto(code).value
+    },
+    sanitize: true
+})
+const renderer = new marked.Renderer()
+renderer.heading = function (text, level) {
+//   return "<h" + level + " id=" + text + level + ">" +text+"</h"+level+">";
+	return `<h${level} id="${text}${level}">${text}</h${level}>`
+}
+marked.setOptions({
+  renderer: renderer,
   gfm: true,
   tables: true,
   breaks: false,
   pedantic: false,
   sanitize: true,
   smartLists: true,
-  smartypants: false
-});
-
-marked.setOptions({
+  smartypants: false,
   highlight: function (code) {
     return require('highlight.js').highlightAuto(code).value;
   }
@@ -63,7 +69,7 @@ export default {
       getFormArticle() {
       	let formArticle = {...this.article};
       	if(formArticle.content != null){
-		    formArticle.content = marked(formArticle.content);
+		    formArticle.content = marked(formArticle.content, {renderer, renderer});
 		    return formArticle;
 		}
       }
@@ -119,7 +125,7 @@ export default {
 
 @media screen and (max-width: 440px) {
 	.wrap{
-		width: 90%;
+		width: 94%;
 	}
 }
 

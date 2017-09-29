@@ -54,7 +54,7 @@ export default {
     align-items: flex-end;
     position: fixed;
     right: 0.2rem;
-    bottom: 0.5rem;
+    bottom: 0.4rem;
     color: #3f86b5;   
     .list{
       width: 0.8rem;
@@ -117,9 +117,22 @@ export default {
         width: 45%;
         height: 3px;
         background-color: #fff;
-        border-radius: 3px;
+        border-radius: 1.5px;
         margin: 1.5px;
       }
     }
+}
+@media screen and (max-width: 900px) {
+	.aside-nav{
+    bottom: 0.6rem;
+    .nav-btn li{
+      height: 2px !important;
+    }
+  }
+}
+@media screen and (max-width: 440px) {
+	.aside-nav{
+    bottom: 0.8rem;    
+  }
 }
 </style>

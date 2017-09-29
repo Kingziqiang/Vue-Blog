@@ -9,38 +9,30 @@
 </template>
 
 <script>
+import util from '../../util.js'
 export default {
 	mounted() {
-		this.paintFooter()();
+		let footWave = util.throttle(this.paintFooter, 200);
+		footWave();
 		const resizeEvent = 'orientationchange' in window ? 'orientationchange' : 'resize';
-		window.addEventListener(resizeEvent, this.paintFooter(), false)
+		window.addEventListener(resizeEvent, footWave(), false)
    	},
    	methods: {
    		paintFooter() {
-			function paint(){
-			  const canvas = document.querySelector("#foot-bg"),
-		      	ctx    = canvas.getContext('2d'),
-			    height = canvas.height=250 ,
-			    offset = 40,
-			    width  = canvas.width  = window.innerWidth;		
-			  ctx.beginPath();
-	          ctx.moveTo(0, 100);
-	          ctx.bezierCurveTo(width/3,4*offset, width*2/3, offset,width,2*offset);
-	          ctx.lineTo(width,height);
-	          ctx.lineTo(0,height);
-	          ctx.lineTo(0,0)
-	          ctx.closePath();
-	          ctx.fillStyle = "#fcfcfc";
-	          ctx.fill();
-			}
-			let timer = null;
-			return function (){
-			  clearTimeout(timer);
-              timer = setTimeout(function (){
-				  paint()
-			  }, 100)
-			}
-   			
+			const canvas = document.querySelector("#foot-bg"),
+		      ctx    = canvas.getContext('2d'),
+			  height = canvas.height=250 ,
+			  offset = 40,
+			  width  = canvas.width  = window.innerWidth;		
+			ctx.beginPath();
+	        ctx.moveTo(0, 100);
+	        ctx.bezierCurveTo(width/3,4*offset, width*2/3, offset,width,2*offset);
+	        ctx.lineTo(width,height);
+	        ctx.lineTo(0,height);
+	        ctx.lineTo(0,0)
+	        ctx.closePath();
+	        ctx.fillStyle = "#fcfcfc";
+	        ctx.fill();
    		}
    	}
 

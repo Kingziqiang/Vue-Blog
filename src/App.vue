@@ -48,7 +48,6 @@ export default {
 <style  lang="scss" rel="stylesheet/scss" scoped>
 #app {
   text-align: center;
-  height: 100%;
   position: relative;
   width:100%;
 }

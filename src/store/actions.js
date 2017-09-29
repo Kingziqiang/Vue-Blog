@@ -51,10 +51,6 @@ export default {
   },
   login({commit}, payload) {   
     return Vue.http.get('/api/login',{params: {payload}})
-      .then((res) => {
-        commit('set_user',res.data);
-        return res;
-      })
   },
   removeArtical({},payload) {
     return Vue.http.post('/api/remove',payload)

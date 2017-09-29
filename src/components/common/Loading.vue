@@ -1,5 +1,5 @@
 <template>
-	<div class ="wrap" v-show="isLoading">
+	<div class ="wrap" v-show="isloading">
 		<ul>
 			<li></li>
 			<li></li>
