@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="wrap">
+
     	<section class="articles posts animated fadeIn" >
         <div class="article" v-for="article in getShortArticles">                 
           <div class="art_wrap">
@@ -15,8 +16,10 @@
             </div>
           </div>         			                  
         </div>
-        <div class="loadMore" v-if = "isLoadingMore" >
-            <span v-if = "more">下拉加载更多...</span> <span v-if = "!more"> .没有更多文章了哟... (;ﾟДﾟi|!) </span>
+        <div class="loadMore" >
+            <loading v-if="isLoadingMore"></loading>
+            <span v-if="!isLoadingMore && more">下拉加载更多...</span> 
+            <span v-if="!more"> .没有更多文章了哟... (;ﾟДﾟi|!) </span>
         </div> 
     	</section>
 
@@ -38,17 +41,23 @@
           </div>
       </section>
     </div>
+    
 	</div>
 </template>
 
 <script>
 
 import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
-import ContactMe                          from '../common/ContactMe.vue'
+import util from '../../util.js'
+import loading from '../common/Loading.vue'
+
 export default {
+  components: {
+		loading
+	},
   data () {
     return {
-      limit: 10,
+      limit: 2,
       skip:0,
       isLoadingMore: false,
       more: true
@@ -62,18 +71,14 @@ export default {
   },
 
   mounted() {
-    window.addEventListener('scroll', this.loadMore, false);
+    let loadMore = util.debounce(this.loadMore)
+    window.addEventListener('scroll', loadMore, false);
   },
 
   beforeRouteLeave (to, from, next) {
     window.removeEventListener('scroll', this.loadMore);
     next();
   },
-  
-  components: {
-    ContactMe
-  },
-
   computed: {
     ...mapState(['allTags']),
     ...mapGetters(['getShortArticles'])
@@ -85,18 +90,15 @@ export default {
     loadMore() {  
       let html = document.querySelector('html');
       if(html.scrollHeight - html.scrollTop <= window.innerHeight){
-          this.isLoadingMore = true;
-          if(this.more == true){
-              this.getArticles({tag:this.tag, limit: this.limit, skip: (this.skip+=1)*this.limit, isAdd: true})
-              .then((articles) => {
-                  if(articles.length === 0){
-                      this.more = false;
-                  }                 
-                  this.isLoadingMore = false;               
-              })
-          }
-      }
-      
+        if(this.more == true){
+          this.isLoadingMore = true
+          this.getArticles({tag:this.tag, limit: this.limit, skip: (++this.skip)*this.limit, isAdd: true})
+          .then((articles) => {
+            this.isLoadingMore = false;                
+            if(articles.length < this.limit) this.more = false;                                        
+          })
+        }
+      }      
     }
   }
 }
@@ -217,11 +219,9 @@ export default {
     }
   }   
    .loadMore {
-    width: 100%;
-      span{
-        width: 100%;
-        text-align: center;
-      }
+      width: 100%;
+      display: felx;
+      justify-content: center;;
    }
 }
 

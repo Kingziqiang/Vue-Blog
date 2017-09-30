@@ -1,14 +1,17 @@
 <template>
-  <div id="app">
+  <div id="app" class="wrap app">
     <router-view></router-view>
     <transition name="fade"> <dialog-box></dialog-box>
     </transition>
     <div v-show="isShow" id="up" @click="slideUp()"></div>
-    <loading></loading>
+    <div class="loading" v-if="isLoading">
+      <loading><p calss="text" slot="text">正在加载......</p></loading>
+    </div>
   </div>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 import DialogBox from './components/common/DialogBox.vue'
 import Loading from './components/common/Loading.vue'
 import util from './util.js'
@@ -23,6 +26,9 @@ export default {
     return {
       isShow: false
     }
+  },
+  computed: {
+    ...mapState(['isLoading'])
   },
   mounted() {
     window.addEventListener('scroll', this.handleShow, false)
@@ -87,5 +93,16 @@ export default {
   border-left: 4px solid #fff;
   border-radius:4px;
   transform: rotate(45deg);
+}
+.loading{
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #fff;
+  z-index: 55;
 }
 </style>

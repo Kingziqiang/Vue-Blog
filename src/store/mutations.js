@@ -2,8 +2,9 @@ import util from '../util.js'
 import marked from 'marked'
 const renderer = new marked.Renderer()
 renderer.heading = function (text, level) {
-  let uniqId = '' + new Date().getTime() + util.random(1, 10000);
-	return `<h${level} id="anchor_${uniqId}_${level}">${text}</h${level}>`
+  // 给该标题生成唯一id
+  let uniqId = '' + new Date().getTime() + util.random(1, 10000); 
+	return `<h${level} id="anchor_${uniqId}_${level}">${text}</h${level}>`;
 }
 marked.setOptions({
   renderer: renderer,
@@ -26,10 +27,9 @@ export default {
     })
     state.articles = articles;
   },
+
   set_marked_article: (state, content) => {
-    console.log(content)
     state.markedArticle = marked(content, {renderer, renderer})
-    console.log(state.markedArticle);
   },
 
   set_add_articles: (state, articles) => {

@@ -65,7 +65,8 @@ import { mapState, mapMutations, mapActions} from 'vuex'
 
   @media screen and (max-width: 750px){
       .search{
-        font-size: 2rem;
+        width: 80% !important;
+        font-size: 0.5rem !important;
       }
   }
 </style>

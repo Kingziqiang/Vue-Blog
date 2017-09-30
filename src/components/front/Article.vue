@@ -57,7 +57,7 @@ export default {
 .wrap{
 	position: relative;
 	width: 65%;
-  	margin:30px auto;
+  	margin:0px auto;
 	display: flex;
 	justify-content: space-between;
 }
@@ -66,8 +66,7 @@ export default {
 	align-self: center;
 	width: 100%;
 	overflow: hidden;
-  	margin:30px auto;
-  	padding:20px 0;
+  	margin:0px auto;
   	text-align: left;
   	time{
 		margin-bottom:30px;
@@ -100,7 +99,7 @@ export default {
 
 @media screen and (max-width: 440px) {
 	.wrap{
-		width: 94%;
+		width: 93%;
 	}
 }
 

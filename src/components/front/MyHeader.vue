@@ -214,7 +214,7 @@ export default {
     justify-content: center;
     align-items: center;
     ul{
-      margin-left: 0px !important;
+      margin: 0px !important;
       width: 90%;
       justify-content: space-around;
       li{

@@ -7,8 +7,9 @@ export default {
         commit('set_loading', true);
         return Vue.http.get('/api/articles', {params: {payload}})
         .then((res) => {
-             commit('set_articles', res.data);
-              commit('set_loading', false);       
+            commit('set_articles', res.data);
+            commit('set_loading', false);
+            return res.data;       
         })
         .catch((err) => { console.log(err) })
     }
@@ -24,11 +25,9 @@ export default {
   },
   getArticle({commit,state},payload) {
     commit('set_loading', true);
-    console.log(payload)
     return Vue.http.get('/api/article',{params: {payload}})
     .then((res) => {
       commit('set_article', res.data);
-      console.log(res.data)
       commit('set_marked_article', res.data.content);
       commit('set_loading', false);
     })

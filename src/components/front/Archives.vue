@@ -82,6 +82,7 @@ export default {
 @media screen and (max-width: 450px) {
 .wrap{
   width: 80%;
+  margin: 0px auto;
   .item{
     flex-direction: column;
     align-items: flex-start;

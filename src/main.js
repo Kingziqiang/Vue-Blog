@@ -25,6 +25,7 @@ new Vue({
 
 // 未登录拦截
 router.beforeEach((to, from, next) => {
+  document.querySelector('html').scrollTop = 0;
   if(/^\/admin.*/.test(to.path) && store.state.user.username == false){
     next({path: '/login'});
   }
