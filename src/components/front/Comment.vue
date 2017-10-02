@@ -269,7 +269,7 @@ import util from '../../util.js'
 		}
 	}
 	button{
-		padding:5px 20px;
+		padding:5px 13px;
 		background-color:  #acc0d7;
 		font-size:15px;
 		cursor: pointer;

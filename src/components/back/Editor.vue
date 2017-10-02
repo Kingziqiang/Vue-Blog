@@ -6,7 +6,7 @@
 		<span :class="{checked:isMarked}" @click="isMarked = true">预览</span></li><li>
 		<input v-focus type="text" class="title" placeholder="标题"  v-model.trim="title"></li>
 	  <li>
-	    <input type="text" class="tag" placeholder="标签,用空格' '分隔" v-model.trim="tags"></li>
+	    <input type="text" class="tag" placeholder="标签请用逗号分隔" v-model.trim="tags"></li>
 	  <li>
 	    <textarea class="content" placeholder="来写点儿啥呗~" 
 		  v-model="content"
@@ -50,7 +50,6 @@ export default {
 	},
 	watch: {
 		type : function (to,from) {
-			alert("jianshichenggong")
 			init(this)
 		}
 	},
@@ -67,12 +66,14 @@ export default {
 			return marked(this.content)
 		},
 		newContent: function (){
+		console.log(this.tags)
 		  let newContent = {
 		    title: this.title,
-			tags: this.tags.split(' '),
+			tags:this.tags instanceof Array ? this.tags : this.tags.split(/[，,]/g),
 			content: this.content,
 			date: new Date()
 		  }
+		  console.log(newContent)
 		  if(this.type !== 'new'){
 		  	newContent._id = this.$route.params.aid;
 		  }

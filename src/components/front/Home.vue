@@ -57,7 +57,7 @@ export default {
 	},
   data () {
     return {
-      limit: 2,
+      limit: 5,
       skip:0,
       isLoadingMore: false,
       more: true
