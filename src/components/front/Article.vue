@@ -42,7 +42,7 @@ export default {
 	  ...mapMutations(['set_loading', 'set_headLine']),
       ...mapActions(['getArticle']),
       getFormArticle() {
-      	let formArticle = {...this.article};
+      	let formArticle = this.article;
       	if(formArticle.content != null){
 		    formArticle.content = this.markedArticle;
 		    return formArticle;
@@ -90,6 +90,7 @@ export default {
 		color: #ff4081;
 		display: flex;
 		justify-content: center;
+		margin-bottom: 20px;
 		li{
 			margin-right: 5px;
 		}

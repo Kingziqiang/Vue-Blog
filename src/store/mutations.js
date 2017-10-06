@@ -1,5 +1,6 @@
 import util from '../util.js'
 import marked from 'marked'
+import router from '../router'
 const renderer = new marked.Renderer()
 renderer.heading = function (text, level) {
   // 给该标题生成唯一id
@@ -20,7 +21,7 @@ marked.setOptions({
   }
 });
 export default {
-  set_articles: (state, articles) => {
+  set_articles (state, articles) {
     articles.map(article => {
       article.date = util.formatDate(article.date, '-');
       return article
@@ -28,11 +29,11 @@ export default {
     state.articles = articles;
   },
 
-  set_marked_article: (state, content) => {
+  set_marked_article (state, content) {
     state.markedArticle = marked(content, {renderer, renderer})
   },
 
-  set_add_articles: (state, articles) => {
+  set_add_articles (state, articles) {
     if(articles.length !== 0){
         articles.map(article => {
           article.date = util.formatDate(article.date, '-');
@@ -42,27 +43,27 @@ export default {
     }
   },
 
-  set_all_tags: (state, allTags) => {
+  set_all_tags (state, allTags) {
     state.allTags = allTags
   },
 
-  set_article: (state,article) => {
+  set_article (state,article) {
     article.date = util.formatDate(article.date, '-');
   	state.article = article
   },
 
-  set_user: (state,user) => {
+  set_user (state,user) {
     localStorage.setItem('user', user.username)
     state.user = user
   },
 
-  set_dialog: (state,dialog_box) => {
+  set_dialog (state,dialog_box) {
     state.dialog_box = {
       ...dialog_box
     }    
   },
 
-  set_drafts: (state,drafts) => {
+  set_drafts (state,drafts) {
     drafts.map(draft => {
       draft.date = util.formatDate(draft.date, '-');
       return draft
@@ -70,7 +71,7 @@ export default {
     state.drafts = drafts
   },
 
-  set_draft: (state,draft) => {
+  set_draft (state,draft) {
     draft.date = util.formatDate(draft.date, '-');
     state.draft = draft
   },
@@ -94,5 +95,18 @@ export default {
   set_search(state, isShow) {
     if(isShow !== undefined) {state.showSearch  = isShow; return; }
     state.showSearch = !state.showSearch;
+  },
+
+  set_alert(state, payload) {
+    state.alert = payload;
+    setTimeout(() => {
+       state.alert.show = false;
+    }, payload.delay||2000)
+  },
+
+  set_logout(state) {
+    state.user = void 0;
+    delete localStorage.user;
+    router.push({name: 'login'});
   }
 }

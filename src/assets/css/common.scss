@@ -36,7 +36,7 @@ input,textarea{
      } 
      &::placeholder{
         font-size: inherit;
-        
+        background-color: transparent !important;
      }
 }
  

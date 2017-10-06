@@ -4,29 +4,35 @@ Zenburn style from voldmar.ru (c) Vladimir Epifanov <voldmar@voldmar.ru>
 based on dark.css by Ivan Sagalaev
 
 */
-.page>p{   
+.content ul li{
+  list-style: disc inside !important;
+}
+.content ol li{
+  list-style: decimal inside !important;
+}
+.content>p{   
   margin:20px 0;
   line-height: 30px;
   font-stretch:30px;
   color: #4d4d4c;
   
 }
-.page h1,.page h2,.page h3{  
+.content h1,.content h2,.content h3{  
   margin:15px 0px;
   border-bottom:1px solid #eee;
   padding: 10px 0px;
   position:relative;
 }
-.page h1::after,.page h2::after,.page h3::after{
+.content h1::after,.content h2::after,.content h3::after{
   content:'#';
   position:absolute;
   right:0px;
 }
-.page h4,.page h5,.page h6{
+.content h4,.content h5,.content h6{
 
   margin:10px 0px;
 }
-.page h1:hover, h2:hover{
+.content h1:hover, h2:hover{
   color: #3f86b5;
 }
 

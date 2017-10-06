@@ -65,11 +65,7 @@ export default {
          }         
      }
      .tag:nth-child(1){
-         font-size: 28.5px;
-         color: #212121;
-     }
-     .tag-1{
-         font-size: 28.5px;
+         font-size: 28px;
          color: #212121;
      }
      .tag-2{
@@ -91,6 +87,10 @@ export default {
      .tag-6{
          font-size: 21px;
          color: #6f6f6f;
+     } 
+     .tag-1{
+         font-size: 21px;
+         color: #212121;
      }
      
      .tag-7{

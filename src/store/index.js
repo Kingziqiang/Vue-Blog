@@ -32,6 +32,10 @@ const store = new Vuex.Store({
     	hasTwobtn:false,
     	resolved() {this.show = false },
     	reject() {this.show = false}
+    },
+    alert: {
+      show: false,
+      text: 'hahahah'
     }
   },
   getters,

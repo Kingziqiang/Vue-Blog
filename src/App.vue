@@ -1,18 +1,19 @@
 <template>
   <div id="app" class="wrap app">
     <router-view></router-view>
-    <transition name="fade"> <dialog-box></dialog-box>
-    </transition>
+    <transition name="fade"> <dialog-box></dialog-box></transition>
     <div v-show="isShow" id="up" @click="slideUp()"></div>
     <div class="loading" v-if="isLoading">
       <loading><p calss="text" slot="text">正在加载......</p></loading>
     </div>
+    <transition name="fade"><alert></alert></transition>
   </div>
 </template>
 
 <script>
 import {mapState} from 'vuex'
 import DialogBox from './components/common/DialogBox.vue'
+import Alert from './components/common/Alert.vue'
 import Loading from './components/common/Loading.vue'
 import util from './util.js'
 import SmoothScroll from 'smooth-scroll' 
@@ -21,6 +22,7 @@ export default {
 	components:{
 		DialogBox,
     Loading,
+    Alert
 	},
   data(){
     return {
@@ -56,6 +58,7 @@ export default {
   text-align: center;
   position: relative;
   width:100%;
+  height: 100%;
 }
 
 .fade-enter-active, .fade-leave-active {

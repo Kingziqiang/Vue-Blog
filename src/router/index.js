@@ -43,7 +43,7 @@ Vue.use(Router)
       },
       {
         path: '/admin',
-        redirect: 'amend',
+        redirect: '/admin/amend',
         component: Admin,
         children: [
           {path: 'amend',name: 'amend',component: Amend},

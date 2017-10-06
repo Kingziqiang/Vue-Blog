@@ -71,7 +71,7 @@ export default {
   },
 
   mounted() {
-    let loadMore = util.debounce(this.loadMore)
+    let loadMore = util.debounce(this.loadMore, 300)
     window.addEventListener('scroll', loadMore, false);
   },
 
@@ -88,15 +88,17 @@ export default {
     ...mapActions(['getArticles', 'getAllTags']),
     ...mapMutations(['set_headLine']),
     loadMore() {  
-      let html = document.querySelector('html');
-      if(html.scrollHeight - html.scrollTop <= window.innerHeight){
+      const html = document.querySelector('html'),
+         // 获取scrollTop的兼容写法
+         scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;            
+      if(html.scrollHeight - scrollTop <= window.innerHeight){        
         if(this.more == true){
           this.isLoadingMore = true
-          this.getArticles({tag:this.tag, limit: this.limit, skip: (++this.skip)*this.limit, isAdd: true})
-          .then((articles) => {
-            this.isLoadingMore = false;                
-            if(articles.length < this.limit) this.more = false;                                        
-          })
+          this.getArticles({tag:this.tag, limit: this.limit, skip: (++this.skip) * this.limit, isAdd: true})
+            .then((articles) => {
+              this.isLoadingMore = false;                
+              if(articles.length < this.limit) this.more = false;                                        
+            });
         }
       }      
     }
