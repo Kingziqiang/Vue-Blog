@@ -96,14 +96,12 @@ $button_color: #e74851;
 		margin: auto 1rem;
 	}
 }
-
 .dialog p{
 	text-align: center;
 	margin: 15% auto;
 	color: #555;
 }
-.dialog .btn_group{
-	
+.dialog .btn_group{	
 	justify-content: space-around;
 }
 .dialog button{
