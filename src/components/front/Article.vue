@@ -1,9 +1,9 @@
 <template>
 	<div  class="wrap articles posts animated fadeIn">
 		<div class="article page">
-			<time>{{getFormArticle().date}}</time>
-			<p class="content" v-html="getFormArticle().content"></p>
-			<ul class="tags"><li v-for = "item in getFormArticle().tags">#{{item}}</li></ul>
+			<time>{{ article.date }}</time>
+			<p class = "content" v-html = "markedArticle"></p>
+			<ul class = "tags"><li v-for = "item in article.tags">#{{ item }}</li></ul>
 			<comment :aid = "aid"></comment>			
 		</div>
 		<aside-nav></aside-nav>
@@ -11,27 +11,27 @@
 </template>
 
 <script>
-import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
-import comment                           from './Comment.vue'
-import AsideNav                           from '../common/AsideNav.vue'
+import {mapActions, mapState,mapGetters,mapMutations} from 'vuex';
+import comment from './Comment.vue';
+import AsideNav from '../common/AsideNav.vue';
 
 export default {
     data () {
-		return{
-		    aid: this.$route.params.aid,	
-		}
+	  return{
+		aid: this.$route.params.aid,	
+	  }
 	},
 	computed: {
-		...mapState(['article', 'markedArticle'])
+	  ...mapState(['article', 'markedArticle'])
 	},
 	components: {
-		comment,
-		AsideNav
+	  comment,
+	  AsideNav
 	},
 	watch:{
-		aid(to,from) {		
-		    this.getArticle({aid: to})
-		}
+	  aid(to,from) {		
+		this.getArticle({aid: to})
+	  }
 	},	
 	created (){
 	  this.set_loading(true);
@@ -40,15 +40,7 @@ export default {
 	},
 	methods: {
 	  ...mapMutations(['set_loading', 'set_headLine']),
-      ...mapActions(['getArticle']),
-      getFormArticle() {
-      	let formArticle = this.article;
-      	if(formArticle.content != null){
-		    formArticle.content = this.markedArticle;
-		    return formArticle;
-		}
-      }
-     
+      ...mapActions(['getArticle']), 
 	}
 }	
 </script>

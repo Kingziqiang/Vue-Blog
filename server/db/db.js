@@ -12,7 +12,7 @@ const ArticleSchema = new Schema({
 	content:String,
 	tags:[String]
 })
-
+// 评论
 const CommentSchema = new Schema({
 	aid: String,
 	email: String,

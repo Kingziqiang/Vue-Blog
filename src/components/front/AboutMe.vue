@@ -16,7 +16,7 @@
 
 <script>
 import {mapActions, mapState,mapGetters,mapMutations} from 'vuex'
-import ContactMe             						  from '../common/ContactMe.vue'
+import ContactMe from '../common/ContactMe.vue'
 
 export default {
 	components: {

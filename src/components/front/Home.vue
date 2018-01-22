@@ -35,9 +35,11 @@
             <img src="../../assets/img/qtc_avatar.png"/>
           </div>
           <div class="box others">
-             <div>
-               <a class="icons" href="https://github.com/Hilda1227"><img src="../../assets/img/github.png"/></a>
-             </div>
+            <div>
+              <a class="icons" href="https://github.com/Hilda1227">
+                <img src="../../assets/img/github.png"/>
+              </a>
+            </div>
           </div>
       </section>
     </div>
@@ -71,8 +73,8 @@ export default {
   },
 
   mounted() {
-    let loadMore = util.debounce(this.loadMore, 300)
-    window.addEventListener('scroll', loadMore, false);
+    this.loadMore = util.debounce(this.loadMore, 300);
+    window.addEventListener('scroll', this.loadMore, false);
   },
 
   beforeRouteLeave (to, from, next) {
@@ -94,11 +96,16 @@ export default {
       if(html.scrollHeight - scrollTop <= window.innerHeight){        
         if(this.more == true){
           this.isLoadingMore = true
-          this.getArticles({tag:this.tag, limit: this.limit, skip: (++this.skip) * this.limit, isAdd: true})
-            .then((articles) => {
-              this.isLoadingMore = false;                
-              if(articles.length < this.limit) this.more = false;                                        
-            });
+          this.getArticles({
+            tag:this.tag, 
+            limit: this.limit, 
+            skip: ( ++this.skip) * this.limit, 
+            isAdd: true
+          })
+          .then((articles) => {
+            this.isLoadingMore = false;                
+            if(articles.length < this.limit) this.more = false;                                        
+          });
         }
       }      
     }

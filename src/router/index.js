@@ -20,7 +20,6 @@ import Draft from '@/components/back/Draft'
 
 Vue.use(Router)
 
-
   export default new Router({
     routes:[
       {

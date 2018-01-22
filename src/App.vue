@@ -44,9 +44,8 @@ export default {
     handleShow() {
       if(document.querySelector("html").scrollTop > 400){
         this.isShow = true;
-      }else{
-        this.isShow = false;
       }
+      else{ this.isShow = false; }
     }
   }
 

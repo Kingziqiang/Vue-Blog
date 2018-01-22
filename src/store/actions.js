@@ -4,11 +4,11 @@ import router from 'vue-router'
 export default {
   getArticles({commit, state}, payload) {
     if(typeof payload.isAdd == 'undefined'){
-        commit('set_loading', true);
+        // commit('set_loading', true);
         return Vue.http.get('/api/articles', {params: {payload}})
         .then((res) => {
             commit('set_articles', res.data);
-            commit('set_loading', false);
+            // commit('set_loading', false);
             return res.data;       
         })
         .catch((err) => { console.log(err) })
@@ -28,9 +28,9 @@ export default {
     commit('set_loading', true);
     return Vue.http.get('/api/article',{params: {payload}})
     .then((res) => {
-      commit('set_article', res.data);
-      commit('set_marked_article', res.data.content);
       commit('set_loading', false);
+      commit('set_article', res.data);
+      commit('set_marked_article', res.data.content);      
     })
     .catch((err) => {
       console.log(err)

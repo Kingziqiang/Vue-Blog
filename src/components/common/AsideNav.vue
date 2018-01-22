@@ -48,7 +48,7 @@ export default {
 
 <style lang="scss"  scoped>
 .aside-nav{
-    z-index: 50;
+    z-index: 100;
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -64,7 +64,8 @@ export default {
       border-radius: 3px;
       box-shadow: 0 0 20px #ccc; 
       overflow: auto; 
-      background-color: #fff;   
+      background-color: #fff; 
+      z-index: 100;  
       li{
         width: 80%;
         text-align: left;

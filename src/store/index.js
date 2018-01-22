@@ -16,7 +16,12 @@ const store = new Vuex.Store({
     showSearch: false,
     articles: [],
     allTags: [],
-    article: {},
+    article: {
+      title: '',
+      date: '',
+      content: '',
+      tags: [],
+    },
     markedArticle:'',
     comments:[],
     drafts: [],
@@ -35,7 +40,7 @@ const store = new Vuex.Store({
     },
     alert: {
       show: false,
-      text: 'hahahah'
+      text: ''
     }
   },
   getters,

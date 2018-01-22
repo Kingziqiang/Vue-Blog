@@ -1,6 +1,6 @@
 <template>
   	<div class="footer">
-   	  	<canvas id="foot-bg" ></canvas> 
+   	  	<canvas id="foot-bg"></canvas> 
 		<ul>
 			<li>Copyright © 2017 wangfang</li>
 			<li>Powered by Vue, designed by me<router-link to="/login" tag="span">站长登录</router-link></li>
@@ -47,7 +47,7 @@ export default {
 	  position: relative;
 	  margin-top: 30px;
 	  height:200px;
-	  	z-index: 6;
+	  z-index: 6;
 	  #foot-bg{		
 			position: absolute;
 			left: 0px;
