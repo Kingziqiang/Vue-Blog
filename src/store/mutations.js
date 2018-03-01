@@ -30,7 +30,6 @@ export default {
   },
 
   set_marked_article (state, content) {
-    console.log(content)
     state.markedArticle = marked(content, {renderer, renderer})
   },
 
@@ -49,8 +48,8 @@ export default {
   },
 
   set_article (state,article) {
-    state.article = {...article};
     article.date = util.formatDate(article.date, '-');
+  	state.article = article
   },
 
   set_user (state,user) {

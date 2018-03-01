@@ -5,14 +5,21 @@
     	<section class="articles posts animated fadeIn" >
         <div class="article" v-for="article in getShortArticles">                 
           <div class="art_wrap">
-            <router-link :to="{ name: 'article', params:{aid: article._id} }" tag='h3'>{{article.title}}</router-link>
+            <router-link 
+              :to="{ name: 'article', params:{aid: article._id} }" 
+              tag='h3'>
+              {{article.title}}
+            </router-link>
             <time>Posted on {{article.date}}</time>                 
             <p>{{article.content}}</p>
             <div class="art_footer"> 
               <div class="tags">In 
                  <span v-for="tag in article.tags">{{tag}}</span>
               </div>
-              <router-link :to="{ name: 'article', params:{aid: article._id} }" class="detail">more...</router-link>
+              <router-link 
+                :to="{ name: 'article', params:{aid: article._id} }" 
+                class="detail">more...
+              </router-link>
             </div>
           </div>         			                  
         </div>
@@ -27,7 +34,14 @@
           <div class='box tags'>
             <p>FEATURED TAGS</p>
             <div>
-              <router-link :to="{name: 'articles', query: {tag: item}}" tag='span' v-for="item in allTags" >{{item}}</router-link>
+              <router-link 
+                :to="{name: 'articles', query: {tag: item}}" 
+                tag='span' 
+                v-for="item in allTags" 
+                :key = "item"
+              >
+                {{item}}
+              </router-link>
             </div>                
           </div>
           <div class="box portrait">

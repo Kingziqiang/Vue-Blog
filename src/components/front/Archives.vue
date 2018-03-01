@@ -3,7 +3,7 @@
     <div class="year-articles"  v-for = "year in getYears()">        
         <span class="year">{{year}}</span>     
         <div class="item" v-for = "(item, index) in getYearArticles(year)" >
-          <span class="date">{{item.date.substring(5).split('-').map(item => item.padStart(2, 0)).join('-')}}</span>
+          <span class="date">{{item.date.substring(5)}}</span>
           <router-link :to="{ name: 'article', params:{aid: item._id} }" tag="span" class="title">
                 {{item.title}}
           </router-link>

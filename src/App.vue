@@ -42,10 +42,12 @@ export default {
       scroll.animateScroll( anchor );
     },
     handleShow() {
-      if(document.querySelector("html").scrollTop > 400){
+      let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+      if(scrollTop > 400){
         this.isShow = true;
+      }else{
+        this.isShow = false;
       }
-      else{ this.isShow = false; }
     }
   }
 

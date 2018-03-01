@@ -14,6 +14,7 @@ Vue.config.devtools = true;
 Vue.use(Vuex)
 Vue.use(VueResource)
 
+
 new Vue({
   el: '#app',
   router,
