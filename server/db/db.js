@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-
+const bcrypt = require('bcrypt-nodejs');
+let { username, password } = require('../config');
 /* 创建并连接数据库 */
 const db= mongoose.createConnection('127.0.0.1','my-blog-cms');
 
@@ -50,15 +51,21 @@ const Models = {
 
 /* 初始化数据将数据插入数据库 */
 const initialize = () => {
-	var promise = new Promise(function (resolve,reject) {
-
-		new Models.User({"username":"hilda","password":"123456"}).save();
+  var promise = new Promise(function (resolve,reject) {
+	Models.User.findOne({}).then(user => {
+	  if(user) resolve();
+	  else {
+		// password加密
+		const salt = bcrypt.genSaltSync(10);
+		password = bcrypt.hashSync(password, salt);
+		new Models.User({username, password}).save();
 		resolve();
-	});
-	promise
-	.then(() => {console.log('数据初始化插入成功啦~')})
-	.catch(() => {console.log('数据初始化插入失败咯~')})
-	
+	  }
+	})		
+  });
+  promise
+  .then(() => {console.log('数据初始化插入成功啦~')})
+  .catch(() => {console.log('数据初始化插入失败~')})
 }
 
 db.on('error',console.error.bind(console,"数据库连接错误~"))

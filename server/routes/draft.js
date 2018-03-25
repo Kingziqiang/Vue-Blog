@@ -5,7 +5,7 @@ const db = require('../db/db.js')
 
  
 
-  router.patch('/api/draft',function (req,res){
+  router.patch('/api/admin/draft',function (req,res){
   let _id = req.body._id;
   delete req.body._id;
   db.Draft.update({_id: _id},{$set: req.body})
@@ -14,7 +14,7 @@ const db = require('../db/db.js')
 
   })
 
-  router.post('/api/postDraft',function(req,res){
+  router.post('/api/admin/postDraft',function(req,res){
     var _id = req.body._id;
     console.log(req.body)
     delete req.body._id;
@@ -24,7 +24,7 @@ const db = require('../db/db.js')
 
   })
 
-  router.get('/api/draft',function(req,res){
+  router.get('/api/admin/draft',function(req,res){
     let aid = req.query.payload.aid
     db.Draft.findOne({_id:aid}).then(draft => {
       res.status(200).send(draft)
@@ -32,7 +32,7 @@ const db = require('../db/db.js')
     })
   })
 
-  router.delete('/api/draft/:_id',(req, res) => {
+  router.delete('/api/admin/removeDraft/:_id',(req, res) => {
     db.Draft.remove({_id: req.params._id}, (err, data) => {
         if (err) {
             console.log(err)
@@ -42,7 +42,7 @@ const db = require('../db/db.js')
         }
     })
   })
-  router.get('/api/getDrafts',function (req,res){
+  router.get('/api/admin/getDrafts',function (req,res){
     let limit = +req.query.payload.limit,
         skip = +req.query.payload.skip;
         console.log(limit,skip)
@@ -58,7 +58,7 @@ const db = require('../db/db.js')
     })
   })
 
-  router.post('/api/saveDraft',function (req,res){
+  router.post('/api/admin/saveDraft',function (req,res){
     new db.Draft(req.body).save()
     .then(() =>{res.sendStatus(200)})
     .catch((err) => {console.log(err)})

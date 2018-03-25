@@ -75,7 +75,7 @@ export default {
   	h1{
 		text-align: center;
 		font-weight: normal;
-		margin-bottom: 30px;
+		margin-bottom: 20px;
 		color: #444;
 		font-size:30px;
 		&:hover{

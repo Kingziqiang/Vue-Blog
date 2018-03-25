@@ -1,16 +1,18 @@
 <template>
-	<div class="wrap posts animated fadeIn">
-		<p class="title">Total 共计<span>{{articles.length}}</span>篇相关文章</p>
-		<div class='wrapper '> 
-              <div v-if = "!articles.length" class="none"><span style="font-size: 25px">o(；>△<)o </span> 没有与 “{{key}}” 相关的文章噢, 瞅瞅别的吧~</div>
-			  <div class="article posts animated fadeIn" v-for = "article in articles">
-                <router-link :to="{ name: 'article', params:{aid: article._id} }" tag="h3">
-                {{article.title}}
+	<div class = "wrap posts animated fadeIn">
+		<p class = "title">Total 共计<span>{{ articles.length }}</span>篇相关文章</p>
+		<div class = 'wrapper '> 
+            <div v-if = "!articles.length" class="none">
+                <span style="font-size: 25px">o(；>△<)o </span> 没有与 “{{key}}” 相关的文章噢, 瞅瞅别的吧~
+            </div>
+			<div class = "article posts animated fadeIn" v-for = "article in articles" :key = 'article._id'>
+                <router-link :to = "{ name: 'article', params: {aid: article._id} }" tag = "h3">
+                  {{ article.title }}
                 </router-link>
-                <span class="line"></span>
-                <time>{{article.date}}</time>
-                <ul class="tag">
-                <li v-for = "tag in article.tags">{{tag}}</li>    
+                <span class = "line"></span>
+                <time>{{ article.date }}</time>
+                <ul class = "tag">
+                    <li v-for = "tag in article.tags" :key = 'tag'>{{ tag }}</li>    
                 </ul>
 			</div>
 		</div>
@@ -18,41 +20,40 @@
 </template>
 
 <script>
-import {mapActions, mapState, mapGetters, mapMutations} from 'vuex'
+import {mapActions, mapState, mapGetters, mapMutations} from 'vuex';
 export default {
-
   created () {
-    this.set_headLine({text: '关于\ “' + this.key +'\”', animate:'show2'});  
+    this.set_headLine({text: '关于\ “' + this.keyword +'\”', animate:'show2'});  
     this.init();
   },
 
   computed: {
     ...mapState(['articles']),
     ...mapGetters(['getShortArticles']),
-    key() {        
+    keyword () {        
       let key = this.$route.query.tag || this.$route.query.key;
       this.set_headLine({text: '关于“' + key +'”', animate:'show2'}); 
       return key;
     }
   },
+
   methods: {
     ...mapMutations(['set_headLine']),
     ...mapActions(['getArticles', 'searchArticles']),
     init() {
-        const query = this.$route.query;
-        if(typeof query.key != 'undefined'){
-            this.key = query.key;
-            this.searchArticles(query)
-        } else{
-            this.key = query.tag;
-            this.getArticles(query)
-        }
+      const query = this.$route.query;
+      if(typeof query.key != 'undefined'){
+        this.key = query.key;
+        this.searchArticles(query)
+      } else{
+        this.key = query.tag;
+        this.getArticles(query)
+      }
     }
   }
 }
 </script>
-<style lang="scss" rel="stylesheet/scss" scoped>
- 
+<style lang="scss" scoped>
 .wrap{
     width:55%;
     position: relative;

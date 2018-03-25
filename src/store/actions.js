@@ -1,5 +1,4 @@
-import Vue from 'vue'
-import router from 'vue-router'
+import Vue from 'vue';
 
 export default {
   getArticles({commit, state}, payload) {
@@ -38,13 +37,13 @@ export default {
   },  
   
   alterArticle({commit},payload) {
-    return Vue.http.post('/api/alter',payload)
+    return Vue.http.post('/api/admin/alter',payload)
     .then(() => {console.log("发送请求成功")})
     .catch((err) => {console.log(err)})
   },
 
   articleToDraft({},payload) {
-    return Vue.http.post('/api/articleToDraft',payload)
+    return Vue.http.post('/api/admin/articleToDraft',payload)
   },
 
   getAllTags({commit, state}) {
@@ -61,15 +60,15 @@ export default {
   },
 
   removeArtical({},payload) {
-    return Vue.http.post('/api/remove',payload)
+    return Vue.http.post('/api/admin/remove',payload)
   },
 
   saveArticle({commit},payload) {
-    return Vue.http.post('/api/addArticle',payload)
+    return Vue.http.post('/api/admin/addArticle',payload)
   },
 
   alterUser({commit,state},payload) {
-    return Vue.http.post('/api/alterUser',payload)
+    return Vue.http.post('/api/admin/alterUser',payload)
     .then(()=>{
       commit('set_user', payload)
     })
@@ -83,7 +82,7 @@ export default {
   },
   
   getDrafts({commit,state},payload) {
-    return Vue.http.get('/api/getDrafts',{params:{payload}})
+    return Vue.http.get('/api/admin/getDrafts',{params:{payload}})
     .then((drafts) => {
       commit('set_drafts',drafts.body)
     })
@@ -91,7 +90,7 @@ export default {
   },
 
   getDraft({commit,state},payload) {
-    return Vue.http.get('/api/draft',{params: {payload}})
+    return Vue.http.get('/api/admin/draft',{params: {payload}})
       .then((res) =>{
         commit('set_draft',res.data)
         })
@@ -100,19 +99,19 @@ export default {
   },
 
   alterDraft({},payload) {
-    return Vue.http.patch('/api/draft',payload)
+    return Vue.http.patch('/api/admin/draft',payload)
   },
 
   dropDraft({},_id) {
-    return Vue.http.delete('/api/draft/'+_id)
+    return Vue.http.delete('/api/admin/removeDraft/'+_id)
   },
 
   postDraft({},payload) {
-    return Vue.http.post('/api/postDraft',payload)
+    return Vue.http.post('/api/admin/postDraft',payload)
   },
 
   saveDraft({},payload) {
-    return Vue.http.post('/api/saveDraft',payload)
+    return Vue.http.post('/api/admin/saveDraft',payload)
   },
 
   submitComment({dispatch, commit}, payload){

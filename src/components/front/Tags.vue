@@ -1,21 +1,21 @@
 <template>
-  <div class="wrap posts animated fadeIn">
-    <p class="total">目前共计<span >{{allTags.length}}</span>个标签</p>
-      <div class="tags">
-        <router-link class="tag" :class="randomSize()" tag='span'
-            :to="{name: 'articles', query: {tag: item}}"          
-            v-for="item in allTags" >
-          {{item}}
-        </router-link>
-      </div>                
+    <div class = "wrap posts animated fadeIn">
+    <p class = "total">目前共计<span >{{ allTags.length }}</span>个标签</p>
+    <div class = "tags">
+    <router-link v-for = "item in allTags"  class = "tag" tag = 'span'
+        :class = "randomSize()" 
+        :to = "{name: 'articles', query: {tag: item}}"    
+        :key = 'item'      
+    >
+        {{item}}
+    </router-link>
+    </div>                
   </div>
 </template>
 
 <script>
-
-import {mapState, mapActions, mapGetters, mapMutations} from 'vuex'
+import {mapState, mapActions, mapGetters, mapMutations} from 'vuex';
 export default {
-
   created () {
     this.set_headLine({text: 'Tags', animate:'show3'})
     this.getAllTags();
@@ -28,13 +28,13 @@ export default {
     ...mapActions(['getAllTags']),
     ...mapMutations(['set_headLine']),
     randomSize(){
-        return "tag-" + Math.floor(1 + 6 * Math.random())
+        return "tag-" + Math.floor(1 + 6 * Math.random());
     }
   }
 }
 </script>
 
-<style lang="scss" rel="stylesheet/scss" scoped>
+<style lang="scss" scoped>
 .wrap{
     position: relative;
 }

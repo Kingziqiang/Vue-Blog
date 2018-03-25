@@ -1,11 +1,9 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
-import getters from './getters.js'
-import mutations from './mutations.js'
-import actions from './actions.js'
-
-
-Vue.use(Vuex)
+import Vue from 'vue';
+import Vuex from 'vuex';
+import getters from './getters.js';
+import mutations from './mutations.js';
+import actions from './actions.js';
+Vue.use(Vuex);
 
 const store = new Vuex.Store({
   state: {
@@ -35,11 +33,11 @@ const store = new Vuex.Store({
     },
     alert: {
       show: false,
-      text: 'hahahah'
+      text: ''
     }
   },
   getters,
   mutations,
   actions
 })
-export default store
+export default store;

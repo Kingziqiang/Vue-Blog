@@ -6,21 +6,25 @@ based on dark.css by Ivan Sagalaev
 */
 .content ul li{
   list-style: disc inside !important;
+  line-height: 30px;
+  // margin: 10px auto;
 }
 .content ol li{
   list-style: decimal inside !important;
+  // margin: 10px auto;
+  line-height: 30px;
 }
 .content>p{   
-  margin:20px 0;
+  margin:10px 0;
   line-height: 30px;
   font-stretch:30px;
   color: #4d4d4c;
   
 }
 .content h1,.content h2,.content h3{  
-  margin:15px 0px;
+  margin:20px auto 8px auto;
   border-bottom:1px solid #eee;
-  padding: 10px 0px;
+  padding: 6px 0px;
   position:relative;
 }
 .content h1::after,.content h2::after,.content h3::after{
@@ -30,7 +34,7 @@ based on dark.css by Ivan Sagalaev
 }
 .content h4,.content h5,.content h6{
 
-  margin:10px 0px;
+  margin:10px auto 6px auto;
 }
 .content h1:hover, h2:hover{
   color: #3f86b5;
@@ -47,6 +51,8 @@ pre{
 code{   
   font: 13px "SFMono-Regular", Consolas, "Liberation Mono", Menlo, Courier, monospace !important;
   background-color: #f6f8fa;
+  padding: 5px;
+  margin: auto 5px;
 } 
 
 .hljs {

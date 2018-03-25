@@ -50,6 +50,6 @@ export default {
         if(min > max){
             let temp = min; min = max; max = temp;
         }
-        return Math.floor(min + Math.random(max-min));
+        return Math.floor(min + Math.random() * (max-min));
     }
 }
